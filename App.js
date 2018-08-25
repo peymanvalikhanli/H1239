@@ -15,17 +15,17 @@ import RN from 'react-navigation'
 import introduction from './sourceCode/view/pages/introduction'; 
 import verification from './sourceCode/view/pages/verification'; 
 import home from './sourceCode/view/pages/home'; 
-import profile from './sourceCode/view/pages/profile'; 
-
-
+import profile from './sourceCode/view/pages/profile';
+import cost_registration from './sourceCode/view/pages/cost_registration';
 
 
 const nave = StackNavigator({
-  //profile: {screen: profile},
+  cost_registration: {screen: cost_registration},
   introduction: { screen: introduction },
   verification: {screen: verification},
   home: {screen: home},
   profile: {screen: profile},
+//  cost_registration: {screen: cost_registration},
   
 },{
   headerMode: "none"

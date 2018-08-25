@@ -13,9 +13,12 @@
     "Lname":"نام خانوادگی",
 
     "baseData":"اطلاعات پایه",
-    "registerHazine":"ثبت هزینه جدید",
     "reportHazine":"گزارش ریز هزینه ", 
     "darkhast":"درخواست معرفی نامه",
+    "cost_registration":"ثبت هزینه جدید", 
+
+    "national_code_":"کد ملی بیمار",
+    "cost_date":"تاریخ هرینه"
 
     "":""
 }

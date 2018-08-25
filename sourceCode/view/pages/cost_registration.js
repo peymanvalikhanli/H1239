@@ -8,7 +8,7 @@ import lang from '../../model/lang/fa.json';
 
 
 
-export default class profile extends PureComponent {
+export default class cost_registration extends PureComponent {
 
     constructor() {
         super();
@@ -23,100 +23,83 @@ export default class profile extends PureComponent {
         var { navigate } = this.props.navigation;
         return (
             <Container style={{ flex: 1 }}>
-            <Header> 
-                <Right>
+                <Header>
+                <Left>
                     <Button
-                    onPress={()=>{this.props.navigation.replace("home");}}
-                    >
-                        <Icon name="menu" />
-                    </Button>
-                </Right>
+                        onPress={()=>{this.props.navigation.replace("profile");}}
+                        >
+                            <Icon name="arrow-back" />
+                        </Button>
+                        </Left> 
+                        <Body>
+                        <Text
+                        style= {{textAlign:'center',color:'#ffffff',}}
+                        >
+                            {lang.cost_registration}
+                        </Text>
+                    </Body>
+                    <Right>
+                        <Button
+                        onPress={()=>{this.props.navigation.replace("home");}}
+                        >
+                            <Icon name="menu" />
+                        </Button>
+                    </Right>
+                    
                 </Header> 
                 <Content>
-                    <View>
-                        <Image
-                            style={styles.header}
-                            source={require("../image/header.png")}
-                        />
-                    </View>
-                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: '#ffffff', paddingBottom: 30 }}>
-                        <View>
-                            
-                                <Image
-                                    style={{
-                                        paddingVertical: 30,
-                                        width: width*0.35,
-                                        height: width*0.35,
-                                        borderRadius: 75
-                                    }}
-                                    resizeMode='stretch'
-                                    source={
-                                         require('../image/p.png')
-                                    }
-                                />
-                        </View>
-                        <View>
-                            <Text>{lang.name + " " + lang.Lname}</Text>
-                        </View>
-                    </View>
+                     
                     <List >
+                        <ListItem>
+                            <Left>
+                            </Left>
+                            <Body>
+                                <Text> 
+                                        {lang.name}: peyman
+                                </Text> 
+                            </Body>
+                            <Right>
+                                {/* <Icon name="card" /> */}
+                            </Right>
+                        </ListItem>
+                        <ListItem>
+                            <Left>
+                            </Left>
+                            <Body>
+                                <Text> 
+                                        {lang.Lname}: valikhanli 
+                                </Text> 
+                            </Body>
+                            <Righ>
+                            </Right>
+                        </ListItem>
+                        <ListItem>
+                            <Left>
+                            </Left>
+                            <Body>
+                                <Text> 
+                                        {lang.national_code_}: 0015337006
+                                </Text>
+                            </Body> 
+                            <Right> 
+                            </Right> 
+                        </ListItem>
+                    </Body>
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem>
                             <Left>
-                                <Icon name="arrow-back" />
                             </Left>
                             <Body>
                                 <Text>
-                                    {lang.baseData}
+                                    {lang.cost_date}
                                 </Text>
                             </Body>
                             <Right>
-                                {/* <Icon name="card" /> */}
                             </Right>
                         </ListItem>
-                        <ListItem icon
-                        onPress={()=>{this.props.navigation.replace("cost_registration");}}
-                        >
-                            <Left>
-                                <Icon name="arrow-back" />
-                            </Left>
-                            <Body>
-                                <Text>
-                                    {lang.cost_registration}
-                                </Text>
-                            </Body>
-                            <Right>
-                                {/* <Icon name="card" /> */}
-                            </Right>
-                        </ListItem>
-                        <ListItem icon>
-                            <Left>
-                                <Icon name="arrow-back" />
-                            </Left>
-                            <Body>
-                                <Text>
-                                    {lang.reportHazine}
-                                </Text>
-                            </Body>
-                            <Right>
-                                {/* <Icon name="card" /> */}
-                            </Right>
-                        </ListItem>
-                        <ListItem icon>
-                            <Left>
-                                <Icon name="arrow-back" />
-                            </Left>
-                            <Body>
-                                <Text>
-                                    {lang.darkhast}
-                                </Text>
-                            </Body>
-                            <Right>
-                                {/* <Icon name="arrow-back" /> */}
-                            </Right>
-                        </ListItem>
+                        
                     </List>
                 </Content>
                 <Footer>
