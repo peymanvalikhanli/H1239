@@ -1,11 +1,38 @@
 
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, NetInfo } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text } from 'native-base';
 import Orientation from 'react-native-orientation';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
 import lang from '../../model/lang/fa.json';
+
+import axios from 'axios';
+
+import server_url from '../../model/server_config/controller_url.json'; 
+
+function handleFirstConnectivityChange(isConnected) {
+    if(!isConnected){
+        
+        Alert.alert(
+            lang.error,
+            lang.check_internet_connection,
+            [
+              {text: 'بله', onPress: () => RNExitApp.exitApp()},
+            ],
+            { cancelable: false }
+          )
+    }
+    
+    NetInfo.isConnected.removeEventListener(
+      'connectionChange',
+      handleFirstConnectivityChange
+    );
+}
+NetInfo.isConnected.addEventListener(
+    'connectionChange',
+    handleFirstConnectivityChange
+);
 
 
 
@@ -14,11 +41,66 @@ export default class introduction extends PureComponent {
 
     constructor() {
         super();
+
+        this.state={
+            is_change_page : false,
+            national_code: '#',
+        }
+
         Orientation.lockToPortrait();
+
     }
 
     btnEnter_onclick() {
-        this.props.navigation.replace("verification");
+        if(this.state.national_code != null || this.state.national_code != '' || this.state.national_code != '#'){
+            
+            if( this.state.national_code.length == 10){
+
+                //_______________________________
+
+                axios.post(server_url.login, {
+                    nationalCode: this.state.national_code,
+                })
+                .then(response=> {
+                    
+                    if(response.data.act != undefined || response.data.act != null){
+                        
+                        if (response.data.act.trim() == 'NO User' || response.data.mobileNumber == '' ){
+                            Alert.alert(
+                                lang.error,
+                                lang.NoUser,
+                                [
+                                {text: lang.yes},
+                                ],
+                                { cancelable: false }
+                            )
+                        }else{
+                            this.props.navigation.replace("verification", { mobile:  response.data.mobileNumber, national_code : this.state.national_code })
+                        }
+                          
+                    }         
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                //_______________________________
+
+
+                // this.props.navigation.replace("verification");                
+            }else{ //if(this.state.national_code.length < 10 || this.state.national_code.length > 10){
+                Alert.alert(
+                    lang.error,
+                    lang.check_national_code,
+                    [
+                    {text: lang.yes},
+                    ],
+                    { cancelable: false }
+                )
+            }
+        }else{
+
+        }
     }
 
     render() {
@@ -61,6 +143,8 @@ export default class introduction extends PureComponent {
                                             </Label>
                                             <Input
                                                 keyboardType="numeric"
+                                                maxLength={10}
+                                                onChange={(event) => this.setState({national_code: event.nativeEvent.text})}
                                             />
                                         </Item>
                                     </Form>
