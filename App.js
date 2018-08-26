@@ -17,16 +17,16 @@ import verification from './sourceCode/view/pages/verification';
 import home from './sourceCode/view/pages/home'; 
 import profile from './sourceCode/view/pages/profile';
 import cost_registration from './sourceCode/view/pages/cost_registration';
+import upload_file from './sourceCode/view/pages/upload_file';
 
 
 const nave = StackNavigator({
-  cost_registration: {screen: cost_registration},
   introduction: { screen: introduction },
   verification: {screen: verification},
   home: {screen: home},
   profile: {screen: profile},
-//  cost_registration: {screen: cost_registration},
-  
+  cost_registration: {screen: cost_registration}, 
+  upload_file:{screen: upload_file},
 },{
   headerMode: "none"
 });

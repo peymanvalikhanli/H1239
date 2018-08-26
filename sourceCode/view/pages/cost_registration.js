@@ -138,7 +138,10 @@ export default class cost_registration extends PureComponent {
                         </Item>
                         <Item> 
                             <Button 
-                            style={{width:width*0.9,marginTop:height*0.02,marginBottom: height*0.025, marginLeft: width*0.025, marginRight: width*0.05 ,textAlign:'center',justifyContent:'center',fontFamily: "DinarTwoMedium_MRT",}}>
+                            style={{width:width*0.9,marginTop:height*0.02,marginBottom: height*0.025, marginLeft: width*0.025, marginRight: width*0.05 ,textAlign:'center',justifyContent:'center',fontFamily: "DinarTwoMedium_MRT",}}
+                            onPress={()=>{this.props.navigation.replace("upload_file");}}
+                            >
+
                                 <Text>{lang.next}</Text>
                             </Button>
                         </Item>
