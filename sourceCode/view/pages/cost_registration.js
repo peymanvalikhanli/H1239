@@ -35,7 +35,7 @@ export default class cost_registration extends PureComponent {
     render() {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
-        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD [is] YYYY/M/D') : '';
+        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
  
         return (
             <Container style={{ flex: 1 }}>
@@ -49,7 +49,7 @@ export default class cost_registration extends PureComponent {
                         </Left> 
                         <Body>
                         <Text
-                        style= {{textAlign:'center',color:'#ffffff',}}
+                        style= {{textAlign:'center',color:'#ffffff',fontFamily: "DinarTwoMedium_MRT",}}
                         >
                             {lang.cost_registration}
                         </Text>
@@ -63,68 +63,88 @@ export default class cost_registration extends PureComponent {
                     </Right>
                     
                 </Header> 
-                <Content>
+                <Content 
+                    style={{paddingLeft: width*0.01,paddingRight: width*0.02,fontFamily: "DinarTwoMedium_MRT",}}
+                >
                      
-                    <Form>
-                        <Text> 
+                    <Form
+                    style={{justifyContent:'center',textAlign:'center',}}
+                    > 
+
+                        <Text
+                        style={styles.text}
+                        > 
                                 {lang.name}: peyman
                         </Text>
-                        <Text> 
+                        <Text
+                        style={styles.text}
+                        > 
                                 {lang.Lname}: valikhanli 
                         </Text> 
-                        <Text> 
+                        <Text
+                        style={styles.text}                        
+                        > 
                                 {lang.national_code_}: 0015337006
-                        </Text>
-                        <Text>
-                            {lang.cost_date}
                         </Text>
                        <List> 
                            <ListItem itemDivider>
                            </ListItem>
                         </List>
                         
-                        <Item >
-                            
-                                 <JalaliCalendarPicker
-                                    onDateChange={this.onDateChange}
-                                    />
+                        <Text
+                        style={styles.text}                        
+                        > 
+                        {lang.cost_date}: {startDate}
+                        </Text>
+                        
+                        <Item> 
+                            <JalaliCalendarPicker
+                            onDateChange={this.onDateChange}
+                            textStyle={{fontFamily: "DinarTwoMedium_MRT",}}
+                            />
                             
                         </Item>
                         <Item picker>
                             <Picker
                                 mode="dropdown"
                                 iosIcon={<Icon name="ios-arrow-down-outline" />}
-                                style={{ width: undefined }}
+                                style={[{ width: undefined, },styles.form_input]}
                                 placeholder={lang.cost_type}
-                                placeholderStyle={{ color: "#bfc6ea" }}
+                                placeholderStyle={[{ color: "#bfc6ea" },styles.form_input]}
                                 placeholderIconColor="#007aff"
                                 // selectedValue={this.state.selected2}
                                 // onValueChange={this.onValueChange2.bind(this)}
                             >
-                                <Picker.Item label={lang.cost_type} value="key0" />
-                                <Picker.Item label={lang.cost_type} value="key0" />
-                                <Picker.Item label={lang.cost_type} value="key0" />
-                                <Picker.Item label={lang.cost_type} value="key0" />
+                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
+                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
+                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
+                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
                             </Picker>
                         </Item>
                         <Item floatingLabel>
-                            <Label>{lang.cost_price}</Label>
-                            <Input 
-                            // placeholder={lang.cost_price}
+                            <Label style={styles.form_input} >{lang.cost_price}</Label>
+                            <Input
+                            style={styles.form_input}
+                                // placeholder={lang.cost_price}
                              />
                         </Item>
                                     
                         <Item 
-                        // style= {{}}
+                         style= {{textAlign:'center',justifyContent:'center',marginTop: height*0.05,}}
                         >
-                            <Label>{lang.cost_price}</Label>    
+                            <Label
+                            style={styles.form_input}
+                            >{lang.cost_price}</Label>    
+                        </Item>
+                        <Item> 
+                            <Button 
+                            style={{width:width*0.9,marginTop:height*0.02,marginBottom: height*0.025, marginLeft: width*0.025, marginRight: width*0.05 ,textAlign:'center',justifyContent:'center',fontFamily: "DinarTwoMedium_MRT",}}>
+                                <Text>{lang.next}</Text>
+                            </Button>
                         </Item>
                                     
                     </Form>
                 </Content>
-                <Footer>
-                    
-                </Footer>
             </Container>
         );
     }
@@ -152,8 +172,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#000000',
     },
     text: {
-        marginTop: height * 0.01,
-        fontSize: width * 0.05,
+        marginTop: height * 0.008,
+        fontSize: width * 0.03,
         color: "#000000",
         fontFamily: "DinarTwoMedium_MRT",
     },
@@ -175,8 +195,8 @@ const styles = StyleSheet.create({
     form_input: {
         // borderColor: '#ff0000',
         // color:'#ff0000',
-        textAlign: 'center',
-        fontSize: width * 0.03,
+        //textAlign: 'center',
+        //fontSize: width * 0.03,
         fontFamily: "DinarTwoMedium_MRT",
     },
     img: {
