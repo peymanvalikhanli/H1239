@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Image, View, Dimensions, StyleSheet, } from 'react-native';
-import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, } from 'native-base';
+import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker} from 'native-base';
 import Orientation from 'react-native-orientation';
+
+import JalaliCalendarPicker from 'react-native-jalali-calendar-picker';
 
 import lang from '../../model/lang/fa.json';
 
@@ -13,7 +15,18 @@ export default class cost_registration extends PureComponent {
     constructor() {
         super();
         Orientation.lockToPortrait();
+        this.onDateChange = this.onDateChange.bind(this);
+
+        this.state = {
+            selectedStartDate: null,
+          };
     }
+
+    onDateChange(date) {
+        this.setState({
+          selectedStartDate: date,
+        });
+      }
 
     btn_send_onclick(){
         this.props.navigation.replace("home");
@@ -21,6 +34,9 @@ export default class cost_registration extends PureComponent {
 
     render() {
         var { navigate } = this.props.navigation;
+        const { selectedStartDate } = this.state;
+        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD [is] YYYY/M/D') : '';
+ 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
@@ -49,58 +65,62 @@ export default class cost_registration extends PureComponent {
                 </Header> 
                 <Content>
                      
-                    <List >
-                        <ListItem>
-                            <Left>
-                            </Left>
-                            <Body>
-                                <Text> 
-                                        {lang.name}: peyman
-                                </Text> 
-                            </Body>
-                            <Right>
-                                {/* <Icon name="card" /> */}
-                            </Right>
-                        </ListItem>
-                        <ListItem>
-                            <Left>
-                            </Left>
-                            <Body>
-                                <Text> 
-                                        {lang.Lname}: valikhanli 
-                                </Text> 
-                            </Body>
-                            <Righ>
-                            </Right>
-                        </ListItem>
-                        <ListItem>
-                            <Left>
-                            </Left>
-                            <Body>
-                                <Text> 
-                                        {lang.national_code_}: 0015337006
-                                </Text>
-                            </Body> 
-                            <Right> 
-                            </Right> 
-                        </ListItem>
-                    </Body>
-                        <ListItem itemDivider>
-                            <Text></Text>
-                        </ListItem>
-                        <ListItem>
-                            <Left>
-                            </Left>
-                            <Body>
-                                <Text>
-                                    {lang.cost_date}
-                                </Text>
-                            </Body>
-                            <Right>
-                            </Right>
-                        </ListItem>
+                    <Form>
+                        <Text> 
+                                {lang.name}: peyman
+                        </Text>
+                        <Text> 
+                                {lang.Lname}: valikhanli 
+                        </Text> 
+                        <Text> 
+                                {lang.national_code_}: 0015337006
+                        </Text>
+                        <Text>
+                            {lang.cost_date}
+                        </Text>
+                       <List> 
+                           <ListItem itemDivider>
+                           </ListItem>
+                        </List>
                         
-                    </List>
+                        <Item >
+                            
+                                 <JalaliCalendarPicker
+                                    onDateChange={this.onDateChange}
+                                    />
+                            
+                        </Item>
+                        <Item picker>
+                            <Picker
+                                mode="dropdown"
+                                iosIcon={<Icon name="ios-arrow-down-outline" />}
+                                style={{ width: undefined }}
+                                placeholder={lang.cost_type}
+                                placeholderStyle={{ color: "#bfc6ea" }}
+                                placeholderIconColor="#007aff"
+                                // selectedValue={this.state.selected2}
+                                // onValueChange={this.onValueChange2.bind(this)}
+                            >
+                                <Picker.Item label={lang.cost_type} value="key0" />
+                                <Picker.Item label={lang.cost_type} value="key0" />
+                                <Picker.Item label={lang.cost_type} value="key0" />
+                                <Picker.Item label={lang.cost_type} value="key0" />
+                            </Picker>
+                        </Item>
+                        <Item floatingLabel>
+                            <Label>{lang.cost_price}</Label>
+                            <Input 
+                            // placeholder={lang.cost_price}
+                             />
+                        </Item>
+                                    
+                        <Item 
+                        // style= {{}}
+                        >
+                            <Label>{lang.cost_price}</Label>    
+                        </Item>
+                                    
+                    </Form>
                 </Content>
                 <Footer>
                     

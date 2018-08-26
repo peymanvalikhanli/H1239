@@ -18,7 +18,9 @@
     "cost_registration":"ثبت هزینه جدید", 
 
     "national_code_":"کد ملی بیمار",
-    "cost_date":"تاریخ هرینه"
+    "cost_date":"تاریخ هرینه", 
+    "cost_type":"نوع هزینه",
+    "cost_price":"مبلغ هرینه", 
 
     "":""
 }
