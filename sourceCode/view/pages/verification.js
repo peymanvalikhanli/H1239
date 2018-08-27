@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 import lang from '../../model/lang/fa.json';
 
+import axios from 'axios';
 
+import server_url from '../../model/server_config/controller_url.json'; 
 
 
 export default class verification extends PureComponent {
@@ -13,14 +15,123 @@ export default class verification extends PureComponent {
     constructor() {
         super();
         Orientation.lockToPortrait();
+
+        this.state={
+            verify_code1:'#',
+            verify_code2:'#',
+            verify_code3:'#',
+            verify_code4:'#',
+        }
     }
 
-    btn_send_onclick(){
-        this.props.navigation.replace("home");
+    btn_send_onclick(national_code){
+
+       
+        var have_error = false;
+
+        if((this.state.verify_code1 != null || this.state.verify_code1 != '') && this.state.verify_code1 != '#'){
+            if((this.state.verify_code2 != null || this.state.verify_code2 != '' )&& this.state.verify_code2 != '#'){
+                if((this.state.verify_code3 != null || this.state.verify_code3 != '' )&& this.state.verify_code3 != '#'){
+                    if((this.state.verify_code4 != null || this.state.verify_code4 != '' )&& this.state.verify_code4 != '#'){
+
+                        //____________________________________
+                        //TODO: send data 
+
+                        axios.post(server_url.verification, {
+                            nationalCode: national_code,
+                            codeGenerate: this.state.verify_code1+''+this.state.verify_code2+''+this.state.verify_code3+''+this.state.verify_code4,
+                        })
+                        .then(response=> {
+                            
+                            if(response.data.act != undefined || response.data.act != null){
+                                
+                                if (response.data.act.trim() == 'Field' || response.data.Token == '' ){
+                                    Alert.alert(
+                                        lang.error,
+                                        lang.verifiy_code_is_not_valid,
+                                        [
+                                        {text: lang.yes},
+                                        ],
+                                        { cancelable: false }
+                                    )
+                                }else{
+                                    AsyncStorage.setItem('Token', response.data.Token ); 
+                                    AsyncStorage.setItem('national_code', national_code );
+                                    this.props.navigation.replace("home");
+                                }
+                                  
+                            }         
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                        //____________________________________
+
+                    }else{
+                        have_error = true;
+                    }
+                }else{
+                    have_error = true;
+                }
+            }else{
+                    have_error = true;
+            }
+        }else{
+                    have_error = true;
+                    alert('test');
+        }
+
+        if(have_error==true){
+            Alert.alert(
+                lang.error,
+                lang.not_valid_verify_code,
+                [
+                {text: lang.yes},
+                ],
+                { cancelable: false }
+            )
+        }
+
+       // this.props.navigation.replace("home");
+
+
+    }
+
+    btn_try_again_onclick(national_code){
+       
+        axios.post(server_url.login, {
+            nationalCode: national_code,
+        })
+        .then(response=> {
+            
+            if(response.data.act != undefined || response.data.act != null){
+                
+                if (response.data.act.trim() == 'NO User' || response.data.mobileNumber == '' ){
+                    Alert.alert(
+                        lang.error,
+                        lang.NoUser,
+                        [
+                        {text: lang.yes},
+                        ],
+                        { cancelable: false }
+                    )
+                }else{
+                   // this.props.navigation.replace("verification", { mobile:  response.data.mobileNumber, national_code : this.state.national_code })
+                }
+                  
+            }         
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     render() {
         var { navigate } = this.props.navigation;
+        var mobile = this.props.navigation.state.params.mobile;
+        var national_code = this.props.navigation.state.params.national_code; 
+       // this.setstate({national_code : national_code});
+        
         return (
             <Container style={{ flex: 1 }}>
                 <Content>
@@ -33,7 +144,9 @@ export default class verification extends PureComponent {
                     <Body>
                         <Text style={[styles.text, { width: width * 0.5, textAlign: 'center' }]}>
                             {lang.system_verify}
-                            0936****723
+                            {mobile.substring(0, 4)}
+                            *****
+                            {mobile.substring(8, 11)}
                     {lang.is_sending}
                         </Text>
                         <Form style={[styles.form, { flex: 1, flexDirection: 'row', justifyContent: 'space-between' }]} >
@@ -43,7 +156,7 @@ export default class verification extends PureComponent {
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code: event.nativeEvent.text })}
+                                    onChange={(event) => this.setState({ verify_code1: event.nativeEvent.text })}
                                     style={styles.form_input}
 
                                 />
@@ -55,7 +168,7 @@ export default class verification extends PureComponent {
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code: event.nativeEvent.text })}
+                                    onChange={(event) => this.setState({ verify_code2: event.nativeEvent.text })}
                                     style={styles.form_input}
 
                                 />
@@ -67,7 +180,7 @@ export default class verification extends PureComponent {
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code: event.nativeEvent.text })}
+                                    onChange={(event) => this.setState({ verify_code3: event.nativeEvent.text })}
                                     style={styles.form_input}
 
                                 />
@@ -79,7 +192,7 @@ export default class verification extends PureComponent {
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code: event.nativeEvent.text })}
+                                    onChange={(event) => this.setState({ verify_code4: event.nativeEvent.text })}
                                     style={styles.form_input}
                                 />
                             </Item>
@@ -88,7 +201,10 @@ export default class verification extends PureComponent {
                             {lang.call_company_for_help}
                         </Text>
 
-                        <Button transparent style={{ marginTop: height * 0.05, marginRight: width * 0.05, width: width * 0.5, textAlign: 'center' }}>
+                        <Button transparent 
+                            style={{ marginTop: height * 0.05, marginRight: width * 0.05, width: width * 0.5, textAlign: 'center' }}
+                            onPress={()=>{this.btn_try_again_onclick(national_code)}}
+                        >
                             <Right>
                                 <Image
                                     style={styles.refresh}
@@ -105,7 +221,7 @@ export default class verification extends PureComponent {
                         </Button>
 
                         <Button style={styles.form_btn}
-                        onPress={()=>{this.btn_send_onclick()}}
+                        onPress={()=>{this.btn_send_onclick(national_code)}}
                         >
                             <Body>
                                 <Text style={{ color: "#ffffff", fontFamily: "DinarTwoMedium_MRT", }}>
