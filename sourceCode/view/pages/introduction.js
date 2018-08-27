@@ -1,6 +1,6 @@
 
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, NetInfo } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, NetInfo, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text } from 'native-base';
 import Orientation from 'react-native-orientation';
 import SwiperFlatList from 'react-native-swiper-flatlist';
@@ -49,6 +49,16 @@ export default class introduction extends PureComponent {
 
         Orientation.lockToPortrait();
 
+        AsyncStorage.getItem('Token', (err, result) => {
+            if(result!= null){
+               this.go_home_page();
+           }  
+        });
+
+    }
+
+    go_home_page(){
+        this.props.navigation.replace("home");
     }
 
     btnEnter_onclick() {
