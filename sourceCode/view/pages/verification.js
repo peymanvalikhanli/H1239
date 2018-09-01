@@ -21,6 +21,7 @@ export default class verification extends PureComponent {
             verify_code2:'#',
             verify_code3:'#',
             verify_code4:'#',
+            national_code:'',
         }
     }
 
@@ -125,13 +126,13 @@ export default class verification extends PureComponent {
             console.log(error);
         });
     }
+    
 
     render() {
         var { navigate } = this.props.navigation;
         var mobile = this.props.navigation.state.params.mobile;
         var national_code = this.props.navigation.state.params.national_code; 
-       // this.setstate({national_code : national_code});
-        
+  //      this.setstate({national_code : national_code});
         return (
             <Container style={{ flex: 1 }}>
                 <Content>
@@ -150,42 +151,50 @@ export default class verification extends PureComponent {
                     {lang.is_sending}
                         </Text>
                         <Form style={[styles.form, { flex: 1, flexDirection: 'row', justifyContent: 'space-between' }]} >
-                            <Item inlineLabel
+                            <Item floatingLabel
                                 style={styles.form_item} >
                                 <Input
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code1: event.nativeEvent.text })}
+                                    onChange={(event) => {this.setState({ verify_code1: event.nativeEvent.text });this._input1._root.focus();}}
                                     style={styles.form_input}
-
+                                    blurOnSubmit={false}
+                                    onFocus = {()=>{this.setState({ verify_code1: "" });}}
+                                    value={this.state.verify_code1=='#'?'':this.state.verify_code1}                                
                                 />
                             </Item>
-                            <Item inlineLabel
+                            <Item floatingLabel
                                 style={styles.form_item}
                             >
                                 <Input
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code2: event.nativeEvent.text })}
+                                    onChange={(event) => {this.setState({ verify_code2: event.nativeEvent.text });this._input2._root.focus();}}
                                     style={styles.form_input}
-
+                                    getRef={(c) => this._input1 = c}
+                                    blurOnSubmit = {false}
+                                    onFocus = {()=>{this.setState({ verify_code2: "" });}}
+                                    value={this.state.verify_code2=='#'?'':this.state.verify_code2}
                                 />
                             </Item>
-                            <Item inlineLabel
+                            <Item floatingLabel
                                 style={styles.form_item}
                             >
                                 <Input
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
-                                    onChange={(event) => this.setState({ verify_code3: event.nativeEvent.text })}
+                                    onChange={(event) => {this.setState({ verify_code3: event.nativeEvent.text });this._input3._root.focus();}}
                                     style={styles.form_input}
-
+                                    getRef = {(c)=>this._input2 = c}
+                                    blurOnSubmit = {false}
+                                    onFocus = {()=>{this.setState({ verify_code3: "" });}}
+                                    value={this.state.verify_code3=='#'?'':this.state.verify_code3}                                    
                                 />
                             </Item>
-                            <Item inlineLabel
+                            <Item floatingLabel
                                 style={styles.form_item}
                             >
                                 <Input
@@ -194,6 +203,10 @@ export default class verification extends PureComponent {
                                     maxLength={1}
                                     onChange={(event) => this.setState({ verify_code4: event.nativeEvent.text })}
                                     style={styles.form_input}
+                                    getRef = {(c)=>this._input3 = c}
+                                    blurOnSubmit = {false}
+                                    onFocus = {()=>{this.setState({ verify_code4: "" });}}
+                                    value={this.state.verify_code4=='#'?'':this.state.verify_code4}                                    
                                 />
                             </Item>
                         </Form>
