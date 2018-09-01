@@ -36,13 +36,16 @@ export default class cost_registration extends PureComponent {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
         const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
+
+        var userid = this.props.navigation.state.params.userId;
+        var userProfile = this.props.navigation.state.params.userProfile;
  
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
                 <Left>
                     <Button
-                        onPress={()=>{this.props.navigation.replace("profile");}}
+                        onPress={()=>{this.props.navigation.replace("profile",{userId:userid ,userProfile: userProfile});}}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -74,17 +77,17 @@ export default class cost_registration extends PureComponent {
                         <Text
                         style={styles.text}
                         > 
-                                {lang.name}: peyman
+                                {lang.name}: {userProfile.PatientName}
                         </Text>
-                        <Text
+                        {/* <Text
                         style={styles.text}
                         > 
                                 {lang.Lname}: valikhanli 
-                        </Text> 
+                        </Text>  */}
                         <Text
                         style={styles.text}                        
                         > 
-                                {lang.national_code_}: 0015337006
+                                {lang.national_code_}: {userProfile.PatientNationalCode}
                         </Text>
                        <List> 
                            <ListItem itemDivider>
@@ -139,7 +142,7 @@ export default class cost_registration extends PureComponent {
                         <Item> 
                             <Button 
                             style={{width:width*0.9,marginTop:height*0.02,marginBottom: height*0.025, marginLeft: width*0.025, marginRight: width*0.05 ,textAlign:'center',justifyContent:'center',fontFamily: "DinarTwoMedium_MRT",}}
-                            onPress={()=>{this.props.navigation.replace("upload_file");}}
+                            onPress={()=>{this.props.navigation.replace("upload_file",{userId:userid ,userProfile: userProfile});}}
                             >
 
                                 <Text>{lang.next}</Text>

@@ -1,6 +1,8 @@
 {
 "login":"http://new.armanins-maskan.com/Mobile/MobileNumber",
 "verification":"http://new.armanins-maskan.com/Mobile/Login",
+"GetUserInsuranceList":"http://new.armanins-maskan.com/Mobile/GetUserInsuranceList",
+
 
 "":""
 }

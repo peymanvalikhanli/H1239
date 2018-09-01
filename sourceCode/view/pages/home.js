@@ -1,22 +1,83 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 import lang from '../../model/lang/fa.json';
 
+import axios from 'axios';
 
+import server_url from '../../model/server_config/controller_url.json'; 
 
 
 export default class home extends PureComponent {
 
+    get_personal_data(){
+        axios.post(server_url.GetUserInsuranceList, {
+            userkey: this.state.Token,
+        })
+        .then(response=> {
+            
+            if(response.data.act != undefined || response.data.act != null){
+               // alert(response.data.LstUserInsurance);
+                if(response.data.LstUserInsurance != undefined || response.data.LstUserInsurance != null || response.data.LstUserInsurance != ''){
+
+                    AsyncStorage.setItem('LstUserInsurance', JSON.stringify(response.data.LstUserInsurance ));
+                    this.setState({LstUserInsurance:  response.data.LstUserInsurance });
+                    this.setState({btn_count:response.data.LstUserInsurance.length});
+                    
+                }
+            }         
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     constructor() {
         super();
         Orientation.lockToPortrait();
+
+        this.state={
+            Token:'#',
+            national_code: '#',
+            LstUserInsurance:'#',
+            btn_count:0,
+        }
+
+        AsyncStorage.getItem('Token', (err, result) => {
+            if(result!= null){
+               this.setState({Token: result});
+               this.get_personal_data();
+           }  
+        });
+
+        AsyncStorage.getItem('national_code', (err, result) => {
+            if(result!= null){
+               this.setState({national_code: result});
+           }  
+        });
+    
     }
 
-    btn_send_onclick(){
-        this.props.navigation.replace("profile");
+   
+    btn_send_onclick(userId,index) {
+       
+       try{     
+            if(userId!= null && userId != undefined && userId != '' && userId != 0){
+                this.props.navigation.replace("profile",{userId: userId , userProfile : this.state.LstUserInsurance[index]});
+            }
+        }catch(e){
+
+        }
+        
+    }
+
+    btn_exit_onclick() {
+        AsyncStorage.setItem('Token', null);
+        AsyncStorage.setItem('national_code', null);
+        AsyncStorage.clear();
+        this.props.navigation.replace("introduction");
     }
 
     render() {
@@ -36,176 +97,252 @@ export default class home extends PureComponent {
                             style={styles.divider_view}
                         >
                             <View
-                            style={styles.top_frame}
+                                style={styles.top_frame}
                             >
-                                <Image
+                                <Button transparent
                                     style={styles.header_btn}
-                                    resizeMode='stretch'
-                                    source={require('../image/btn_z4.png')} 
+                                >
+                                    <Image
+                                        style={styles.header_btn_image}
+                                        resizeMode='stretch'
+                                        source={require('../image/btn_z4.png')}
                                     />
-                                <Image
+                                </Button>
+                                <Button transparent
                                     style={styles.header_btn}
-                                    resizeMode='stretch'
-                                    source={require('../image/btn_z3.png')} 
+                                    onPress={() => { this.btn_exit_onclick() }}
+                                >
+                                    <Image
+                                        style={styles.header_btn_image}
+                                        resizeMode='stretch'
+                                        source={require('../image/btn_z3.png')}
                                     />
-                                <Image
+                                </Button>
+                                <Button transparent
                                     style={styles.header_btn}
-                                    resizeMode='stretch'
-                                    source={require('../image/btn_z2.png')} 
+                                >
+                                    <Image
+                                        style={styles.header_btn_image}
+                                        resizeMode='stretch'
+                                        source={require('../image/btn_z2.png')}
                                     />
-                                <Image
-                                    style={styles.header_btn1}
-                                    resizeMode='stretch'
-                                    source={require('../image/btn1.png')} 
+                                </Button>
+                                <Button transparent
+                                    style={styles.header_btn}
+                                >
+                                    <Image
+                                        style={styles.header_btn1_image}
+                                        resizeMode='stretch'
+                                        source={require('../image/btn1.png')}
                                     />
+                                </Button>
                             </View>
                             <View
                                 style={styles.clo_view}
                             >
 
                                 <View
-                                    style={[styles.row_view,{marginTop:height*0.05}]}
+                                    style={[styles.row_view, { marginTop: height * 0.05 }]}
                                 >
-                                     <Button Transparent
-                                        onPress={()=>{this.btn_send_onclick()}}
-                                        style={styles.btn_personal}                                       
-                                       >
-                                        <Image
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>1?this.state.LstUserInsurance[1].UserInsuranceId:undefined,1) }}
                                         style={styles.btn_personal}
-                                        resizeMode='stretch'
-                                        source={require('../image/p.png')} 
-                                        onPress={()=>{this.btn_send_onclick()}}                                    
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p.png')}
                                         />
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.45,marginTop:(height*0.03)*-1}]}
+                                    style={[styles.row_view, { width: width * 0.45, marginTop: (height * 0.03) * -1 }]}
                                 >
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>2?this.state.LstUserInsurance[2].UserInsuranceId:undefined,2) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p11.png')}
+                                        />
+                                    </Button>
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>3?this.state.LstUserInsurance[3].UserInsuranceId:undefined,3) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p12.png')}
+                                        />
+                                    </Button>
+                                </View>
+                                <View
+                                    style={[styles.row_view, { width: width * 0.68, marginTop: height * 0.025 }]}
+                                >
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>4?this.state.LstUserInsurance[4].UserInsuranceId:undefined,4) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p21.png')}
+                                        />
+                                    </Button>
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>5?this.state.LstUserInsurance[5].UserInsuranceId:undefined,5) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p22.png')}
+                                        />
+                                    </Button>
+                                </View>
+                                <View
+                                    style={[styles.row_view, { width: width * 0.75, marginTop: height * 0.05 }]}
+                                >
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>6?this.state.LstUserInsurance[6].UserInsuranceId:undefined,6) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p31.png')}
+                                        />
+                                    </Button>
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>0?this.state.LstUserInsurance[0].UserInsuranceId:undefined,0) }}
+                                        style={styles.btn_main_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_main_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/center_image.png')}
+                                        />
+                                    </Button>
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>7?this.state.LstUserInsurance[7].UserInsuranceId:undefined,7) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p32.png')}
+                                        />
+                                    </Button>
+                                </View>
+                                <View
+                                    style={[styles.row_view, { width: width * 0.68, marginTop: height * 0.05 }]}
+                                >
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>8?this.state.LstUserInsurance[8].UserInsuranceId:undefined,8) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p41.png')}
+                                        />
+                                    </Button>
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>9?this.state.LstUserInsurance[9].UserInsuranceId:undefined,9) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p42.png')}
+                                        />
+                                    </Button>
 
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p11.png')} 
-                                    />
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p12.png')} 
-                                    />
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.68,marginTop:height*0.025}]}
+                                    style={[styles.row_view, { width: width * 0.45, marginTop: height * 0.025 }]}
                                 >
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p21.png')} 
-                                    />
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p22.png')} 
-                                    />
-                                </View>
-                                <View
-                                    style={[styles.row_view, { width: width * 0.75,marginTop:height*0.05}]}
-                                >
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p31.png')} 
-                                    />
-                                    <Image
-                                    style={styles.btn_main_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/center_image.png')} 
-                                    />
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p32.png')} 
-                                    />
-                                </View>
-                                <View
-                                    style={[styles.row_view, { width: width * 0.68,marginTop:height*0.05 }]}
-                                >
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p41.png')} 
-                                    />
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p42.png')} 
-                                    />
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>10?this.state.LstUserInsurance[10].UserInsuranceId:undefined,10) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p51.png')}
+                                        />
+                                    </Button>
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>11?this.state.LstUserInsurance[11].UserInsuranceId:undefined,11) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p52.png')}
+                                        />
+                                    </Button>
 
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.45,marginTop:height*0.025}]}
+                                    style={[styles.row_view, { marginTop: (height * 0.03) * -1 }]}
                                 >
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p51.png')} 
-                                    />
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p52.png')} 
-                                    />
+                                    <Button Transparent
+                                        onPress={() => { this.btn_send_onclick(this.state.btn_count>12?this.state.LstUserInsurance[12].UserInsuranceId:undefined,12) }}
+                                        style={styles.btn_personal}
+                                    >
+                                        <Image
+                                            style={styles.btn_personal_image}
+                                            resizeMode='stretch'
+                                            source={require('../image/p6.png')}
+                                        />
 
-                                </View>
-                                <View
-                                    style={[styles.row_view,{marginTop:(height*0.03)*-1}]}
-                                >
-                                    <Image
-                                    style={styles.btn_personal}
-                                    resizeMode='stretch'
-                                    source={require('../image/p6.png')} 
-                                    />
+                                    </Button>
 
                                 </View>
                             </View>
                             <View
-                            style={styles.footer_frame_bk}
-                            > 
+                                style={styles.footer_frame_bk}
+                            >
                             </View>
                             <View
-                            style={styles.footer_frame}
-                            > 
+                                style={styles.footer_frame}
+                            >
                                 <View
-                                style={styles.footer}
+                                    style={styles.footer}
                                 >
-                                <Image
+                                    <Image
                                         style={styles.btn_footer}
                                         resizeMode='stretch'
-                                        source={require('../image/btn_x2.png')} 
-                                        />
+                                        source={require('../image/btn_x2.png')}
+                                    />
                                 </View>
-                                
+
                                 <View
-                                style={{flex:0,justifyContent: 'center',}}
+                                    style={{ flex: 0, justifyContent: 'center', }}
                                 >
 
                                     <Image
                                         style={styles.btn_main_footer}
                                         resizeMode='stretch'
-                                        source={require('../image/btn2.png')} 
-                                        />
+                                        source={require('../image/btn2.png')}
+                                    />
                                 </View>
                                 <View
-                                style={styles.footer}
+                                    style={styles.footer}
                                 >
-                                   <Image
+                                    <Image
                                         style={styles.btn_footer}
                                         resizeMode='stretch'
-                                        source={require('../image/btn_x1.png')} 
-                                        />
+                                        source={require('../image/btn_x1.png')}
+                                    />
                                 </View>
 
                             </View>
-                            
+
                         </View>
                     </Body>
                 </Content>
@@ -225,32 +362,45 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
 
-    header_btn:{
-        
-        width:width*0.2,
-        height:width*0.15,
+    header_btn: {
+        width: width * 0.2,
+        height: width * 0.15,
         paddingVertical: 30,
         resizeMode: 'stretch',
-        marginTop: (height*0.1)*-1,
-       // borderRadius: 75
+        marginTop: (height * 0.1) * -1,
+        // borderRadius: 75
     },
-    header_btn1:{
-        
-        width:width*0.15,
-        height:width*0.15,
+    header_btn_image: {
+        width: width * 0.2,
+        height: width * 0.15,
         paddingVertical: 30,
         resizeMode: 'stretch',
-        marginTop: (height*0.1)*-1,
-       // borderRadius: 75
+        // marginTop: (height*0.1)*-1,
+        // borderRadius: 75
     },
-
+    header_btn1: {
+        width: width * 0.15,
+        height: width * 0.15,
+        paddingVertical: 30,
+        resizeMode: 'stretch',
+        marginTop: (height * 0.1) * -1,
+        // borderRadius: 75
+    },
+    header_btn1_image: {
+        width: width * 0.15,
+        height: width * 0.15,
+        paddingVertical: 30,
+        resizeMode: 'stretch',
+        //marginTop: (height*0.1)*-1,
+        // borderRadius: 75
+    },
     divider_view: {
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
         justifyContent: 'center',
-        height:height*0.729,
+        height: height * 0.729,
     },
 
     top_frame: {
@@ -259,16 +409,16 @@ const styles = StyleSheet.create({
         //justifyContent: 'space-between',
         justifyContent: 'center',
         alignItems: 'center',
-        height:height*0.1,
+        height: height * 0.1,
     },
     clo_view: {
         flex: 7,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-       // height: height*0.9,
+        // height: height*0.9,
         //backgroundColor:"#ffff00",
-        marginTop:(height*0.05)*-1,
+        marginTop: (height * 0.05) * -1,
     },
 
     row_view: {
@@ -277,75 +427,89 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: 2 ,
+        height: 2,
 
     },
 
-    btn_personal:{
-        width:width*0.15,
-        height:width*0.15,
-        paddingVertical: 30,
-        borderRadius: 75
-    },
-    btn_main_personal:{
-        width:width*0.4,
-        height:width*0.4,
-        paddingVertical: 30,
-        borderRadius: 75
-    },
-    btn_main_footer:{
-        width:width*0.13,
-        height:width*0.16,
+    btn_personal: {
+        width: width * 0.15,
+        height: width * 0.15,
         paddingVertical: 30,
         borderRadius: 75,
-        marginTop: height*-0.05,
-        //backgroundColor:'#00184e',
-        //flex:1,
-       // flexGrow: 3,
+        marginTop:height*-0.03,        
     },
-    btn_footer:{
-        width:width*0.05,
-        height:width*0.05,
-       // paddingVertical: 30,
-       // marginTop: height*0.02,
+    btn_personal_image: {
+        width: width * 0.15,
+        height: width * 0.15,
+        paddingVertical: 30,
+        borderRadius: 75,        
+    },
+    btn_main_personal: {
+        width: width * 0.4,
+        height: width * 0.4,
+        paddingVertical: 30,
+        borderRadius: width*0.5,
+        marginTop:height*-0.125,
+    },
+    btn_main_personal_image: {
+        width: width * 0.4,
+        height: width * 0.4,
+        paddingVertical: 30,
+        borderRadius: 75
+    },
+    btn_main_footer: {
+        width: width * 0.13,
+        height: width * 0.16,
+        paddingVertical: 30,
+        borderRadius: 75,
+        marginTop: height * -0.05,
         //backgroundColor:'#00184e',
         //flex:1,
-       // flexGrow: 3,
+        // flexGrow: 3,
+    },
+    btn_footer: {
+        width: width * 0.05,
+        height: width * 0.05,
+        // paddingVertical: 30,
+        // marginTop: height*0.02,
+        //backgroundColor:'#00184e',
+        //flex:1,
+        // flexGrow: 3,
     },
 
-    footer_frame:{
-        flex:1, 
+    footer_frame: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         justifyContent: 'center',
         alignItems: 'center',
         height: height * 0.04,
-        width:width,
-        marginTop: height*-0.08,
-       // flexWrap:'wrap',
-       // backgroundColor:'#00184e',
-       
+        width: width,
+        marginTop: height * -0.08,
+        // flexWrap:'wrap',
+        // backgroundColor:'#00184e',
+
     },
-    footer_frame_bk:{
-        flex:1, 
+    footer_frame_bk: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         justifyContent: 'center',
         alignItems: 'center',
         height: height * 0.04,
-        width:width,
-        marginTop: height*0.08,
-       // flexWrap:'wrap',
-        backgroundColor:'#00184e',
-       
+        width: width,
+        marginTop: height * 0.08,
+        // flexWrap:'wrap',
+        backgroundColor: '#00184e',
+
     },
 
-    footer:{
+    footer: {
         //backgroundColor:'#00184e',
-        width:width*0.33,
-        height:height*0.1,
+        width: width * 0.33,
+        height: height * 0.1,
         alignItems: 'center',
-        marginTop: height*0.05,
+        marginTop: height * 0.05,
     }
 
 });

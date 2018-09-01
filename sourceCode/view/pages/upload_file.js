@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import { Image, View, Dimensions, StyleSheet, } from 'react-native';
-import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail} from 'native-base';
+import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 
 import lang from '../../model/lang/fa.json';
+
+import PhotoUpload from 'react-native-photo-upload';
 
 
 
@@ -18,16 +20,16 @@ export default class upload_file extends PureComponent {
 
         this.state = {
             selectedStartDate: null,
-          };
+        };
     }
 
     onDateChange(date) {
         this.setState({
-          selectedStartDate: date,
+            selectedStartDate: date,
         });
-      }
+    }
 
-    btn_send_onclick(){
+    btn_send_onclick() {
         this.props.navigation.replace("home");
     }
 
@@ -36,103 +38,118 @@ export default class upload_file extends PureComponent {
         const { selectedStartDate } = this.state;
         const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
         const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
- 
+
+        var userid = this.props.navigation.state.params.userId;
+        var userProfile = this.props.navigation.state.params.userProfile;
+
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
-                <Left>
-                    <Button
-                        onPress={()=>{this.props.navigation.replace("profile");}}
+                    <Left>
+                        <Button
+                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
-                        </Left> 
-                        <Body>
+                    </Left>
+                    <Body>
                         <Text
-                        style= {{textAlign:'center',color:'#ffffff',fontFamily: "DinarTwoMedium_MRT",}}
+                            style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
                             {lang.cost_registration}
                         </Text>
                     </Body>
                     <Right>
                         <Button
-                        onPress={()=>{this.props.navigation.replace("home");}}
+                            onPress={() => { this.props.navigation.replace("home"); }}
                         >
                             <Icon name="menu" />
                         </Button>
                     </Right>
-                    
-                </Header> 
-                <Content 
-                    style={{fontFamily: "DinarTwoMedium_MRT",}}
+
+                </Header>
+                <Content
+                    style={{ fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                    <Button 
-                        style={{width:width*0.9,marginTop:height*0.02,marginBottom: height*0.02, marginLeft: width*0.05, marginRight: width*0.05 ,textAlign:'center',justifyContent:'center',fontFamily: "DinarTwoMedium_MRT",}}
-                        onPress={()=>{alert('Hello peyman')}}
+                    <Button
+                        style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
+                        onPress={() => { alert('Hello peyman') }}
                     >
                         <Text
-                        style={[styles.font,]}
+                            style={[styles.font,]}
                         >{lang.save}</Text>
                     </Button>
-                    <List> 
-                        <ListItem itemDivider>
-                        </ListItem>
-                    </List>
-                    <View 
-                    style={[{flex:1,justifyContent:'center',width,height:height*0.6,textAlign:'center',flexDirection:'column',alignItems: 'center',marginTop:height*0.01,marginBottom:height*0.01},]}
-                    >
-                        <Image
-                        source={require('../image/camera.png')}
-                        resizeMode='stretch'
-                        style={[{flex:1,width:width*0.8}]}
-                        />
-
-                    </View>
-                    <List> 
+                    <List>
                         <ListItem itemDivider>
                         </ListItem>
                     </List>
                     <View
-                    style={{flex:1,flexDirection:'row',paddingRight:width*0.01,paddingRight:width*0.01}}
+                        style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
-                    <Button bordered large
-                        onPress={()=>{alert('Hello peyman')}}
-                        style={[styles.btn_img]}
+
+                        <PhotoUpload
+                            onPhotoSelect={avatar => {
+                                if (avatar) {
+                                    this.setState({
+                                        avatar: avatar
+                                    });
+                                    console.log('Image base64 string: ', avatar);
+                                }
+                            }}
+                        >
+                            <Image
+                                source={require('../image/camera.png')}
+                                resizeMode='stretch'
+                                style={[{ flex: 1, width: width * 0.8 }]}
+                            />
+                        </PhotoUpload>
+
+                    </View>
+                    <List>
+                        <ListItem itemDivider>
+                        </ListItem>
+                    </List>
+                    <View
+                        style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
-                       <Icon large name="add" />
-                        
-                    </Button>
-                    <Button
-                    style={[styles.btn_img]}
-                    >
-                    <Thumbnail large source={{uri: uri}} />
-                    </Button>
-                    <Button
-                    style={[styles.btn_img]}
-                    >
-                    <Thumbnail large source={{uri: uri}} />
-                    </Button>
-                    <Button
-                    style={[styles.btn_img]}
-                    >
-                    <Thumbnail large source={{uri: uri}} />
-                    </Button>
-                    <Button
-                    style={[styles.btn_img]}
-                    >
-                    <Thumbnail large source={{uri: uri}} />
-                    </Button>
-                    <Button
-                    style={[styles.btn_img]}
-                    >
-                    <Thumbnail large source={{uri: uri}} />
-                    </Button>
-                    <Button
-                    style={[styles.btn_img]}
-                    >
-                    <Thumbnail large source={{uri: uri}} />
-                    </Button>
-                    </View> 
+                        <Button bordered large
+                            //  onPress={()=>{alert('Hello peyman')}}
+                            style={[styles.btn_img]}
+                        >
+                            <Icon large name="add" />
+
+                        </Button>
+                        <Button
+                            style={[styles.btn_img]}
+                        >
+                            <Thumbnail large source={{ uri: uri }} />
+                        </Button>
+                        <Button
+                            style={[styles.btn_img]}
+                        >
+                            <Thumbnail large source={{ uri: uri }} />
+                        </Button>
+                        <Button
+                            style={[styles.btn_img]}
+                        >
+                            <Thumbnail large source={{ uri: uri }} />
+                        </Button>
+                        <Button
+                            style={[styles.btn_img]}
+                        >
+                            <Thumbnail large source={{ uri: uri }} />
+                        </Button>
+                        <Button
+                            style={[styles.btn_img]}
+                        >
+                            <Thumbnail large source={{ uri: uri }} />
+                        </Button>
+                        <Button
+                            style={[styles.btn_img]}
+                        >
+                            <Thumbnail large source={{ uri: uri }} />
+                        </Button>
+                    </View>
                 </Content>
             </Container>
         );
@@ -143,7 +160,7 @@ export const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
 
-    font:{
+    font: {
         fontFamily: "DinarTwoMedium_MRT",
     },
 
@@ -174,14 +191,14 @@ const styles = StyleSheet.create({
         width: width * 0.6,
         marginTop: height * 0.08,
     },
-    btn_img:{
-        width:width*0.1,
-        height: height*0.15, 
-        marginLeft: width*0.01,
-        marginTop: width*0.01,
-        flex:1, 
-        textAlign:'center',
-        justifyContent:'center'
+    btn_img: {
+        width: width * 0.1,
+        height: height * 0.15,
+        marginLeft: width * 0.01,
+        marginTop: width * 0.01,
+        flex: 1,
+        textAlign: 'center',
+        justifyContent: 'center'
     },
     img: {
         width: width * 0.8,

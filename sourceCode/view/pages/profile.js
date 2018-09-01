@@ -21,6 +21,8 @@ export default class profile extends PureComponent {
 
     render() {
         var { navigate } = this.props.navigation;
+        var userid = this.props.navigation.state.params.userId;
+        var userProfile = this.props.navigation.state.params.userProfile;
         return (
             <Container style={{ flex: 1 }}>
             <Header> 
@@ -56,7 +58,9 @@ export default class profile extends PureComponent {
                                 />
                         </View>
                         <View>
-                            <Text>{lang.name + " " + lang.Lname}</Text>
+                            <Text 
+                            style={styles.font_name}
+                            >{userProfile.PatientName}</Text>
                         </View>
                     </View>
                     <List >
@@ -68,7 +72,10 @@ export default class profile extends PureComponent {
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
-                                <Text>
+                                <Text
+                            style={styles.font_name}                                
+                                >
+
                                     {lang.baseData}
                                 </Text>
                             </Body>
@@ -77,13 +84,16 @@ export default class profile extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                        onPress={()=>{this.props.navigation.replace("cost_registration");}}
+                        onPress={()=>{this.props.navigation.replace("cost_registration",{userId:userid ,userProfile: userProfile});}}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
-                                <Text>
+                                <Text
+                            style={styles.font_name}
+                                
+                                >
                                     {lang.cost_registration}
                                 </Text>
                             </Body>
@@ -96,7 +106,10 @@ export default class profile extends PureComponent {
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
-                                <Text>
+                                <Text
+                            style={styles.font_name}
+                                
+                                >
                                     {lang.reportHazine}
                                 </Text>
                             </Body>
@@ -109,7 +122,9 @@ export default class profile extends PureComponent {
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
-                                <Text>
+                                <Text
+                            style={styles.font_name}                                
+                                >
                                     {lang.darkhast}
                                 </Text>
                             </Body>
@@ -163,6 +178,9 @@ const styles = StyleSheet.create({
         marginLeft: width * 0.05,
         width: width * 0.5,
         backgroundColor: "#2e2878",
+        fontFamily: "DinarTwoMedium_MRT",
+    },
+    font_name:{
         fontFamily: "DinarTwoMedium_MRT",
     },
     form_item: {
