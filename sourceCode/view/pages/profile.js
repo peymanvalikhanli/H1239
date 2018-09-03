@@ -49,11 +49,11 @@ export default class profile extends PureComponent {
                                         paddingVertical: 30,
                                         width: width*0.35,
                                         height: width*0.35,
-                                        borderRadius: 75
+                                        borderRadius: width*0.5,
                                     }}
                                     resizeMode='stretch'
                                     source={
-                                         require('../image/p.png')
+                                         require('../image/default_avatar.jpg')
                                     }
                                 />
                         </View>

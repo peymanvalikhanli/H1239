@@ -18,9 +18,12 @@ import home from './sourceCode/view/pages/home';
 import profile from './sourceCode/view/pages/profile';
 import cost_registration from './sourceCode/view/pages/cost_registration';
 import upload_file from './sourceCode/view/pages/upload_file';
+import cost_list from './sourceCode/view/pages/cost_list';
+
 
 
 const nave = StackNavigator({
+  cost_list: {screen: cost_list},
   introduction: { screen: introduction },
   verification: {screen: verification},
   home: {screen: home},

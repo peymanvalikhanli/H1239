@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, } from 'react-native';
-import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left } from 'native-base';
+import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Badge } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 import lang from '../../model/lang/fa.json';
@@ -151,7 +151,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p.png')}
+                                            // source={require('../image/p.png')}
+                                            source={(this.state.btn_count>1?require('../image/p.png'):require('../image/p61.png'))}
                                         />
                                     </Button>
                                 </View>
@@ -165,7 +166,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p11.png')}
+                                            // source={require('../image/p11.png')}
+                                            source={(this.state.btn_count>2?require('../image/p11.png'):require("../image/p61.png"))}
                                         />
                                     </Button>
                                     <Button Transparent
@@ -175,7 +177,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p12.png')}
+                                            // source={require('../image/p12.png')}
+                                            source={(this.state.btn_count>3?require('../image/p12.png'):require('../image/p62.png'))}
                                         />
                                     </Button>
                                 </View>
@@ -189,7 +192,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p21.png')}
+                                            // source={require('../image/p21.png')}
+                                            source={(this.state.btn_count>4?require('../image/p21.png'):require('../image/p61.png'))}
                                         />
                                     </Button>
                                     <Button Transparent
@@ -199,7 +203,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p22.png')}
+                                            // source={require('../image/p22.png')}
+                                            source={(this.state.btn_count>5?require('../image/p22.png'):require('../image/p62.png'))}
                                         />
                                     </Button>
                                 </View>
@@ -213,8 +218,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p31.png')}
-                                        />
+                                            source={this.state.btn_count>6?require('../image/p31.png'):require('../image/p61.png')}
+                                                                                    />
                                     </Button>
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count>0?this.state.LstUserInsurance[0].UserInsuranceId:undefined,0) }}
@@ -233,7 +238,7 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p32.png')}
+                                            source={this.state.btn_count>7?require('../image/p32.png'):require('../image/p62.png')}
                                         />
                                     </Button>
                                 </View>
@@ -247,7 +252,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p41.png')}
+                                            // source={require('../image/p41.png')}
+                                            source={(this.state.btn_count>8?require('../image/p41.png'):require('../image/p61.png'))}
                                         />
                                     </Button>
                                     <Button Transparent
@@ -257,7 +263,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p42.png')}
+                                            // source={require('../image/p42.png')}
+                                            source={(this.state.btn_count>9?require('../image/p42.png'):require('../image/p62.png'))}
                                         />
                                     </Button>
 
@@ -272,7 +279,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p51.png')}
+                                            // source={require('../image/p51.png')}
+                                            source={(this.state.btn_count>10?require('../image/p51.png'):require('../image/p61.png'))}
                                         />
                                     </Button>
                                     <Button Transparent
@@ -282,7 +290,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p52.png')}
+                                            // source={require('../image/p52.png')}
+                                            source={(this.state.btn_count>11?require('../image/p52.png'):require('../image/p62.png'))}
                                         />
                                     </Button>
 
@@ -297,7 +306,8 @@ export default class home extends PureComponent {
                                         <Image
                                             style={styles.btn_personal_image}
                                             resizeMode='stretch'
-                                            source={require('../image/p6.png')}
+                                            // source={require('../image/p6.png')}
+                                            source={this.state.btn_count>12?require('../image/p6.png'):require('../image/p61.png')}
                                         />
 
                                     </Button>
@@ -319,6 +329,11 @@ export default class home extends PureComponent {
                                         resizeMode='stretch'
                                         source={require('../image/btn_x2.png')}
                                     />
+                                     <Badge
+                                    style={{marginBottom: height*0.2,}}
+                                    >
+                                        <Text>2</Text>
+                                    </Badge>
                                 </View>
 
                                 <View
@@ -339,6 +354,7 @@ export default class home extends PureComponent {
                                         resizeMode='stretch'
                                         source={require('../image/btn_x1.png')}
                                     />
+                                    
                                 </View>
 
                             </View>

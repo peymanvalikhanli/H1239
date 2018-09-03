@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker} from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -7,10 +7,32 @@ import JalaliCalendarPicker from 'react-native-jalali-calendar-picker';
 
 import lang from '../../model/lang/fa.json';
 
+import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 
+import axios from 'axios';
+
+import server_url from '../../model/server_config/controller_url.json'; 
 
 
 export default class cost_registration extends PureComponent {
+
+    get_data_from_server(){ 
+        axios.post(server_url.GetTariffCategoryList, {
+            userkey: this.state.Token,
+        })
+        .then(response=> {
+            
+            if(response.data.act != undefined || response.data.act != null){
+                //alert(response.data.TariffCategory);
+                 if(response.data.TariffCategory != undefined || response.data.TariffCategory != null || response.data.TariffCategory != ''){
+                     this.setState({TariffCategory:response.data.TariffCategory}); 
+                 }
+            }         
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 
     constructor() {
         super();
@@ -18,8 +40,22 @@ export default class cost_registration extends PureComponent {
         this.onDateChange = this.onDateChange.bind(this);
 
         this.state = {
+            Token:'#',
+            national_code: '#',
             selectedStartDate: null,
+            price:'',
+            picker:'',
+            TariffCategory:[{Title:'',TariffCategoryTypeTitle:''}],
           };
+        
+        AsyncStorage.getItem('Token', (err, result) => {
+            if(result!= null){
+               this.setState({Token: result});
+               this.get_data_from_server();
+           }  
+        });
+
+
     }
 
     onDateChange(date) {
@@ -32,6 +68,22 @@ export default class cost_registration extends PureComponent {
         this.props.navigation.replace("home");
     }
 
+    create_currency_input(){ 
+     
+    } 
+
+
+    get_picker(){
+        // style={stylesTitle.form_input}
+        const items = this.state.TariffCategory.map((s,i)=>{
+            return(
+                <Picker.Item label={lang.cost_type} key={i} label={s.Title} value={s.TariffCategoryTypeTitle} />
+            );
+        });
+        return items;
+       
+    }
+
     render() {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
@@ -39,6 +91,8 @@ export default class cost_registration extends PureComponent {
 
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
+
+        let date_picker = this.get_picker();
  
         return (
             <Container style={{ flex: 1 }}>
@@ -94,17 +148,27 @@ export default class cost_registration extends PureComponent {
                            </ListItem>
                         </List>
                         
-                        <Text
-                        style={styles.text}                        
-                        > 
-                        {lang.cost_date}: {startDate}
-                        </Text>
+                        
                         
                         <Item> 
-                            <JalaliCalendarPicker
-                            onDateChange={this.onDateChange}
-                            textStyle={{fontFamily: "DinarTwoMedium_MRT",}}
-                            />
+                        <Collapse
+                        style={{width:width*0.95}}
+                        >
+                            <CollapseHeader>
+                                    <Text
+                                        style={styles.text}                        
+                                    > 
+                                        {lang.cost_date}: {startDate}
+                                    </Text>
+                            </CollapseHeader>
+                            <CollapseBody>
+                                <JalaliCalendarPicker
+                                onDateChange={this.onDateChange}
+                                textStyle={{fontFamily: "DinarTwoMedium_MRT",}}
+                                />
+                            </CollapseBody>
+                        </Collapse>
+                            
                             
                         </Item>
                         <Item picker>
@@ -115,19 +179,19 @@ export default class cost_registration extends PureComponent {
                                 placeholder={lang.cost_type}
                                 placeholderStyle={[{ color: "#bfc6ea" },styles.form_input]}
                                 placeholderIconColor="#007aff"
-                                // selectedValue={this.state.selected2}
-                                // onValueChange={this.onValueChange2.bind(this)}
+                                onValueChange={ (service) => ( this.setState({selectedPicker:service}) ) } 
+                                selectedValue={this.state.selectedPicker}
                             >
-                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
-                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
-                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
-                                <Picker.Item label={lang.cost_type} value="key0" style={styles.form_input}/>
+                                {date_picker}
                             </Picker>
                         </Item>
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.cost_price}</Label>
                             <Input
                             style={styles.form_input}
+                            keyboardType="numeric"
+                           // value={this.state.price}
+                           // onChange={(event)=>{this.create_currency_input()}}                     
                                 // placeholder={lang.cost_price}
                              />
                         </Item>
