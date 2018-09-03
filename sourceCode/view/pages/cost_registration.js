@@ -115,7 +115,7 @@ export default class cost_registration extends PureComponent {
                         <Button
                         onPress={()=>{this.props.navigation.replace("home");}}
                         >
-                            <Icon name="menu" />
+                            <Icon name="home" />
                         </Button>
                     </Right>
                     

@@ -23,7 +23,8 @@ import cost_list from './sourceCode/view/pages/cost_list';
 
 
 const nave = StackNavigator({
-  cost_list: {screen: cost_list},
+  
+  cost_list: { screen: cost_list },
   introduction: { screen: introduction },
   verification: {screen: verification},
   home: {screen: home},

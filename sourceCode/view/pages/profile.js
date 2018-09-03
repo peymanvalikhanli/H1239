@@ -30,7 +30,7 @@ export default class profile extends PureComponent {
                     <Button
                     onPress={()=>{this.props.navigation.replace("home");}}
                     >
-                        <Icon name="menu" />
+                        <Icon name="home" />
                     </Button>
                 </Right>
                 </Header> 

@@ -18,9 +18,9 @@
     "cost_registration":"ثبت هزینه جدید", 
 
     "national_code_":"کد ملی بیمار",
-    "cost_date":"تاریخ هرینه", 
+    "cost_date":"تاریخ هزینه", 
     "cost_type":"نوع هزینه",
-    "cost_price":"مبلغ هرینه", 
+    "cost_price":"مبلغ هزینه", 
 
     "next":"بعدی",
     "back":"قبلی",
@@ -28,15 +28,22 @@
     
     "check_internet_connection":"", 
     "error":"خطا",
+    "warning":"هشدار",
 
     "check_national_code":"کد ملی خود را به صورت صحیح وارد کنید",
     "yes":"بله",
     "ok":"بله",
     "OK":"درست",
+    "no":"خیر",
+
 
     "NoUser":"کدملی شما در سیستم ثبت نشده است",
     "not_valid_verify_code":"لطفا کد احراز هویت را درست وارد کنید",
     "verifiy_code_is_not_valid":"کد احراز هویت را اشتباه وارد کرده اید",
+
+    "send":"ارسال",
+
+    "are_you_delete_thia_item":"آیا گزینه انتخاب شده پاک شود؟",
 
     "":""
 }

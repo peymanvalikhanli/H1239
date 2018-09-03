@@ -63,7 +63,7 @@ export default class upload_file extends PureComponent {
                         <Button
                             onPress={() => { this.props.navigation.replace("home"); }}
                         >
-                            <Icon name="menu" />
+                            <Icon name="home" />
                         </Button>
                     </Right>
 
