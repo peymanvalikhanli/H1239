@@ -36,7 +36,6 @@
     "OK":"درست",
     "no":"خیر",
 
-
     "NoUser":"کدملی شما در سیستم ثبت نشده است",
     "not_valid_verify_code":"لطفا کد احراز هویت را درست وارد کنید",
     "verifiy_code_is_not_valid":"کد احراز هویت را اشتباه وارد کرده اید",
@@ -44,6 +43,20 @@
     "send":"ارسال",
 
     "are_you_delete_thia_item":"آیا گزینه انتخاب شده پاک شود؟",
+
+    "documents":"مدارک",
+    "cost_list":"لیست هزینه ها و ارسال",
+    "return_cost_list":"لیست هزینه ها برگشتی",
+    "return_cost":"هزینه برگشتی",
+
+    "description":"شرح",
+    
+    "fractional_documents_list":"لیست کسری مدارک",
+    "fractional_documents":"کسری مدارک",
+
+    "start_date":"از تاریخ", 
+    "end_date":"تا تاریخ", 
+    "report":"گزارش", 
 
     "":""
 }

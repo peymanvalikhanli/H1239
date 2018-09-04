@@ -19,18 +19,36 @@ import profile from './sourceCode/view/pages/profile';
 import cost_registration from './sourceCode/view/pages/cost_registration';
 import upload_file from './sourceCode/view/pages/upload_file';
 import cost_list from './sourceCode/view/pages/cost_list';
-
+import cost_edit from './sourceCode/view/pages/cost_edit';
+import return_cost_list from './sourceCode/view/pages/return_cost_list';
+import return_cost from './sourceCode/view/pages/return_cost';
+import fractional_documents_list from './sourceCode/view/pages/fractional_documents_list';
+import fractional_documents from './sourceCode/view/pages/fractional_documents';
+import report_detail_cost from './sourceCode/view/pages/report_detail_cost';
 
 
 const nave = StackNavigator({
   
-  cost_list: { screen: cost_list },
   introduction: { screen: introduction },
   verification: {screen: verification},
   home: {screen: home},
   profile: {screen: profile},
+
   cost_registration: {screen: cost_registration}, 
   upload_file:{screen: upload_file},
+
+  cost_list: { screen: cost_list },
+  cost_edit: { screen: cost_edit },
+
+  return_cost_list: { screen: return_cost_list },
+  return_cost: { screen: return_cost },
+
+  fractional_documents: { screen: fractional_documents },
+  fractional_documents_list: { screen: fractional_documents_list },
+ 
+  report_detail_cost: { screen: report_detail_cost },
+  
+
 },{
   headerMode: "none"
 });
