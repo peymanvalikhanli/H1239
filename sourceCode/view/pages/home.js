@@ -74,6 +74,20 @@ export default class home extends PureComponent {
     }
 
     btn_exit_onclick() {
+        Alert.alert(
+            lang.warning,
+            lang.are_you_log_out,
+            [
+                { text: lang.no },
+                { text: lang.yes,onPress: () => {this. exit_app() }},
+            ],
+            { cancelable: false }
+        )
+
+        
+    }
+
+    exit_app(){
         AsyncStorage.setItem('Token', null);
         AsyncStorage.setItem('national_code', null);
         AsyncStorage.clear();
@@ -327,7 +341,7 @@ export default class home extends PureComponent {
                                 >
                                     <Button transparent
                                         style={[styles.btn_footer,{marginLeft:width*0.22,}]}
-                                        onPress={()=>{this.props.navigation.replace("cost_list");}}
+                                         onPress={()=>{this.props.navigation.replace("cost_list");}}
                                     >
                                         <Image
                                             style={styles.btn_footer}
@@ -348,7 +362,7 @@ export default class home extends PureComponent {
                                 >
                                     <Button transparent
                                         style={[styles.btn_main_footer, { marginTop: height * 0.05, height: width * 0.22 }]}
-                                    onPress={()=>{this.props.navigation.replace("return_cost_list");}}
+                                     onPress={()=>{this.props.navigation.replace("return_cost_list");}}
                                     >
                                         <Image
                                             style={styles.btn_main_footer}
@@ -362,7 +376,7 @@ export default class home extends PureComponent {
                                 >
                                     <Button transparent
                                         style={[styles.btn_footer, { marginLeft: width * 0.05 }]}
-                                    onPress={()=>{this.props.navigation.replace("fractional_documents_list");}}
+                                     onPress={()=>{this.props.navigation.replace("fractional_documents_list");}}
                                     >
                                         <Image
                                             style={styles.btn_footer}

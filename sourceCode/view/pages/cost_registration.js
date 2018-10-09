@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -44,9 +44,8 @@ export default class cost_registration extends PureComponent {
             national_code: '#',
             selectedStartDate: null,
             price: '',
-            picker: '',
-            TariffCategory: [{ Title: '', TariffCategoryTypeTitle: '' }],
-            selectedPicker: 'test',
+            TariffCategory: [{ Title: lang.cost_type , TariffCategoryTypeTitle: '' }],
+            selectedPicker: '#',
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -55,8 +54,6 @@ export default class cost_registration extends PureComponent {
                 this.get_data_from_server();
             }
         });
-
-
     }
 
     onDateChange(date) {
@@ -85,8 +82,47 @@ export default class cost_registration extends PureComponent {
         return items;
     }
 
-    test() {
-        alert(this.state.selectedPicker)
+    btn_next(userid,userProfile) {
+
+        if(this.state.price == '#' || this.state.price == null || this.state.price == ''){
+
+            Alert.alert(
+                lang.error,
+                lang.enter_price,
+                [
+                {text: lang.yes},
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if(this.state.selectedPicker == '#' || this.state.selectedPicker == null || this.state.selectedPicker == ''){
+
+            Alert.alert(
+                lang.error,
+                lang.enter_cost_type,
+                [
+                {text: lang.yes},
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if(this.state.selectedStartDate == '#' || this.state.selectedStartDate == null || this.state.selectedStartDate == ''){
+
+            Alert.alert(
+                lang.error,
+                lang.select_dateـcost,
+                [
+                {text: lang.yes},
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+
+        //AsyncStorage.setItem('cost', response.data.Token ); 
+        this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile }); 
     }
 
     render() {
@@ -128,7 +164,6 @@ export default class cost_registration extends PureComponent {
                 <Content
                     style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-
                     <Form
                         style={{ justifyContent: 'center', textAlign: 'center', }}
                     >
@@ -147,9 +182,6 @@ export default class cost_registration extends PureComponent {
                             <ListItem itemDivider>
                             </ListItem>
                         </List>
-
-
-
                         <Item>
                             <Collapse
                                 style={{ width: width * 0.95 }}
@@ -197,18 +229,17 @@ export default class cost_registration extends PureComponent {
                                 onBlur={() => { this.create_currency_input(); }}
                             />
                         </Item>
-                        <Item
+                        {/* <Item
                             style={{ textAlign: 'center', justifyContent: 'center', marginTop: height * 0.05, }}
                         >
                             <Label
                                 style={styles.form_input}
                             >{lang.cost_price}</Label>
-                        </Item>
+                        </Item> */}
                         <Item>
                             <Button
                                 style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                                // onPress={() => { this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile }); }}
-                                onPress={() => { this.test() }}
+                                onPress={() => { this.btn_next(userid,userProfile) }}
                             >
                                 <Text>{lang.next}</Text>
                             </Button>

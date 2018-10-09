@@ -53,8 +53,13 @@ export default class verification extends PureComponent {
                                         [
                                         {text: lang.yes},
                                         ],
-                                        { cancelable: false }
-                                    )
+                                        { cancelable: false } 
+                                    ); 
+                                    this.setState({
+                                    verify_code1:'#',
+                                    verify_code2:'#',
+                                    verify_code3:'#',
+                                    verify_code4:'#',}); 
                                 }else{
                                     AsyncStorage.setItem('Token', response.data.Token ); 
                                     AsyncStorage.setItem('national_code', national_code );

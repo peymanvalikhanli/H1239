@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert} from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -19,7 +19,9 @@ export default class upload_file extends PureComponent {
         this.onDateChange = this.onDateChange.bind(this);
 
         this.state = {
-            selectedStartDate: null,
+            image_index: 0,
+            images: [],
+            avatar:null,
         };
     }
 
@@ -30,6 +32,52 @@ export default class upload_file extends PureComponent {
     }
 
     btn_send_onclick() {
+        this.props.navigation.replace("home");
+    }
+
+    image_items(uri) {
+        const tem = this.state.images.map((img,i) => {
+            return (
+                <Button
+                    style={[styles.btn_img]}
+                >
+                    <Image style={[styles.btn_img_]} source={{uri: 'data:image/png;base64,'+img}} />
+                </Button>
+            );
+        });
+        return tem;
+    }
+
+    btn_add_onclick() {
+
+        if (this.state.avatar !== null) {
+            var tem = this.state.images;
+            var a = tem.unshift(this.state.avatar);
+            this.setState({ images: tem });
+            //alert(this.state.avatar);
+            this.setState({avatar:null});
+        }
+    }
+    btn_save_onclick(){
+        if(this.state.images.length <= 0 ){
+            Alert.alert(
+                lang.error,
+                lang.insert_attachment,
+                [
+                {text: lang.yes},
+                ],
+                { cancelable: false }
+            ) 
+            return;
+        }
+        Alert.alert(
+            lang.info,
+            lang.data_saving_has_been,
+            [
+            {text: lang.yes},
+            ],
+            { cancelable: false }
+        )
         this.props.navigation.replace("home");
     }
 
@@ -73,7 +121,8 @@ export default class upload_file extends PureComponent {
                 >
                     <Button
                         style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                        onPress={() => { alert('Hello peyman') }}
+                    // onPress={() => { alert('Hello peyman') }}
+                    onPress={() => { this.btn_save_onclick() }}
                     >
                         <Text
                             style={[styles.font,]}
@@ -113,42 +162,13 @@ export default class upload_file extends PureComponent {
                         style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
                         <Button bordered large
-                            //  onPress={()=>{alert('Hello peyman')}}
+                            onPress={() => { this.btn_add_onclick(); }}
                             style={[styles.btn_img]}
                         >
                             <Icon large name="add" />
 
                         </Button>
-                        <Button
-                            style={[styles.btn_img]}
-                        >
-                            <Thumbnail large source={{ uri: uri }} />
-                        </Button>
-                        <Button
-                            style={[styles.btn_img]}
-                        >
-                            <Thumbnail large source={{ uri: uri }} />
-                        </Button>
-                        <Button
-                            style={[styles.btn_img]}
-                        >
-                            <Thumbnail large source={{ uri: uri }} />
-                        </Button>
-                        <Button
-                            style={[styles.btn_img]}
-                        >
-                            <Thumbnail large source={{ uri: uri }} />
-                        </Button>
-                        <Button
-                            style={[styles.btn_img]}
-                        >
-                            <Thumbnail large source={{ uri: uri }} />
-                        </Button>
-                        <Button
-                            style={[styles.btn_img]}
-                        >
-                            <Thumbnail large source={{ uri: uri }} />
-                        </Button>
+                        {this.image_items(uri)}
                     </View>
                 </Content>
             </Container>
@@ -196,6 +216,15 @@ const styles = StyleSheet.create({
         height: height * 0.15,
         marginLeft: width * 0.01,
         marginTop: width * 0.01,
+        flex: 1,
+        textAlign: 'center',
+        justifyContent: 'center'
+    },
+    btn_img_: {
+        width: width * 0.1,
+        height: height * 0.15,
+        // marginLeft: width * 0.01,
+        // marginTop: width * 0.01,
         flex: 1,
         textAlign: 'center',
         justifyContent: 'center'
