@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert} from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -21,7 +21,8 @@ export default class upload_file extends PureComponent {
         this.state = {
             image_index: 0,
             images: [],
-            avatar:null,
+            avatar: null,
+            data_list:[],
         };
     }
 
@@ -36,12 +37,12 @@ export default class upload_file extends PureComponent {
     }
 
     image_items(uri) {
-        const tem = this.state.images.map((img,i) => {
+        const tem = this.state.images.map((img, i) => {
             return (
                 <Button
                     style={[styles.btn_img]}
                 >
-                    <Image style={[styles.btn_img_]} source={{uri: 'data:image/png;base64,'+img}} />
+                    <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
                 </Button>
             );
         });
@@ -55,126 +56,164 @@ export default class upload_file extends PureComponent {
             var a = tem.unshift(this.state.avatar);
             this.setState({ images: tem });
             //alert(this.state.avatar);
-            this.setState({avatar:null});
+            this.setState({ avatar: null });
         }
     }
-    btn_save_onclick(){
-        if(this.state.images.length <= 0 ){
-            Alert.alert(
-                lang.error,
-                lang.insert_attachment,
-                [
-                {text: lang.yes},
-                ],
-                { cancelable: false }
-            ) 
-            return;
+
+    save_register_const(record){
+
+        var data_list = this.state.data_list; 
+        alert(data_list); 
+       if(data_list != null && data_list != undefined && data_list != ""){
+            data_list = JSON.parse(data_list);
+            data_list.push(record);
+        }else{
+            data_list = [record,];
         }
+        AsyncStorage.setItem('const_list', JSON.stringify(data_list));
+
         Alert.alert(
             lang.info,
             lang.data_saving_has_been,
             [
-            {text: lang.yes},
+                { text: lang.yes },
             ],
             { cancelable: false }
         )
+
         this.props.navigation.replace("home");
+
     }
 
-    render() {
-        var { navigate } = this.props.navigation;
-        const { selectedStartDate } = this.state;
-        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
-        const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
+    btn_save_onclick(record) {
+        if (this.state.images.length <= 0) {
+            Alert.alert(
+                lang.error,
+                lang.insert_attachment,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        
+        if (record != undefined) {
+            switch (record.act){
+                case "register": 
+                AsyncStorage.getItem('const_list', (err, result) => {
+                    if (result != null) {
+                        this.setState({ data_list: result });
+                    }
+                    this.save_register_const(record);
+                    //alert('test mikonasm'); 
+                });
+                break;
+            }
+        }
+            // this.props.navigation.replace("home");
+        }
 
-        var userid = this.props.navigation.state.params.userId;
-        var userProfile = this.props.navigation.state.params.userProfile;
+        render() {
+            
+            var { navigate } = this.props.navigation;
+            
+            const { selectedStartDate } = this.state;
+            
+            const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
+            
+            const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
 
-        return (
-            <Container style={{ flex: 1 }}>
-                <Header>
-                    <Left>
+            var userid = this.props.navigation.state.params.userId;
+            
+            var userProfile = this.props.navigation.state.params.userProfile;
+            
+            var record = this.props.navigation.state.params.record;
+
+            return (
+                <Container style={{ flex: 1 }}>
+                    <Header>
+                        <Left>
+                            <Button
+                                onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile }); }}
+                            >
+                                <Icon name="arrow-back" />
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Text
+                                style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
+                            >
+                                {lang.cost_registration}
+                            </Text>
+                        </Body>
+                        <Right>
+                            <Button
+                                onPress={() => { this.props.navigation.replace("home"); }}
+                            >
+                                <Icon name="home" />
+                            </Button>
+                        </Right>
+                    </Header>
+                    <Content
+                        style={{ fontFamily: "DinarTwoMedium_MRT", }}
+                    >
                         <Button
-                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile }); }}
+                            style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
+                              onPress={() => { alert(JSON.stringify(userProfile)) }}
+                           // onPress={() => { this.btn_save_onclick(record) }}
                         >
-                            <Icon name="arrow-back" />
+                            <Text
+                                style={[styles.font,]}
+                            >{lang.save}</Text>
                         </Button>
-                    </Left>
-                    <Body>
-                        <Text
-                            style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
+                        <List>
+                            <ListItem itemDivider>
+                            </ListItem>
+                        </List>
+                        <View
+                            style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                         >
-                            {lang.cost_registration}
-                        </Text>
-                    </Body>
-                    <Right>
-                        <Button
-                            onPress={() => { this.props.navigation.replace("home"); }}
+
+                            <PhotoUpload
+                                onPhotoSelect={avatar => {
+                                    if (avatar) {
+                                        this.setState({
+                                            avatar: avatar
+                                        });
+                                        console.log('Image base64 string: ', avatar);
+                                    }
+                                }}
+                            >
+                                <Image
+                                    source={require('../image/camera.png')}
+                                    resizeMode='stretch'
+                                    style={[{ flex: 1, width: width * 0.8 }]}
+                                />
+                            </PhotoUpload>
+
+                        </View>
+                        <List>
+                            <ListItem itemDivider>
+                            </ListItem>
+                        </List>
+                        <View
+                            style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                         >
-                            <Icon name="home" />
-                        </Button>
-                    </Right>
+                            <Button bordered large
+                                onPress={() => { this.btn_add_onclick(); }}
+                                style={[styles.btn_img]}
+                            >
+                                <Icon large name="add" />
 
-                </Header>
-                <Content
-                    style={{ fontFamily: "DinarTwoMedium_MRT", }}
-                >
-                    <Button
-                        style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                    // onPress={() => { alert('Hello peyman') }}
-                    onPress={() => { this.btn_save_onclick() }}
-                    >
-                        <Text
-                            style={[styles.font,]}
-                        >{lang.save}</Text>
-                    </Button>
-                    <List>
-                        <ListItem itemDivider>
-                        </ListItem>
-                    </List>
-                    <View
-                        style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
-                    >
-
-                        <PhotoUpload
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                    this.setState({
-                                        avatar: avatar
-                                    });
-                                    console.log('Image base64 string: ', avatar);
-                                }
-                            }}
-                        >
-                            <Image
-                                source={require('../image/camera.png')}
-                                resizeMode='stretch'
-                                style={[{ flex: 1, width: width * 0.8 }]}
-                            />
-                        </PhotoUpload>
-
-                    </View>
-                    <List>
-                        <ListItem itemDivider>
-                        </ListItem>
-                    </List>
-                    <View
-                        style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
-                    >
-                        <Button bordered large
-                            onPress={() => { this.btn_add_onclick(); }}
-                            style={[styles.btn_img]}
-                        >
-                            <Icon large name="add" />
-
-                        </Button>
-                        {this.image_items(uri)}
-                    </View>
-                </Content>
-            </Container>
-        );
+                            </Button>
+                            {this.image_items(uri)}
+                        </View>
+                    </Content>
+                </Container>
+            );
+        }
     }
-}
 
 export const { width, height } = Dimensions.get('window');
 
