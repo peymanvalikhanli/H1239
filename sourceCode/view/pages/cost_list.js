@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, CheckBox, } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -8,27 +8,28 @@ import { ListView } from 'react-native';
 import lang from '../../model/lang/fa.json';
 
 
-const datas = [
-    'Simon Mignolet',
-    'Nathaniel Clyne',
-    'Dejan Lovren',
-    'Mama Sakho',
-    'Alberto Moreno',
-    'Emre Can',
-    'Joe Allen',
-    'Phil Coutinho',
-];
+const datas = [];
 
 export default class cost_list extends PureComponent {
 
     constructor() {
         super();
         Orientation.lockToPortrait();
-        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+      //  this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+        AsyncStorage.getItem('const_list', (err, result) => {
+            if (result != null) {
+                //datas = result;
+                this.setState({listViewData: JSON.parse(result)});
+                //alert(result)
+            }
+        });
+
         this.state = {
             basic: true,
-            listViewData: datas,
+            listViewData: [],
         };
+        // {act:"test",name:"peyman"},{act:"test"},{act:"test"},{act:"test"}
     }
 
     is_deleteRow(secId, rowId, rowMap) {
@@ -60,7 +61,7 @@ export default class cost_list extends PureComponent {
 
     render() {
         var { navigate } = this.props.navigation;
-        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+        //const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         // var userid = this.props.navigation.state.params.userId;
         // var userProfile = this.props.navigation.state.params.userProfile;
         return (
@@ -100,35 +101,37 @@ export default class cost_list extends PureComponent {
                     <List
                         style={{ marginLeft: width * 0.01 }}
                         rightOpenValue={-75}
-                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+          //              dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        dataArray = {this.state.listViewData}
                         renderRow={data =>
                             <ListItem icon
-                            onPress={()=>{this.props.navigation.replace("cost_edit");}}
+                            onPress={()=>{this.props.navigation.replace("cost_edit",{data:data});}}
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
                                 <Text>
-                                    ۱۳۹۷-۰۱-۱۲
+                                    {data.persian_date}
+                                    {/* {data.date.substring(0,10)} */}
                             </Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}
 
                                     >
-                                        {lang.cost_type} {"  "} برادر  {data}
+                                        {data.const_type} {"  "} {data.PatientName}
                                     </Text>
                                 </Body>
                                 <Right>
-                                    <CheckBox checked={true} color="green" />
+                                    <CheckBox checked={data.IsCheck} color="green" />
                                 </Right>
                             </ListItem>
 
                         }
-                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
-                                <Icon active name="trash" />
-                            </Button>}
+                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                        //     <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
+                        //         <Icon active name="trash" />
+                        //     </Button>}
 
                     />
 

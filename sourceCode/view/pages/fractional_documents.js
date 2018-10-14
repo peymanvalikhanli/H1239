@@ -84,6 +84,12 @@ export default class fractional_documents extends PureComponent {
 
     }
 
+    create_currency_input(x){
+        
+        var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       return a;
+    }
+
     render() {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
@@ -91,6 +97,8 @@ export default class fractional_documents extends PureComponent {
 
         var userid = "";//this.props.navigation.state.params.userId;
         var userProfile = "";//this.props.navigation.state.params.userProfile;
+
+        var data = this.props.navigation.state.params.data;
 
         let date_picker = this.get_picker();
 
@@ -144,29 +152,29 @@ export default class fractional_documents extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.name}: {userProfile.PatientName}
+                            {lang.name}: {data.PatientName}
                         </Text>
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code_}: {userProfile.PatientNationalCode}
-                        </Text>
-
-                        <Text
-                            style={styles.text}
-                        >
-                            {lang.cost_date}: {startDate}
+                            {lang.national_code_}: {data.PatientNationalCode}
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_type}: 
+                            {lang.cost_date}: {data.TransDateFa}
+                        </Text>
+
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.cost_type}: {data.TariffCategoryTitle} 
                         </Text>
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_price}: 
+                            {lang.cost_price}: {this.create_currency_input(data.TransAmount)} {" "} {"ریال"} 
                         </Text>
                     </Form>
                     <List
@@ -182,7 +190,7 @@ export default class fractional_documents extends PureComponent {
                         </ListItem>
                     </List>
                     <Text style={styles.font_name}>
-                        {lang.description}
+                        {data.Description==null?"":data.Description}
                     </Text>
                     <List
                         style={{ marginTop: height * 0.02, }}

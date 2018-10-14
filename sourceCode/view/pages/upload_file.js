@@ -60,11 +60,19 @@ export default class upload_file extends PureComponent {
         }
     }
 
-    save_register_const(record){
+    save_register_const(record,profile){
 
         var data_list = this.state.data_list; 
-        alert(data_list); 
-       if(data_list != null && data_list != undefined && data_list != ""){
+        //alert(data_list); 
+        record.UserInsuranceId = profile.UserInsuranceId;
+        record.CompanyInsuranceId = profile.CompanyInsuranceId;
+        record.PatientName = profile.PatientName;
+        record.PatientNationalCode = profile.PatientNationalCode;
+        record.IsCheck = true;
+        record.Attachment = ""; 
+
+      // alert(JSON.stringify( profile));
+        if(data_list != null && data_list != undefined && data_list != ""){
             data_list = JSON.parse(data_list);
             data_list.push(record);
         }else{
@@ -85,7 +93,7 @@ export default class upload_file extends PureComponent {
 
     }
 
-    btn_save_onclick(record) {
+    btn_save_onclick(record,profile) {
         if (this.state.images.length <= 0) {
             Alert.alert(
                 lang.error,
@@ -105,7 +113,7 @@ export default class upload_file extends PureComponent {
                     if (result != null) {
                         this.setState({ data_list: result });
                     }
-                    this.save_register_const(record);
+                    this.save_register_const(record,profile);
                     //alert('test mikonasm'); 
                 });
                 break;
@@ -160,8 +168,8 @@ export default class upload_file extends PureComponent {
                     >
                         <Button
                             style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                              onPress={() => { alert(JSON.stringify(userProfile)) }}
-                           // onPress={() => { this.btn_save_onclick(record) }}
+                            //   onPress={() => { alert(JSON.stringify(userProfile)) }}
+                            onPress={() => { this.btn_save_onclick(record,userProfile) }}
                         >
                             <Text
                                 style={[styles.font,]}

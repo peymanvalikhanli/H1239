@@ -3,6 +3,7 @@
 "verification":"http://new.armanins-maskan.com/Mobile/Login",
 "GetUserInsuranceList":"http://new.armanins-maskan.com/Mobile/GetUserInsuranceList",
 "GetTariffCategoryList":"http://new.armanins-maskan.com/Mobile/GetTariffCategoryList",
-
+"GetOdatTransList":"http://new.armanins-maskan.com/Mobile/GetOdatTransList",
+"GetBackedTransList":"http://new.armanins-maskan.com/Mobile/GetBackedTransList",
 "":""
 }

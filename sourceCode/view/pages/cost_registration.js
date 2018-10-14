@@ -122,7 +122,7 @@ export default class cost_registration extends PureComponent {
         }
 
         //AsyncStorage.setItem('cost', response.data.Token ); 
-        this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile ,record: {act:"register" ,price: this.state.price , const_type: this.state.selectedPicker , date: this.state.selectedStartDate} }); 
+        this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile ,record: {act:"register" ,price: this.state.price , const_type: this.state.selectedPicker , date: this.state.selectedStartDate , persian_date:this.state.selectedStartDate.format('jYYYY/jM/jD')} }); 
     }
 
     render() {

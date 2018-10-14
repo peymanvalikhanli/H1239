@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, CheckBox, } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -7,6 +7,9 @@ import { ListView } from 'react-native';
 
 import lang from '../../model/lang/fa.json';
 
+import axios from 'axios';
+
+import server_url from '../../model/server_config/controller_url.json'; 
 
 const datas = [
     'Simon Mignolet',
@@ -21,6 +24,25 @@ const datas = [
 
 export default class fractional_documents_list extends PureComponent {
 
+    get_data_from_server(){ 
+        axios.post(server_url.GetBackedTransList, {
+            userkey: this.state.Token,
+        })
+        .then(response=> {
+           // alert(JSON.stringify(response)); 
+            if(response.data.act != undefined || response.data.act != null){
+             //   alert(JSON.stringify(response.data.LstBackTrans));
+                 if(response.data.LstBackTrans != undefined || response.data.LstBackTrans != null || response.data.LstBackTrans != ''){
+                     this.setState({LstBackTrans:response.data.LstBackTrans}); 
+                    // alert(JSON.stringify(this.state.LstOdatTrans));
+                 }
+            }         
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     constructor() {
         super();
         Orientation.lockToPortrait();
@@ -28,7 +50,15 @@ export default class fractional_documents_list extends PureComponent {
         this.state = {
             basic: true,
             listViewData: datas,
+            LstBackTrans:[],
         };
+
+        AsyncStorage.getItem('Token', (err, result) => {
+            if (result != null) {
+                this.setState({ Token: result });
+                this.get_data_from_server();
+            }
+        });
     }
 
     btn_send_onclick() {
@@ -76,23 +106,24 @@ export default class fractional_documents_list extends PureComponent {
                     </List>
                     <List
                         style={{ marginLeft: width * 0.01 }}
-                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        // dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        dataArray = {this.state.LstBackTrans}                        
                         renderRow={data =>
                             <ListItem icon
-                            onPress={()=>{this.props.navigation.replace("fractional_documents");}}                            
+                            onPress={()=>{this.props.navigation.replace("fractional_documents",{data:data});}}                            
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
                                 <Text>
-                                    ۱۳۹۷-۰۱-۱۲
+                                    {data.TransDateFa}
                             </Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}
 
                                     >
-                                        {lang.cost_type} {"  "} برادر  {data}
+                                        {data.TariffCategoryTitle} {"  "}  {data.PatientName}
                                     </Text>
                                 </Body>
                                 <Right>
@@ -101,10 +132,10 @@ export default class fractional_documents_list extends PureComponent {
                             </ListItem>
 
                         }
-                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            <Button full danger >
-                                <Icon active name="trash" />
-                            </Button>}
+                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                        //     <Button full danger >
+                        //         <Icon active name="trash" />
+                        //     </Button>}
 
 
                     />

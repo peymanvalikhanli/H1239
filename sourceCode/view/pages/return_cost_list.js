@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage} from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, CheckBox, } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 import { ListView } from 'react-native';
 
 import lang from '../../model/lang/fa.json';
+
+import axios from 'axios';
+
+import server_url from '../../model/server_config/controller_url.json'; 
 
 
 const datas = [
@@ -21,6 +25,25 @@ const datas = [
 
 export default class return_cost_list extends PureComponent {
 
+    get_data_from_server(){ 
+        axios.post(server_url.GetOdatTransList, {
+            userkey: this.state.Token,
+        })
+        .then(response=> {
+            
+            if(response.data.act != undefined || response.data.act != null){
+                //alert(JSON.stringify(response.data.LstOdatTrans));
+                 if(response.data.LstOdatTrans != undefined || response.data.LstOdatTrans != null || response.data.LstOdatTrans != ''){
+                     this.setState({LstOdatTrans:response.data.LstOdatTrans}); 
+                    // alert(JSON.stringify(this.state.LstOdatTrans));
+                 }
+            }         
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     constructor() {
         super();
         Orientation.lockToPortrait();
@@ -28,7 +51,15 @@ export default class return_cost_list extends PureComponent {
         this.state = {
             basic: true,
             listViewData: datas,
+            LstOdatTrans: [],
         };
+
+        AsyncStorage.getItem('Token', (err, result) => {
+            if (result != null) {
+                this.setState({ Token: result });
+                this.get_data_from_server();
+            }
+        });
     }
 
     is_deleteRow(secId, rowId, rowMap) {
@@ -100,23 +131,24 @@ export default class return_cost_list extends PureComponent {
                     <List
                         style={{ marginLeft: width * 0.01 }}
                         rightOpenValue={-75}
-                        dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        //dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        dataArray = {this.state.LstOdatTrans}
                         renderRow={data =>
                             <ListItem icon
-                            onPress={()=>{this.props.navigation.replace("return_cost");}}                                                        
+                            onPress={()=>{this.props.navigation.replace("return_cost",{data:data});}}                                                        
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
                                 <Text>
-                                    ۱۳۹۷-۰۱-۱۲
+                                    {data.TransDateFa}
                             </Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}
 
                                     >
-                                        {lang.cost_type} {"  "} برادر  {data}
+                                        {data.TariffCategoryTitle} {"  "}   {data.PatientName}
                                     </Text>
                                 </Body>
                                 <Right>
@@ -125,10 +157,10 @@ export default class return_cost_list extends PureComponent {
                             </ListItem>
 
                         }
-                        renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                            <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
-                                <Icon active name="trash" />
-                            </Button>}
+                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                        //     <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
+                        //         <Icon active name="trash" />
+                        //     </Button>}
 
                     />
 

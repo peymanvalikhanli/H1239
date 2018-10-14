@@ -92,6 +92,8 @@ export default class return_cost extends PureComponent {
         var userid = "";//this.props.navigation.state.params.userId;
         var userProfile = "";//this.props.navigation.state.params.userProfile;
 
+        var data = this.props.navigation.state.params.data;
+
         let date_picker = this.get_picker();
 
         return (
@@ -144,12 +146,12 @@ export default class return_cost extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.name}: {userProfile.PatientName}
+                            {lang.name}: {data.PatientName}
                         </Text>
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code_}: {userProfile.PatientNationalCode}
+                            {lang.national_code_}: {data.PatientNationalCode}
                         </Text>
                         <List>
                             <ListItem itemDivider>
@@ -163,7 +165,7 @@ export default class return_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.cost_date}: {startDate}
+                                        {lang.cost_date}: {data.TransDateFa}
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -195,19 +197,19 @@ export default class return_cost extends PureComponent {
                             <Input
                                 style={styles.form_input}
                                 keyboardType="numeric"
-                            // value={this.state.price}
+                                value={data.TransAmount}
                             // onChange={(event)=>{this.create_currency_input()}}                     
                             // placeholder={lang.cost_price}
                             />
                         </Item>
 
-                        <Item
+                        {/* <Item
                             style={{ textAlign: 'center', justifyContent: 'center', marginTop: height * 0.05, }}
                         >
                             <Label
                                 style={styles.form_input}
                             >{lang.cost_price}</Label>
-                        </Item>
+                        </Item> */}
                     </Form>
                     <List
                         style={{ marginTop: height * 0.02, }}
@@ -222,7 +224,7 @@ export default class return_cost extends PureComponent {
                         </ListItem>
                     </List>
                     <Text>
-                        {lang.description}
+                        {data.Description}
                     </Text>
                     <List
                         style={{ marginTop: height * 0.02, }}

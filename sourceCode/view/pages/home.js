@@ -52,12 +52,15 @@ export default class home extends PureComponent {
             }
         });
 
+        // AsyncStorage.setItem('const_list', "");
+
         //_________________ const list data
         // AsyncStorage.getItem('const_list', (err, result) => {
         //     if (result != null) {
         //         alert(result );
         //     }
         // });
+        
 
         AsyncStorage.getItem('national_code', (err, result) => {
             if (result != null) {
