@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, BackHandler, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker} from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -58,6 +58,20 @@ export default class cost_edit extends PureComponent {
 
     }
 
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    
+      componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    
+      handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace("cost_list");
+        return true;
+    }
+
     onDateChange(date) {
         this.setState({
           selectedStartDate: date,
@@ -100,7 +114,7 @@ export default class cost_edit extends PureComponent {
                 <Header>
                 <Left>
                     <Button
-                        onPress={()=>{this.props.navigation.replace("profile",{userId:userid ,userProfile: userProfile});}}
+                        onPress={()=>{this.props.navigation.replace("cost_list");}}
                         >
                             <Icon name="arrow-back" />
                         </Button>

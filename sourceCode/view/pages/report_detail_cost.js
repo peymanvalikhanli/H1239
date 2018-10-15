@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, BackHandler, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -37,6 +37,20 @@ export default class report_detail_cost extends PureComponent {
             basic: true,
             listViewData: datas,
         };
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    
+      componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    
+      handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace("home");
+        return true;
     }
 
     onDateChange(date) {

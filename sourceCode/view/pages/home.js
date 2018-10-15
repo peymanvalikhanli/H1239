@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Badge } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -95,7 +95,21 @@ export default class home extends PureComponent {
         )
 
         
-    }
+     }
+    
+     // componentDidMount() {
+    //     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    //   }
+    
+    //   componentWillUnmount() {
+    //     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    //   }
+    
+    //   handleBackPress = () => {
+    //     //this.btn_exit_onclick(); // works best when the goBack is async
+    //     exitApp();
+    //     return true;
+    //   }
 
     exit_app(){
         AsyncStorage.setItem('Token', null);
