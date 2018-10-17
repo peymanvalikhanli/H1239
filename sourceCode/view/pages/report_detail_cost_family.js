@@ -10,20 +10,21 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 import JalaliCalendarPicker from 'react-native-jalali-calendar-picker';
 
 import { ListView } from 'react-native';
- 
+
 import axios from 'axios';
 
 import server_url from '../../model/server_config/controller_url.json';
 
 
-export default class report_detail_cost extends PureComponent {
+export default class report_detail_cost_family extends PureComponent {
 
-    get_data_from_server(national_code) {
+
+    get_data_from_server() {
         axios.post(server_url.GetTransStatusReportList, {
             userkey: this.state.Token,
             fromSendDate: this.state.selectedStartDate.format('M/D/YYYY'),
             toSendDate: this.state.selectedendDate.format('M/D/YYYY'),
-            patientNationalCode: national_code
+            patientNationalCode: ""
         })
             .then(response => {
 
@@ -39,13 +40,13 @@ export default class report_detail_cost extends PureComponent {
                 console.log(error);
             });
     }
-    
+
     constructor() {
         super();
         Orientation.lockToPortrait();
         this.onDateChange = this.onDateChange.bind(this);
         this.onDateChange1 = this.onDateChange1.bind(this);
-        // this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+      //  this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             Token: '#',
             national_code: '#',
@@ -55,6 +56,7 @@ export default class report_detail_cost extends PureComponent {
             listViewData: [],
             fromSendDate:null,
             toSendDate: null,
+
         };
         AsyncStorage.getItem('Token', (err, result) => {
             if (result != null) {
@@ -67,12 +69,12 @@ export default class report_detail_cost extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      componentWillUnmount() {
+
+    componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
         this.props.navigation.replace("home");
         return true;
@@ -92,16 +94,16 @@ export default class report_detail_cost extends PureComponent {
         this.props.navigation.replace("home");
     }
 
-    btn_search_onclick(national_code) {
+    btn_search_onclick() {
         //alert(startDate+" hi peyman "+ endDate);
         
-        this.get_data_from_server(national_code);
+        this.get_data_from_server();
     }
 
     render() {
         var { navigate } = this.props.navigation;
-        var userid = this.props.navigation.state.params.userId;
-        var userProfile = this.props.navigation.state.params.userProfile;
+        var userid = "";//this.props.navigation.state.params.userId;
+        var userProfile = "";//this.props.navigation.state.params.userProfile;
 
         const { selectedStartDate } = this.state;
         const { selectedendDate } = this.state;
@@ -126,35 +128,8 @@ export default class report_detail_cost extends PureComponent {
                             source={require("../image/header.png")}
                         />
                     </View>
-                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: '#ffffff', paddingBottom: 30 }}>
-                        <View>
-
-                            <Image
-                                style={{
-                                    paddingVertical: 30,
-                                    width: width * 0.35,
-                                    height: width * 0.35,
-                                    borderRadius: width * 0.5,
-                                }}
-                                resizeMode='stretch'
-                                source={
-                                    require('../image/default_avatar.jpg')
-                                }
-                            />
-                        </View>
-                        <View>
-                            <Text
-                                style={styles.font_name}
-                            >{userProfile.PatientName}</Text>
-                        </View>
-                    </View>
-                    <List >
-                        <ListItem itemDivider>
-                            <Text></Text>
-                        </ListItem>
-                    </List>
                     <Form>
-                    <Item>
+                        <Item>
                             <Collapse
                                 style={{ width: width * 0.95 }}
                             >
@@ -195,7 +170,7 @@ export default class report_detail_cost extends PureComponent {
                     </Form>
                     <Button
                         style={styles.form_btn}
-                        onPress={() => { this.btn_search_onclick(userProfile.PatientNationalCode) }}
+                        onPress={() => { this.btn_search_onclick() }}
                     >
                         <Text
                             style={styles.font_name}
@@ -226,8 +201,7 @@ export default class report_detail_cost extends PureComponent {
                                         style={styles.font_name}
 
                                     >
-                                        {data.TariffCategoryTitle} 
-                                        {/* {"  "}   {data.PatientName} */}
+                                        {data.TariffCategoryTitle} {"  "}   {data.PatientName}
                                     </Text>
                                 </Body>
                                 <Right />

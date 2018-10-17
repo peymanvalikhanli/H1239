@@ -81,7 +81,9 @@ export default class profile extends PureComponent {
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                        onPress={()=>{this.props.navigation.replace("base_info",{userId:userid ,userProfile: userProfile});}}
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
@@ -116,7 +118,7 @@ export default class profile extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                         onPress={()=>{this.props.navigation.replace("report_detail_cost");}}
+                         onPress={()=>{this.props.navigation.replace("report_detail_cost",{userId:userid ,userProfile: userProfile});}}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
