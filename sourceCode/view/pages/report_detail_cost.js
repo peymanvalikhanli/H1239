@@ -10,7 +10,7 @@ import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion
 import JalaliCalendarPicker from 'react-native-jalali-calendar-picker';
 
 import { ListView } from 'react-native';
- 
+
 import axios from 'axios';
 
 import server_url from '../../model/server_config/controller_url.json';
@@ -28,7 +28,7 @@ export default class report_detail_cost extends PureComponent {
             .then(response => {
 
                 if (response.data.act != undefined || response.data.act != null) {
-                   // alert(JSON.stringify(response.data.LstTransStatusRepor));
+                    // alert(JSON.stringify(response.data.LstTransStatusRepor));
                     if (response.data.LstTransStatusRepor != undefined || response.data.LstTransStatusRepor != null || response.data.LstTransStatusRepor != '') {
                         this.setState({ listViewData: response.data.LstTransStatusRepor });
                         // alert(JSON.stringify(this.state.LstOdatTrans));
@@ -39,7 +39,7 @@ export default class report_detail_cost extends PureComponent {
                 console.log(error);
             });
     }
-    
+
     constructor() {
         super();
         Orientation.lockToPortrait();
@@ -53,13 +53,13 @@ export default class report_detail_cost extends PureComponent {
             selectedendDate: null,
             basic: true,
             listViewData: [],
-            fromSendDate:null,
+            fromSendDate: null,
             toSendDate: null,
         };
         AsyncStorage.getItem('Token', (err, result) => {
             if (result != null) {
                 this.setState({ Token: result });
-              //  this.get_data_from_server();
+                //  this.get_data_from_server();
             }
         });
     }
@@ -67,19 +67,19 @@ export default class report_detail_cost extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      componentWillUnmount() {
+
+    componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace("home");
+        this.props.navigation.replace("profile", { userId: this.state.userid, userProfile: this.state.userProfile });
         return true;
     }
 
     onDateChange(date) {
-        this.setState({selectedStartDate: date});
+        this.setState({ selectedStartDate: date });
     }
 
     onDateChange1(date) {
@@ -94,7 +94,7 @@ export default class report_detail_cost extends PureComponent {
 
     btn_search_onclick(national_code) {
         //alert(startDate+" hi peyman "+ endDate);
-        
+
         this.get_data_from_server(national_code);
     }
 
@@ -102,15 +102,24 @@ export default class report_detail_cost extends PureComponent {
         var { navigate } = this.props.navigation;
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
+        this.setState({ userid: userid, userProfile: userProfile });
 
         const { selectedStartDate } = this.state;
         const { selectedendDate } = this.state;
-        const startDate = selectedStartDate!= null ? selectedStartDate.format('jYYYY/jM/jD') : '';
+        const startDate = selectedStartDate != null ? selectedStartDate.format('jYYYY/jM/jD') : '';
         const endDate = selectedendDate ? selectedendDate.format('jYYYY/jM/jD') : '';
 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
+                    <Left>
+                        <Button
+                            onPress={() => { this.props.navigation.replace("profile", { userId: userid, userProfile: userProfile }); }}
+                        >
+                            <Icon name="arrow-back" />
+                        </Button>
+                    </Left>
+                    <Body />
                     <Right>
                         <Button
                             onPress={() => { this.props.navigation.replace("home"); }}
@@ -120,13 +129,13 @@ export default class report_detail_cost extends PureComponent {
                     </Right>
                 </Header>
                 <Content>
-                    <View>
+                    {/* <View>
                         <Image
                             style={styles.header}
                             source={require("../image/header.png")}
                         />
-                    </View>
-                    <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: '#ffffff', paddingBottom: 30 }}>
+                    </View>*/}
+                    {/* <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: '#ffffff', paddingBottom: 30, marginTop: 0  }}>
                         <View>
 
                             <Image
@@ -147,14 +156,18 @@ export default class report_detail_cost extends PureComponent {
                                 style={styles.font_name}
                             >{userProfile.PatientName}</Text>
                         </View>
-                    </View>
+                    </View>  */}
                     <List >
                         <ListItem itemDivider>
-                            <Text></Text>
+                            <Left />
+                            <Body />
+                            <Right>
+                                <Text>{userProfile.PatientName}</Text>
+                            </Right>
                         </ListItem>
                     </List>
                     <Form>
-                    <Item>
+                        <Item>
                             <Collapse
                                 style={{ width: width * 0.95 }}
                             >
@@ -214,7 +227,9 @@ export default class report_detail_cost extends PureComponent {
                         // dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                         dataArray={this.state.listViewData}
                         renderRow={data =>
-                            <ListItem icon>
+                            <ListItem icon
+                                onPress={() => { this.props.navigation.replace("show_report_detail_cost", { data: data , parent: "report_detail_cost", userId: userid, userProfile: userProfile }); }}
+                            >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
@@ -226,7 +241,7 @@ export default class report_detail_cost extends PureComponent {
                                         style={styles.font_name}
 
                                     >
-                                        {data.TariffCategoryTitle} 
+                                        {data.TariffCategoryTitle}
                                         {/* {"  "}   {data.PatientName} */}
                                     </Text>
                                 </Body>
@@ -234,17 +249,17 @@ export default class report_detail_cost extends PureComponent {
                             </ListItem>
 
                         }
-                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                        //     <Button full danger >
-                        //         <Icon active name="trash" />
-                        //     </Button>}
+                    // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                    //     <Button full danger >
+                    //         <Icon active name="trash" />
+                    //     </Button>}
 
                     />
 
                 </Content>
-                <Footer>
+                {/* <Footer>
 
-                </Footer>
+                </Footer> */}
             </Container>
         );
     }

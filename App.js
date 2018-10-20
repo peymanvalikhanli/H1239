@@ -26,6 +26,7 @@ import fractional_documents_list from './sourceCode/view/pages/fractional_docume
 import fractional_documents from './sourceCode/view/pages/fractional_documents';
 import report_detail_cost from './sourceCode/view/pages/report_detail_cost';
 import report_detail_cost_family from './sourceCode/view/pages/report_detail_cost_family';
+import show_report_detail_cost from './sourceCode/view/pages/show_report_detail_cost';
 import base_info from './sourceCode/view/pages/base_info';
 
 
@@ -50,6 +51,7 @@ const nave = StackNavigator({
  
   report_detail_cost: { screen: report_detail_cost },
   report_detail_cost_family: { screen: report_detail_cost_family },
+  show_report_detail_cost: { screen: show_report_detail_cost },
 
   base_info: { screen: base_info },
   

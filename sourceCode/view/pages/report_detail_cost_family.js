@@ -29,7 +29,7 @@ export default class report_detail_cost_family extends PureComponent {
             .then(response => {
 
                 if (response.data.act != undefined || response.data.act != null) {
-                   // alert(JSON.stringify(response.data.LstTransStatusRepor));
+                    // alert(JSON.stringify(response.data.LstTransStatusRepor));
                     if (response.data.LstTransStatusRepor != undefined || response.data.LstTransStatusRepor != null || response.data.LstTransStatusRepor != '') {
                         this.setState({ listViewData: response.data.LstTransStatusRepor });
                         // alert(JSON.stringify(this.state.LstOdatTrans));
@@ -46,7 +46,7 @@ export default class report_detail_cost_family extends PureComponent {
         Orientation.lockToPortrait();
         this.onDateChange = this.onDateChange.bind(this);
         this.onDateChange1 = this.onDateChange1.bind(this);
-      //  this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+        //  this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             Token: '#',
             national_code: '#',
@@ -54,14 +54,14 @@ export default class report_detail_cost_family extends PureComponent {
             selectedendDate: null,
             basic: true,
             listViewData: [],
-            fromSendDate:null,
+            fromSendDate: null,
             toSendDate: null,
 
         };
         AsyncStorage.getItem('Token', (err, result) => {
             if (result != null) {
                 this.setState({ Token: result });
-              //  this.get_data_from_server();
+                //  this.get_data_from_server();
             }
         });
     }
@@ -81,7 +81,7 @@ export default class report_detail_cost_family extends PureComponent {
     }
 
     onDateChange(date) {
-        this.setState({selectedStartDate: date});
+        this.setState({ selectedStartDate: date });
     }
 
     onDateChange1(date) {
@@ -96,7 +96,7 @@ export default class report_detail_cost_family extends PureComponent {
 
     btn_search_onclick() {
         //alert(startDate+" hi peyman "+ endDate);
-        
+
         this.get_data_from_server();
     }
 
@@ -107,7 +107,7 @@ export default class report_detail_cost_family extends PureComponent {
 
         const { selectedStartDate } = this.state;
         const { selectedendDate } = this.state;
-        const startDate = selectedStartDate!= null ? selectedStartDate.format('jYYYY/jM/jD') : '';
+        const startDate = selectedStartDate != null ? selectedStartDate.format('jYYYY/jM/jD') : '';
         const endDate = selectedendDate ? selectedendDate.format('jYYYY/jM/jD') : '';
 
         return (
@@ -189,7 +189,9 @@ export default class report_detail_cost_family extends PureComponent {
                         // dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                         dataArray={this.state.listViewData}
                         renderRow={data =>
-                            <ListItem icon>
+                            <ListItem icon
+                                onPress={() => { this.props.navigation.replace("show_report_detail_cost", { data: data, parent: "report_detail_cost_family", userId: userid, userProfile: userProfile }); }}
+                            >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
@@ -208,10 +210,10 @@ export default class report_detail_cost_family extends PureComponent {
                             </ListItem>
 
                         }
-                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                        //     <Button full danger >
-                        //         <Icon active name="trash" />
-                        //     </Button>}
+                    // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                    //     <Button full danger >
+                    //         <Icon active name="trash" />
+                    //     </Button>}
 
                     />
 
