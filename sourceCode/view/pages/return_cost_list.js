@@ -162,7 +162,7 @@ export default class return_cost_list extends PureComponent {
                                         style={styles.font_name}
 
                                     >
-                                        {data.TariffCategoryTitle} {"  "}   {data.PatientName}
+                                        {data.PatientName} {"  "} {data.TariffCategoryTitle}    
                                     </Text>
                                 </Body>
                                 <Right>

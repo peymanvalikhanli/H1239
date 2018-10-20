@@ -203,7 +203,7 @@ export default class report_detail_cost_family extends PureComponent {
                                         style={styles.font_name}
 
                                     >
-                                        {data.TariffCategoryTitle} {"  "}   {data.PatientName}
+                                       {data.PatientName} {"  "} {data.TariffCategoryTitle}    
                                     </Text>
                                 </Body>
                                 <Right />

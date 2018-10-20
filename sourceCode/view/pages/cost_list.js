@@ -133,7 +133,7 @@ export default class cost_list extends PureComponent {
                                         style={styles.font_name}
 
                                     >
-                                        {data.const_type} {"  "} {data.PatientName}
+                                        {data.PatientName} {"  "} {data.const_type}  
                                     </Text>
                                 </Body>
                                 <Right>
