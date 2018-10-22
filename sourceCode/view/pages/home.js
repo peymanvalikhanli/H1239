@@ -158,7 +158,7 @@ export default class home extends PureComponent {
                                 </Button>
                                 <Button transparent
                                     style={styles.header_btn}
-                                    onPress={()=>{this.props.navigation.replace("report_detail_cost_family");}}
+                                    onPress={()=>{this.props.navigation.replace("report_detail_cost_family",{ start_date: null , end_date: null });}}
                                 >
                                     <Image
                                         style={styles.header_btn_image}

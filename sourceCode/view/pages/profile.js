@@ -118,7 +118,7 @@ export default class profile extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                         onPress={()=>{this.props.navigation.replace("report_detail_cost",{userId:userid ,userProfile: userProfile});}}
+                         onPress={()=>{this.props.navigation.replace("report_detail_cost",{userId:userid ,userProfile: userProfile, start_date: null , end_date: null });}}
                         >
                             <Left>
                                 <Icon name="arrow-back" />

@@ -58,7 +58,7 @@ export default class show_report_detail_cost extends PureComponent {
 
     }
 
-  
+
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
@@ -69,7 +69,7 @@ export default class show_report_detail_cost extends PureComponent {
 
     handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace(this.state.parent , { userId: this.state.userid, userProfile: this.state.userProfile });
+        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile, start_date: this.state.start_date, end_date: this.state.end_date });
         return true;
     }
 
@@ -114,7 +114,10 @@ export default class show_report_detail_cost extends PureComponent {
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
         var parent = this.props.navigation.state.params.parent;
-        this.setState({ userid: userid, userProfile: userProfile, parent: parent });
+        var start_date = this.props.navigation.state.params.start_date;
+        var end_date = this.props.navigation.state.params.end_date;
+
+        this.setState({ userid: userid, userProfile: userProfile, parent: parent, start_date: start_date, end_date: end_date });
 
         var data = this.props.navigation.state.params.data;
 
@@ -125,7 +128,7 @@ export default class show_report_detail_cost extends PureComponent {
                 <Header>
                     <Left>
                         <Button
-                             onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile, start_date: start_date, end_date: end_date }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -135,6 +138,8 @@ export default class show_report_detail_cost extends PureComponent {
                             style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
                             {/* {lang.fractional_documents} */}
+
+                            {data.TariffCategoryTitle}
                         </Text>
                     </Body>
                     <Right>
@@ -159,12 +164,49 @@ export default class show_report_detail_cost extends PureComponent {
                         >
                             {lang.name}: {data.PatientName}
                         </Text>
-                        <Text
+                    </Form>
+                    <List
+                        style={{ marginTop: height * 0.02, }}
+                    >
+                        <ListItem itemDivider>
+                            <Left />
+                            <Body />
+                            <Right>
+                                {/* <Text style={styles.font_name} >{lang.description}</Text> */}
+                            </Right>
+
+                        </ListItem>
+                    </List>
+                    {/* <Text
                             style={styles.text}
                         >
                             {lang.national_code_}: {data.PatientNationalCode}
+                        </Text> */}
+                    <Form>
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.cost_price}: {this.create_currency_input(data.TransAmount)} {" "} {"ریال"}
                         </Text>
 
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.pay_price}:{this.create_currency_input(data.TotalPaidAmount)} {" "} {"ریال"}
+                        </Text>
+                    </Form>
+                    <List
+                        style={{ marginTop: height * 0.02, }}
+                    >
+                        <ListItem itemDivider>
+                            <Left />
+                            <Body />
+                            <Right>
+                            </Right>
+                        </ListItem>
+                    </List>
+
+                    <Form>
                         <Text
                             style={styles.text}
                         >
@@ -174,13 +216,48 @@ export default class show_report_detail_cost extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_type}: {data.TariffCategoryTitle}
+                            {lang.ReadyToPayDate}: {data.ReadyToPayDateFa}
                         </Text>
+
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_price}: {this.create_currency_input(data.TransAmount)} {" "} {"ریال"}
+                            {lang.pay_date}:{data.PaidDateFa}
                         </Text>
+                    </Form>
+                    <List
+                        style={{ marginTop: height * 0.02, }}
+                    >
+                        <ListItem itemDivider>
+                            <Left />
+                            <Body />
+                            <Right>
+                            </Right>
+
+                        </ListItem>
+                    </List>
+
+                    <Form>
+
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.file_satatus}: {data.FileStatusTitle}
+                        </Text>
+
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.file_NO}: {data.FileNumber}
+                        </Text>
+
+                        {/* <Text
+                            style={styles.text}
+                        >
+                            {lang.cost_type}: {data.TariffCategoryTitle}
+                        </Text> */}
+
+
                     </Form>
                     <List
                         style={{ marginTop: height * 0.02, }}
@@ -221,7 +298,7 @@ export default class show_report_detail_cost extends PureComponent {
                         </ListItem>
                     </List>
                 </Content>
-            </Container>
+            </Container >
         );
     }
 }

@@ -76,5 +76,12 @@
     "health_insurance_card":"دفترچه بیمه",
     "copyـofـbirthـcertificate":"کپی شناسنامه",
 
+    "pay_price":"مبلغ پرداخت",
+    "pay_date":"تاریخ پرداخت",
+    "file_satatus": "وضعیت پرونده",
+    "file_NO": "شماره پرونده",
+    "ReadyToPayDate": "تاریخ اعلام خسارت",
+
+
     "":""
 }

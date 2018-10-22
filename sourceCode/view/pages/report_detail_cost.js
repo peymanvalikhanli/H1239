@@ -21,17 +21,23 @@ export default class report_detail_cost extends PureComponent {
     get_data_from_server(national_code) {
         axios.post(server_url.GetTransStatusReportList, {
             userkey: this.state.Token,
-            fromSendDate: this.state.selectedStartDate.format('M/D/YYYY'),
-            toSendDate: this.state.selectedendDate.format('M/D/YYYY'),
+            fromSendDate: this.state.req_start_date,
+            toSendDate: this.state.req_end_date,
             patientNationalCode: national_code
         })
             .then(response => {
 
                 if (response.data.act != undefined || response.data.act != null) {
-                    // alert(JSON.stringify(response.data.LstTransStatusRepor));
-                    if (response.data.LstTransStatusRepor != undefined || response.data.LstTransStatusRepor != null || response.data.LstTransStatusRepor != '') {
-                        this.setState({ listViewData: response.data.LstTransStatusRepor });
-                        // alert(JSON.stringify(this.state.LstOdatTrans));
+                    //alert(JSON.stringify(response.data));
+                    switch (response.data.act) {
+                        case "msg":
+                            alert(response.data.Message);
+                            break;
+                        case "Success":
+                            if (response.data.LstTransStatusRepor != undefined || response.data.LstTransStatusRepor != null || response.data.LstTransStatusRepor != '') {
+                                this.setState({ listViewData: response.data.LstTransStatusRepor });
+                            }
+                            break;
                     }
                 }
             })
@@ -62,6 +68,16 @@ export default class report_detail_cost extends PureComponent {
                 //  this.get_data_from_server();
             }
         });
+
+        AsyncStorage.getItem('report_date', (err, result) => {
+            if (result != null) {
+                var data = JSON.parse(result);
+                this.setState({ startDate: data.start, endDate: data.end, req_start_date: data.req_start_date, req_end_date: data.req_end_date });
+                if (data.req_end_date != null && data.req_start_date != null) {
+                    this.get_data_from_server();
+                }
+            }
+        });
     }
 
     componentDidMount() {
@@ -79,13 +95,21 @@ export default class report_detail_cost extends PureComponent {
     }
 
     onDateChange(date) {
-        this.setState({ selectedStartDate: date });
+        this.setState({
+            selectedStartDate: date,
+            startDate: date.format('jYYYY/jM/jD'),
+            req_start_date: date.format('M/D/YYYY')
+        });
+        AsyncStorage.setItem('report_date', JSON.stringify({ start: date.format('jYYYY/jM/jD'), req_start_date: date.format('M/D/YYYY'), end: this.state.endDate, req_end_date: this.state.req_end_date }));
     }
 
     onDateChange1(date) {
         this.setState({
             selectedendDate: date,
+            endDate: date.format('jYYYY/jM/jD'),
+            req_end_date: date.format('M/D/YYYY')
         });
+        AsyncStorage.setItem('report_date', JSON.stringify({ start: this.state.startDate, req_start_date: this.state.req_start_date, end: date.format('jYYYY/jM/jD'), req_end_date: date.format('M/D/YYYY') }));
     }
 
     btn_send_onclick() {
@@ -175,7 +199,7 @@ export default class report_detail_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.start_date}: {startDate}
+                                        {lang.start_date}: {this.state.startDate}
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -194,7 +218,7 @@ export default class report_detail_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.end_date}: {endDate}
+                                        {lang.end_date}: {this.state.endDate}
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -228,7 +252,7 @@ export default class report_detail_cost extends PureComponent {
                         dataArray={this.state.listViewData}
                         renderRow={data =>
                             <ListItem icon
-                                onPress={() => { this.props.navigation.replace("show_report_detail_cost", { data: data , parent: "report_detail_cost", userId: userid, userProfile: userProfile }); }}
+                                onPress={() => { this.props.navigation.replace("show_report_detail_cost", { data: data, parent: "report_detail_cost", userId: userid, userProfile: userProfile, start_date: this.state.selectedStartDate, end_date: this.state.selectedendDate }); }}
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
