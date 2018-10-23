@@ -6,5 +6,6 @@
 "GetOdatTransList":"http://new.armanins-maskan.com/Mobile/GetOdatTransList",
 "GetBackedTransList":"http://new.armanins-maskan.com/Mobile/GetBackedTransList",
 "GetTransStatusReportList":"http://new.armanins-maskan.com/Mobile/GetTransStatusReportList",
+"GetIntroductionLetterRequestList":"http://new.armanins-maskan.com/Mobile/GetIntroductionLetterRequestList",
 "":""
 }

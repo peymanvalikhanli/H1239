@@ -168,6 +168,7 @@ export default class home extends PureComponent {
                                 </Button>
                                 <Button transparent
                                     style={styles.header_btn}
+                                    onPress={()=>{this.props.navigation.replace("introduction_letter_list");}}
                                 >
                                     <Image
                                         style={styles.header_btn1_image}

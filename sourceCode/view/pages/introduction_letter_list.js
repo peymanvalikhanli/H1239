@@ -7,67 +7,84 @@ import { ListView } from 'react-native';
 
 import lang from '../../model/lang/fa.json';
 
+import axios from 'axios';
 
-const datas = [];
+import server_url from '../../model/server_config/controller_url.json';
 
-export default class cost_list extends PureComponent {
+const datas = [
+    'Simon Mignolet',
+    'Nathaniel Clyne',
+    'Dejan Lovren',
+    'Mama Sakho',
+    'Alberto Moreno',
+    'Emre Can',
+    'Joe Allen',
+    'Phil Coutinho',
+];
+
+export default class introduction_letter_list extends PureComponent {
+
+    get_data_from_server() {
+        axios.post(server_url.GetIntroductionLetterRequestList, {
+            userkey: this.state.Token,
+        })
+            .then(response => {
+                //   alert(JSON.stringify(response)); 
+
+                if (response.data.act != undefined || response.data.act != null) {
+                    switch (response.data.act) {
+
+                        case "msg":
+                            alert(response.data.Message);
+                            break;
+
+                        case "Success":
+                            if (response.data.LstIntroductionLetterRequestList != undefined || response.data.LstIntroductionLetterRequestList != null || response.data.LstIntroductionLetterRequestList != '') {
+                                this.setState({ LstIntroductionLetterRequestList: response.data.LstIntroductionLetterRequestList });
+                                // alert(JSON.stringify(this.state.LstOdatTrans));
+                            }
+                            break;
+                    }
+                    //   alert(JSON.stringify(response.data.LstBackTrans));
+
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     constructor() {
         super();
         Orientation.lockToPortrait();
-      //  this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-        AsyncStorage.getItem('const_list', (err, result) => {
-            if (result != null) {
-                //datas = result;
-                this.setState({listViewData: JSON.parse(result)});
-                //alert(result)
-            }
-        });
-
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             basic: true,
-            listViewData: [],
+            listViewData: datas,
+            LstIntroductionLetterRequestList: [],
         };
-        // {act:"test",name:"peyman"},{act:"test"},{act:"test"},{act:"test"}
+
+        AsyncStorage.getItem('Token', (err, result) => {
+            if (result != null) {
+                this.setState({ Token: result });
+                this.get_data_from_server();
+            }
+        });
     }
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      componentWillUnmount() {
+
+    componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
         this.props.navigation.replace("home");
         return true;
     }
-
-    is_deleteRow(secId, rowId, rowMap) {
-
-        rowMap[`${secId}${rowId}`].props.closeRow();
-        const newData = [...this.state.listViewData];
-        newData.splice(rowId, 1);
-        this.setState({ listViewData: newData });
-    }
-
-    deleteRow(secId, rowId, rowMap) {
-
-        Alert.alert(
-            lang.warning,
-            lang.are_you_delete_thia_item,
-            [
-                { text: lang.no },
-                { text: lang.yes,onPress: () => {this.is_deleteRow(secId, rowId, rowMap) }},
-            ],
-            { cancelable: false }
-        )
-    }
-
-
 
     btn_send_onclick() {
         this.props.navigation.replace("home");
@@ -75,18 +92,18 @@ export default class cost_list extends PureComponent {
 
     render() {
         var { navigate } = this.props.navigation;
-        //const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         // var userid = this.props.navigation.state.params.userId;
         // var userProfile = this.props.navigation.state.params.userProfile;
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
-                <Left/>
+                    <Left />
                     <Body>
                         <Text
-                        style= {{textAlign:'center',color:'#ffffff',fontFamily: "DinarTwoMedium_MRT",}}
+                            style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
-                            {lang.cost_list}
+                            {lang.introduction_letter_list}
                         </Text>
                     </Body>
                     <Right>
@@ -98,53 +115,38 @@ export default class cost_list extends PureComponent {
                     </Right>
                 </Header>
                 <Content>
-                    {/* <Button
-                        style={styles.form_btn}
-                    >
-                        <Text
-                            style={styles.font_name}
-                        >
-                            {lang.send}
-                        </Text>
-                    </Button> */}
-                    <List>
-                        <ListItem itemDivider>
-                            <Text></Text>
-                        </ListItem>
-                    </List>
                     <List
                         style={{ marginLeft: width * 0.01 }}
-                        rightOpenValue={-75}
-          //              dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-                        dataArray = {this.state.listViewData}
+                        // dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+                        dataArray={this.state.LstIntroductionLetterRequestList}
                         renderRow={data =>
                             <ListItem icon
-                            onPress={()=>{this.props.navigation.replace("cost_edit",{data:data});}}
+                                style={{backgroundColor: (data.IntroductionLetterStatusId==1? "green": data.IntroductionLetterStatusId==2?"yellow":data.IntroductionLetterStatusId==3?"blue":data.IntroductionLetterStatusId==4?"white":"red")}}
+                            onPress={()=>{this.props.navigation.replace("introduction_letter",{data:data});}}                            
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
                                 <Text>
-                                    {data.persian_date}
-                                    {/* {data.date.substring(0,10)} */}
-                            </Text>
+                                    {data.RequestDateFa}
+                                </Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}
+
                                     >
-                                        {data.PatientName} {"  "} {data.const_type}  
+                                        {data.ApplicantName} {"  "} {data.IntroductionLetterStatusTitle} {"  "} {data.SystemNumber != null? lang.number:""} {"  "} {data.SystemNumber}
                                     </Text>
                                 </Body>
-                                <Right>
-                                    {/* <CheckBox checked={data.IsCheck} color="green" /> */}
-                                </Right>
+                                <Right/>
                             </ListItem>
 
                         }
-                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                        //     <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
-                        //         <Icon active name="trash" />
-                        //     </Button>}
+                    // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                    //     <Button full danger >
+                    //         <Icon active name="trash" />
+                    //     </Button>}
+
 
                     />
 

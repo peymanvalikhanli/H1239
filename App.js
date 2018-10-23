@@ -28,6 +28,8 @@ import report_detail_cost from './sourceCode/view/pages/report_detail_cost';
 import report_detail_cost_family from './sourceCode/view/pages/report_detail_cost_family';
 import show_report_detail_cost from './sourceCode/view/pages/show_report_detail_cost';
 import base_info from './sourceCode/view/pages/base_info';
+import introduction_letter_list from './sourceCode/view/pages/introduction_letter_list';
+import introduction_letter from './sourceCode/view/pages/inroduction_letter';
 
 
 const nave = StackNavigator({
@@ -54,6 +56,9 @@ const nave = StackNavigator({
   show_report_detail_cost: { screen: show_report_detail_cost },
 
   base_info: { screen: base_info },
+  
+  introduction_letter_list: { screen: introduction_letter_list },
+  introduction_letter: { screen: introduction_letter },
   
 
 },{

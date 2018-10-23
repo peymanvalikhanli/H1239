@@ -128,7 +128,7 @@ export default class return_cost_list extends PureComponent {
                     </Right>
                 </Header>
                 <Content>
-                    <Button
+                    {/* <Button
                         style={styles.form_btn}
                     >
                         <Text
@@ -136,7 +136,7 @@ export default class return_cost_list extends PureComponent {
                         >
                             {lang.send}
                         </Text>
-                    </Button>
+                    </Button> */}
                     <List>
                         <ListItem itemDivider>
                             <Text></Text>
@@ -166,7 +166,7 @@ export default class return_cost_list extends PureComponent {
                                     </Text>
                                 </Body>
                                 <Right>
-                                    <CheckBox checked={true} color="green" />
+                                    {/* <CheckBox checked={true} color="green" /> */}
                                 </Right>
                             </ListItem>
 
