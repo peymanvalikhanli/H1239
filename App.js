@@ -30,6 +30,7 @@ import show_report_detail_cost from './sourceCode/view/pages/show_report_detail_
 import base_info from './sourceCode/view/pages/base_info';
 import introduction_letter_list from './sourceCode/view/pages/introduction_letter_list';
 import introduction_letter from './sourceCode/view/pages/inroduction_letter';
+import show_files from './sourceCode/view/pages/show_files';
 
 
 const nave = StackNavigator({
@@ -41,6 +42,7 @@ const nave = StackNavigator({
 
   cost_registration: {screen: cost_registration}, 
   upload_file:{screen: upload_file},
+  show_files:{screen: show_files},
 
   cost_list: { screen: cost_list },
   cost_edit: { screen: cost_edit },

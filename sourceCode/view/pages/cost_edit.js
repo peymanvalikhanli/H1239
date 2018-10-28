@@ -138,7 +138,7 @@ export default class cost_edit extends PureComponent {
                 <Content 
                     style={{paddingLeft: width*0.01,paddingRight: width*0.02,fontFamily: "DinarTwoMedium_MRT",}}
                 >
-                      <Button
+                      {/* <Button
                         style={styles.form_btn}
                     >
                         <Text
@@ -146,7 +146,7 @@ export default class cost_edit extends PureComponent {
                         >
                             {lang.send}
                         </Text>
-                    </Button>
+                    </Button> */}
                     <List>
                         <ListItem itemDivider>
                             <Text></Text>
@@ -178,7 +178,7 @@ export default class cost_edit extends PureComponent {
                         
                         
                         
-                        <Item> 
+                        {/* <Item> 
                         <Collapse
                         style={{width:width*0.95}}
                         >
@@ -197,8 +197,14 @@ export default class cost_edit extends PureComponent {
                             </CollapseBody>
                         </Collapse>
 
-                        </Item>
-                        <Item picker>
+                        </Item> */}
+                        <Text
+                        style={styles.text}                        
+                        > 
+                                {lang.cost_date}: {data.persian_date}
+                        </Text>
+                    
+                        {/* <Item picker>
                             <Picker
                                 mode="dropdown"
                                 iosIcon={<Icon name="ios-arrow-down-outline" />}
@@ -211,8 +217,20 @@ export default class cost_edit extends PureComponent {
                             >
                                 {date_picker}
                             </Picker>
-                        </Item>
-                        <Item floatingLabel>
+                        </Item> */}
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.cost_type}: {data.const_type} 
+                        </Text>
+                        <Text
+                            style={styles.text}
+                        >
+                            {lang.cost_price}: {data.price} 
+                        </Text>
+                        
+
+                        {/* <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.cost_price}</Label>
                             <Input
                             style={styles.form_input}
@@ -222,7 +240,8 @@ export default class cost_edit extends PureComponent {
                             onBlur={() => { this.create_currency_input(); }}
 
                              />
-                        </Item>
+                        </Item> */}
+
                                     
                         {/* <Item 
                          style= {{textAlign:'center',justifyContent:'center',marginTop: height*0.05,}}
@@ -233,12 +252,13 @@ export default class cost_edit extends PureComponent {
                         </Item>                                   */}
                     </Form>
                     <List
-                    style={{marginTop:height*0.02,}}
-                    >
+                    style={{marginTop:height*0.02,}}>
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("show_files",{data:data}); }}                        
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

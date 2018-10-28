@@ -7,5 +7,8 @@
 "GetBackedTransList":"http://new.armanins-maskan.com/Mobile/GetBackedTransList",
 "GetTransStatusReportList":"http://new.armanins-maskan.com/Mobile/GetTransStatusReportList",
 "GetIntroductionLetterRequestList":"http://new.armanins-maskan.com/Mobile/GetIntroductionLetterRequestList",
+"CreateTrans":"http://new.armanins-maskan.com/Mobile/CreateTrans",
+"UploadDocument":"http://new.armanins-maskan.com/Mobile/UploadDocument",
+"GetTransDocumentDetail":"http://new.armanins-maskan.com/Mobile/GetTransDocumentDetail", 
 "":""
 }

@@ -13,74 +13,15 @@ import axios from 'axios';
 import server_url from '../../model/server_config/controller_url.json';
 
 
-export default class upload_file extends PureComponent {
+export default class show_files extends PureComponent {
 
-    upload_file_server(Id) {
-        // alert(Id);
-        this.state.images.map((img, i) => {
-            let data = new FormData();
-
-            data.append('transId', Id);
-            data.append('fileName', "peymantest.png");
-            data.append('fileType', 3);
-            data.append('contentType', "image/png");
-            data.append('content', img);
-
-            axios.post(server_url.UploadDocument, data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-                .then(response => {
-                    // alert(JSON.stringify(response));
-                    //if (response.data.msg != undefined || response.data.msg != null) {
-                    // this.get_data();
-
-                    // }
-                    // Alert.alert(
-                    //                 lang.info,
-                    //                 response.data.Message,
-                    //                 [
-                    //                     { text: lang.yes },
-                    //                 ],
-                    //                 { cancelable: false }
-                    //             )
-                    //            // alert(response.data.Id);  
-                    switch (response.data.act) {
-                        case "Success":
-                            Alert.alert(
-                                lang.info,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
-                            break;
-                    }
-                })
-                .catch(function (error) {
-                    //console.log(error);
-                    alert(JSON.stringify(error));
-                });
-
-        });
-    }
-
-
-
-    send_data_for_server(data) {
-        axios.post(server_url.CreateTrans, {
+    get_images() {
+        axios.post(server_url.GetTransDocumentDetail, {
             userkey: this.state.Token,
-            userInsuranceId: data.UserInsuranceId,
-            transAmount: data.price,
-            transDate: data.date,
-            companyInsuranceId: data.CompanyInsuranceId,
-            tariffCategoryTitle: data.const_type,
-            pageCount: this.state.images.length,
+            transId: 50177
         })
             .then(response => {
-
+                // alert(JSON.stringify(response));
                 if (response.data.act != undefined || response.data.act != null) {
                     //alert(JSON.stringify(response.data));
                     switch (response.data.act) {
@@ -105,20 +46,17 @@ export default class upload_file extends PureComponent {
                             )
                             break;
                         case "Success":
-                            if (response.data.Id != undefined || response.data.Id != null || response.data.Id != '') {
-                                // Alert.alert(
-                                //     lang.info,
-                                //     response.data.Message,
-                                //     [
-                                //         { text: lang.yes },
-                                //     ],
-                                //     { cancelable: false }
-                                // )
-                                //alert(response.data.Id);  
-                                this.upload_file_server(response.data.Id);
-
+                            if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
+                                var tem = [];
+                                response.data.UserDocumentDetail.map((img, i) => {
+                                    tem.push(img.Content_String)
+                                    //alert(JSON.stringify(img));
+                                }
+                                );
+                                this.setState({ images: tem });
                             }
                             break;
+
                     }
                 }
             })
@@ -126,7 +64,6 @@ export default class upload_file extends PureComponent {
                 console.log(error);
             });
     }
-
 
     constructor() {
         super();
@@ -145,6 +82,7 @@ export default class upload_file extends PureComponent {
             if (result != null) {
                 this.setState({ Token: result });
                 //     this.get_data_from_server();
+                this.get_images();
             }
         });
     }
@@ -183,87 +121,15 @@ export default class upload_file extends PureComponent {
         }
     }
 
-    save_register_const(record, profile) {
-
-        var data_list = this.state.data_list;
-        //alert(data_list); 
-        record.UserInsuranceId = profile.UserInsuranceId;
-        record.CompanyInsuranceId = profile.CompanyInsuranceId;
-        record.PatientName = profile.PatientName;
-        record.PatientNationalCode = profile.PatientNationalCode;
-        record.IsCheck = true;
-        record.Attachment = "";
-
-        // alert(JSON.stringify( profile));
-        if (data_list != null && data_list != undefined && data_list != "") {
-            data_list = JSON.parse(data_list);
-            data_list.push(record);
-        } else {
-            data_list = [record,];
-        }
-        //  alert(JSON.stringify(data_list));
-
-        this.send_data_for_server(record);
-
-        AsyncStorage.setItem('const_list', JSON.stringify(data_list));
-
-        // Alert.alert(
-        //     lang.info,
-        //     lang.data_saving_has_been,
-        //     [
-        //         { text: lang.yes },
-        //     ],
-        //     { cancelable: false }
-        // )
-
-        //this.props.navigation.replace("home");
-
-    }
-
-    btn_save_onclick(record, profile) {
-        if (this.state.images.length <= 0) {
-            Alert.alert(
-                lang.error,
-                lang.insert_attachment,
-                [
-                    { text: lang.yes },
-                ],
-                { cancelable: false }
-            )
-            return;
-        }
-
-        if (record != undefined) {
-            switch (record.act) {
-                case "register":
-                    AsyncStorage.getItem('const_list', (err, result) => {
-                        if (result != null) {
-                            this.setState({ data_list: result });
-                        }
-                        this.save_register_const(record, profile);
-                        //alert('test mikonasm'); 
-                    });
-                    break;
-            }
-        }
-        // this.props.navigation.replace("home");
-    }
-
     render() {
 
         var { navigate } = this.props.navigation;
 
+        var data = this.props.navigation.state.params.data;
+
         const { selectedStartDate } = this.state;
 
-        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
-
         const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
-
-        var userid = this.props.navigation.state.params.userId;
-
-        var userProfile = this.props.navigation.state.params.userProfile;
-
-        var record = this.props.navigation.state.params.record;
 
         return (
             <Container style={{ flex: 1 }}>
@@ -293,15 +159,6 @@ export default class upload_file extends PureComponent {
                 <Content
                     style={{ fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                    <Button
-                        style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                        //   onPress={() => { alert(JSON.stringify(userProfile)) }}
-                        onPress={() => { this.btn_save_onclick(record, userProfile) }}
-                    >
-                        <Text
-                            style={[styles.font,]}
-                        >{lang.save}</Text>
-                    </Button>
                     <List>
                         <ListItem itemDivider>
                         </ListItem>
