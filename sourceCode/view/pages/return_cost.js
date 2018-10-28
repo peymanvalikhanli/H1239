@@ -61,12 +61,12 @@ export default class return_cost extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      componentWillUnmount() {
+
+    componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
         this.props.navigation.replace("return_cost_list");
         return true;
@@ -247,7 +247,9 @@ export default class return_cost extends PureComponent {
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("show_files", { data: data, parent: "return_cost",main_parent:"" , userProfile: userProfile , userid: userid }); }}
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

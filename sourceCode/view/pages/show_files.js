@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -92,6 +92,20 @@ export default class show_files extends PureComponent {
         });
     }
 
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace(this.state.parent, { data: this.state.data, parent: this.state.main_parent , userProfile: this.state.userProfile , userid: this.state.userid });
+        return true;
+    }
+
     onDateChange(date) {
         this.setState({
             selectedStartDate: date,
@@ -107,6 +121,7 @@ export default class show_files extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
+                    onPress={() => { this.setState({ avatar: this.state.images[i] }) }}
                 >
                     <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
                 </Button>
@@ -115,27 +130,22 @@ export default class show_files extends PureComponent {
         return tem;
     }
 
-    btn_add_onclick() {
-
-        if (this.state.avatar !== null) {
-            var tem = this.state.images;
-            var a = tem.unshift(this.state.avatar);
-            this.setState({ images: tem });
-            //alert(this.state.avatar);
-            this.setState({ avatar: null });
-        }
-    }
-
     render() {
 
         var { navigate } = this.props.navigation;
 
         var data = this.props.navigation.state.params.data;
 
-        //alert(JSON.stringify(data));
-        this.setState({ transId: data.transId });
+        var parent = this.props.navigation.state.params.parent;
 
-        const { selectedStartDate } = this.state;
+        var main_parent = this.props.navigation.state.params.main_parent;
+
+        var userid = this.props.navigation.state.params.userId;
+        var userProfile = this.props.navigation.state.params.userProfile;
+
+        // alert(JSON.stringify(data));
+
+        this.setState({ transId: data.transId == null ? data.TransId : data.transId, data: data, parent: parent, main_parent: main_parent, userid: userid, userProfile: userProfile });
 
         const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
 
@@ -144,7 +154,7 @@ export default class show_files extends PureComponent {
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace(this.state.parent, { data: data, parent: main_parent, userid: userid, userProfile: userProfile }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -153,7 +163,7 @@ export default class show_files extends PureComponent {
                         <Text
                             style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
-                            {lang.cost_registration}
+                            {lang.documents}
                         </Text>
                     </Body>
                     <Right>
@@ -172,26 +182,13 @@ export default class show_files extends PureComponent {
                         </ListItem>
                     </List>
                     <View
-                        style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
+                        style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.69, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
-
-                        <PhotoUpload
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                    this.setState({
-                                        avatar: avatar
-                                    });
-                                    console.log('Image base64 string: ', avatar);
-                                }
-                            }}
-                        >
-                            <Image
-                                source={require('../image/camera.png')}
-                                resizeMode='stretch'
-                                style={[{ flex: 1, width: width * 0.8 }]}
-                            />
-                        </PhotoUpload>
-
+                        <Image
+                            source={(this.state.avatar == null || this.state.avatar == undefined) ? require('../image/camera.png') : { uri: 'data:image/png;base64,' + this.state.avatar }}
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: width * 0.8 }]}
+                        />
                     </View>
                     <List>
                         <ListItem itemDivider>
@@ -200,13 +197,6 @@ export default class show_files extends PureComponent {
                     <View
                         style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
-                        <Button bordered large
-                            onPress={() => { this.btn_add_onclick(); }}
-                            style={[styles.btn_img]}
-                        >
-                            <Icon large name="add" />
-
-                        </Button>
                         {this.image_items(uri)}
                     </View>
                 </Content>

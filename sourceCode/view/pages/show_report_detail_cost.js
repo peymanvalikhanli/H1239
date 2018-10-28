@@ -101,7 +101,7 @@ export default class show_report_detail_cost extends PureComponent {
     }
 
     create_currency_input(x) {
-
+        if(x == null ){return x}
         var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return a;
     }
@@ -280,7 +280,9 @@ export default class show_report_detail_cost extends PureComponent {
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("show_files",{data:data, parent:"show_report_detail_cost",main_parent:parent , userProfile: userProfile , userid: userid}); }}                                                    
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

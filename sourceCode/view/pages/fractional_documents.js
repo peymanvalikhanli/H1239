@@ -100,7 +100,9 @@ export default class fractional_documents extends PureComponent {
     }
 
     create_currency_input(x){
-        
+        if(x== null){
+            return x;
+        }
         var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
        return a;
     }
@@ -141,12 +143,11 @@ export default class fractional_documents extends PureComponent {
                             <Icon name="home" />
                         </Button>
                     </Right>
-
                 </Header>
                 <Content
                     style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                    <Button
+                    {/* <Button
                         style={styles.form_btn}
                     >
                         <Text
@@ -154,12 +155,12 @@ export default class fractional_documents extends PureComponent {
                         >
                             {lang.send}
                         </Text>
-                    </Button>
-                    <List>
+                    </Button> */}
+                    {/* <List>
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                    </List>
+                    </List> */}
                     <Form
                         style={{ justifyContent: 'center', textAlign: 'center', }}
                     >

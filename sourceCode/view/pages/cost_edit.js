@@ -1,37 +1,37 @@
 import React, { PureComponent } from 'react';
 import { Image, View, Dimensions, StyleSheet, AsyncStorage, BackHandler, } from 'react-native';
-import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker} from 'native-base';
+import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 import JalaliCalendarPicker from 'react-native-jalali-calendar-picker';
 
 import lang from '../../model/lang/fa.json';
 
-import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
+import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 import axios from 'axios';
 
-import server_url from '../../model/server_config/controller_url.json'; 
+import server_url from '../../model/server_config/controller_url.json';
 
 
 export default class cost_edit extends PureComponent {
 
-    get_data_from_server(){ 
+    get_data_from_server() {
         axios.post(server_url.GetTariffCategoryList, {
             userkey: this.state.Token,
         })
-        .then(response=> {
-            
-            if(response.data.act != undefined || response.data.act != null){
-                //alert(response.data.TariffCategory);
-                 if(response.data.TariffCategory != undefined || response.data.TariffCategory != null || response.data.TariffCategory != ''){
-                     this.setState({TariffCategory:response.data.TariffCategory}); 
-                 }
-            }         
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(response => {
+
+                if (response.data.act != undefined || response.data.act != null) {
+                    //alert(response.data.TariffCategory);
+                    if (response.data.TariffCategory != undefined || response.data.TariffCategory != null || response.data.TariffCategory != '') {
+                        this.setState({ TariffCategory: response.data.TariffCategory });
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     constructor() {
@@ -40,19 +40,19 @@ export default class cost_edit extends PureComponent {
         this.onDateChange = this.onDateChange.bind(this);
 
         this.state = {
-            Token:'#',
+            Token: '#',
             national_code: '#',
             selectedStartDate: null,
-            price:'',
-            picker:'',
-            TariffCategory:[{Title:'',TariffCategoryTypeTitle:''}],
-          };
-        
+            price: '',
+            picker: '',
+            TariffCategory: [{ Title: '', TariffCategoryTypeTitle: '' }],
+        };
+
         AsyncStorage.getItem('Token', (err, result) => {
-            if(result!= null){
-               this.setState({Token: result});
-               this.get_data_from_server();
-           }  
+            if (result != null) {
+                this.setState({ Token: result });
+                this.get_data_from_server();
+            }
         });
 
 
@@ -61,12 +61,12 @@ export default class cost_edit extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      componentWillUnmount() {
+
+    componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
         this.props.navigation.replace("cost_list");
         return true;
@@ -74,28 +74,28 @@ export default class cost_edit extends PureComponent {
 
     onDateChange(date) {
         this.setState({
-          selectedStartDate: date,
+            selectedStartDate: date,
         });
-      }
+    }
 
-    btn_send_onclick(){
+    btn_send_onclick() {
         this.props.navigation.replace("home");
     }
 
-    create_currency_input(){ 
-     
-    } 
+    create_currency_input() {
+
+    }
 
 
-    get_picker(){
+    get_picker() {
         // style={stylesTitle.form_input}
-        const items = this.state.TariffCategory.map((s,i)=>{
-            return(
+        const items = this.state.TariffCategory.map((s, i) => {
+            return (
                 <Picker.Item label={lang.cost_type} key={i} label={s.Title} value={s.TariffCategoryTypeTitle} />
             );
         });
         return items;
-       
+
     }
 
     render() {
@@ -108,37 +108,37 @@ export default class cost_edit extends PureComponent {
         var data = this.props.navigation.state.params.data;
 
         let date_picker = this.get_picker();
- 
+
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
-                <Left>
-                    <Button
-                        onPress={()=>{this.props.navigation.replace("cost_list");}}
+                    <Left>
+                        <Button
+                            onPress={() => { this.props.navigation.replace("cost_list"); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
-                        </Left> 
-                        <Body>
+                    </Left>
+                    <Body>
                         <Text
-                        style= {{textAlign:'center',color:'#ffffff',fontFamily: "DinarTwoMedium_MRT",}}
+                            style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
                             {/* {lang.cost_registration} */}
                         </Text>
                     </Body>
                     <Right>
                         <Button
-                        onPress={()=>{this.props.navigation.replace("home");}}
+                            onPress={() => { this.props.navigation.replace("home"); }}
                         >
                             <Icon name="home" />
                         </Button>
                     </Right>
-                    
-                </Header> 
-                <Content 
-                    style={{paddingLeft: width*0.01,paddingRight: width*0.02,fontFamily: "DinarTwoMedium_MRT",}}
+
+                </Header>
+                <Content
+                    style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                      {/* <Button
+                    {/* <Button
                         style={styles.form_btn}
                     >
                         <Text
@@ -153,13 +153,13 @@ export default class cost_edit extends PureComponent {
                         </ListItem>
                     </List>
                     <Form
-                    style={{justifyContent:'center',textAlign:'center',}}
-                    > 
+                        style={{ justifyContent: 'center', textAlign: 'center', }}
+                    >
 
                         <Text
-                        style={styles.text}
-                        > 
-                                {lang.name}: {data.PatientName}
+                            style={styles.text}
+                        >
+                            {lang.name}: {data.PatientName}
                         </Text>
                         {/* <Text
                         style={styles.text}
@@ -167,17 +167,17 @@ export default class cost_edit extends PureComponent {
                                 {lang.Lname}: valikhanli 
                         </Text>  */}
                         <Text
-                        style={styles.text}                        
-                        > 
-                                {lang.national_code_}: {data.PatientNationalCode}
+                            style={styles.text}
+                        >
+                            {lang.national_code_}: {data.PatientNationalCode}
                         </Text>
-                       <List> 
-                           <ListItem itemDivider>
-                           </ListItem>
+                        <List>
+                            <ListItem itemDivider>
+                            </ListItem>
                         </List>
-                        
-                        
-                        
+
+
+
                         {/* <Item> 
                         <Collapse
                         style={{width:width*0.95}}
@@ -199,11 +199,11 @@ export default class cost_edit extends PureComponent {
 
                         </Item> */}
                         <Text
-                        style={styles.text}                        
-                        > 
-                                {lang.cost_date}: {data.persian_date}
+                            style={styles.text}
+                        >
+                            {lang.cost_date}: {data.persian_date}
                         </Text>
-                    
+
                         {/* <Item picker>
                             <Picker
                                 mode="dropdown"
@@ -221,14 +221,14 @@ export default class cost_edit extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_type}: {data.const_type} 
+                            {lang.cost_type}: {data.const_type}
                         </Text>
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_price}: {data.price} 
+                            {lang.cost_price}: {data.price}
                         </Text>
-                        
+
 
                         {/* <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.cost_price}</Label>
@@ -242,7 +242,7 @@ export default class cost_edit extends PureComponent {
                              />
                         </Item> */}
 
-                                    
+
                         {/* <Item 
                          style= {{textAlign:'center',justifyContent:'center',marginTop: height*0.05,}}
                         >
@@ -252,19 +252,19 @@ export default class cost_edit extends PureComponent {
                         </Item>                                   */}
                     </Form>
                     <List
-                    style={{marginTop:height*0.02,}}>
+                        style={{ marginTop: height * 0.02, }}>
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("show_files",{data:data}); }}                        
+                            onPress={() => { this.props.navigation.replace("show_files", { data: data, parent: "cost_edit", main_parent: "", userProfile: userProfile , userid: userid }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
                                 <Text
-                            style={styles.font_name}                                
+                                    style={styles.font_name}
                                 >
 
                                     {lang.documents}
