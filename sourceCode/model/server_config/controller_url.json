@@ -10,5 +10,8 @@
 "CreateTrans":"http://new.armanins-maskan.com/Mobile/CreateTrans",
 "UploadDocument":"http://new.armanins-maskan.com/Mobile/UploadDocument",
 "GetTransDocumentDetail":"http://new.armanins-maskan.com/Mobile/GetTransDocumentDetail", 
+"HowGetIntroductionLetter":"http://new.armanins-maskan.com/Mobile/HowGetIntroductionLetter",
+"GetTariffCategoryListForIntroductionLetter":"http://new.armanins-maskan.com/Mobile/GetTariffCategoryListForIntroductionLetter",
+"CreateIntroductionLetter":"http://new.armanins-maskan.com/Mobile/CreateIntroductionLetter",
 "":""
 }

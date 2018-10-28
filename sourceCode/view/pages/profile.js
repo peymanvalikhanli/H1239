@@ -135,7 +135,9 @@ export default class profile extends PureComponent {
                                 {/* <Icon name="card" /> */}
                             </Right>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                        onPress={()=>{this.props.navigation.replace("inroduction_latter_new",{userId:userid ,userProfile: userProfile});}}                        
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

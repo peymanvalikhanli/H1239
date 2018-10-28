@@ -67,6 +67,16 @@
     "ValidityDateFa": "تاریخ اعتبار",
     "IntroductionLetterStatusTitle":"وضعیت",
     "number":"شماره",
-   
+   "tarikh_bastari":"تاریخ بستری",
+   "tarikh_daryaft":"تاریخ مورد نظر دریافت معرفی نامه", 
+   "tarikh_etebar_5_ruze":"تاریخ اعتبار از تاریخ صدور ۵ روز میباشد",
+   "nahve_daryaft_moarefi":"نحوه دریافت معرفی نامه",
+   "sat_kare_sherkat":"ساعت کار شرکت ۸ الی ۱۶ میباشد",
+   "dastur_pezashk":"تصویر دستور پزشک",
+   "name_bime_gozar":"نامه بیمه گزار",
+    "hazine_ersal_be_ohde":"هزینه ارسال به عهده بیمه شده میباشد", 
+    "mobile":"موبایل",
+    "sat_jahat_ersal":"ساعت جهت ارسال",
+    "address":"آدرس",
     "": ""
 }

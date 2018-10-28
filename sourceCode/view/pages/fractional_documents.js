@@ -214,7 +214,9 @@ export default class fractional_documents extends PureComponent {
                         <ListItem itemDivider>
                             <Text></Text>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile , userid: userid }); }}
+                            >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

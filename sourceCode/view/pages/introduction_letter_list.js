@@ -116,12 +116,12 @@ export default class introduction_letter_list extends PureComponent {
                 </Header>
                 <Content>
                     <List
-                        style={{ marginLeft: width * 0.01 }}
+                        // style={{ marginLeft: width * 0.01 }}
                         // dataSource={this.ds.cloneWithRows(this.state.listViewData)}
                         dataArray={this.state.LstIntroductionLetterRequestList}
                         renderRow={data =>
                             <ListItem icon
-                                style={{backgroundColor: (data.IntroductionLetterStatusId==1? "green": data.IntroductionLetterStatusId==2?"yellow":data.IntroductionLetterStatusId==3?"blue":data.IntroductionLetterStatusId==4?"white":"red")}}
+                                style={{backgroundColor: (data.IntroductionLetterStatusId==1? "#cad6cd": data.IntroductionLetterStatusId==2?"#f6c04e":data.IntroductionLetterStatusId==3?"#8cbbf1":data.IntroductionLetterStatusId==4?"white":"#ea412c")}}
                             onPress={()=>{this.props.navigation.replace("introduction_letter",{data:data});}}                            
                             >
                                 <Left>
