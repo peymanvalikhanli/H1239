@@ -16,9 +16,15 @@ import server_url from '../../model/server_config/controller_url.json';
 export default class show_files extends PureComponent {
 
     get_images() {
+        if (this.state.transId == null || this.state.transId == undefined || this.state.transId == "") {
+            setTimeout(() => {
+                this.get_images();
+            }, 1000);
+            return;
+        }
         axios.post(server_url.GetTransDocumentDetail, {
             userkey: this.state.Token,
-            transId: 50177
+            transId: this.state.transId,
         })
             .then(response => {
                 // alert(JSON.stringify(response));
@@ -50,7 +56,6 @@ export default class show_files extends PureComponent {
                                 var tem = [];
                                 response.data.UserDocumentDetail.map((img, i) => {
                                     tem.push(img.Content_String)
-                                    //alert(JSON.stringify(img));
                                 }
                                 );
                                 this.setState({ images: tem });
@@ -126,6 +131,9 @@ export default class show_files extends PureComponent {
         var { navigate } = this.props.navigation;
 
         var data = this.props.navigation.state.params.data;
+
+        //alert(JSON.stringify(data));
+        this.setState({ transId: data.transId });
 
         const { selectedStartDate } = this.state;
 

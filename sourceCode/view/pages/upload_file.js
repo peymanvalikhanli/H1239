@@ -116,7 +116,19 @@ export default class upload_file extends PureComponent {
                                 // )
                                 //alert(response.data.Id);  
                                 this.upload_file_server(response.data.Id);
+                                data.transId = response.data.Id;
 
+                                var data_list = this.state.data_list;
+                                if (data_list != null && data_list != undefined && data_list != "") {
+                                    data_list = JSON.parse(data_list);
+                                    data_list.push(data);
+                                } else {
+                                    data_list = [data,];
+                                }
+                                //  alert(JSON.stringify(data_list));
+                        
+                                AsyncStorage.setItem('const_list', JSON.stringify(data_list));
+                        
                             }
                             break;
                     }
@@ -185,7 +197,7 @@ export default class upload_file extends PureComponent {
 
     save_register_const(record, profile) {
 
-        var data_list = this.state.data_list;
+        
         //alert(data_list); 
         record.UserInsuranceId = profile.UserInsuranceId;
         record.CompanyInsuranceId = profile.CompanyInsuranceId;
@@ -194,18 +206,9 @@ export default class upload_file extends PureComponent {
         record.IsCheck = true;
         record.Attachment = "";
 
-        // alert(JSON.stringify( profile));
-        if (data_list != null && data_list != undefined && data_list != "") {
-            data_list = JSON.parse(data_list);
-            data_list.push(record);
-        } else {
-            data_list = [record,];
-        }
-        //  alert(JSON.stringify(data_list));
-
+       
         this.send_data_for_server(record);
 
-        AsyncStorage.setItem('const_list', JSON.stringify(data_list));
 
         // Alert.alert(
         //     lang.info,
