@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import server_url from '../../model/server_config/controller_url.json';
 
-
+//const image_url = '../image/camera.png';
 export default class upload_file extends PureComponent {
 
     upload_file_server(Id) {
@@ -121,14 +121,15 @@ export default class upload_file extends PureComponent {
                                 var data_list = this.state.data_list;
                                 if (data_list != null && data_list != undefined && data_list != "") {
                                     data_list = JSON.parse(data_list);
-                                    data_list.push(data);
+                                    // data_list.push(data);
+                                    data_list.unshift(data);
                                 } else {
                                     data_list = [data,];
                                 }
                                 //  alert(JSON.stringify(data_list));
-                        
+
                                 AsyncStorage.setItem('const_list', JSON.stringify(data_list));
-                        
+
                             }
                             break;
                     }
@@ -151,6 +152,7 @@ export default class upload_file extends PureComponent {
             images: [],
             avatar: null,
             data_list: [],
+            // image_url:image_url,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -160,6 +162,21 @@ export default class upload_file extends PureComponent {
             }
         });
     }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace("cost_registration", { userId: this.state.userid, userProfile: this.state.userProfile, record: this.state.record });
+        return true;
+    }
+
 
     onDateChange(date) {
         this.setState({
@@ -197,7 +214,7 @@ export default class upload_file extends PureComponent {
 
     save_register_const(record, profile) {
 
-        
+
         //alert(data_list); 
         record.UserInsuranceId = profile.UserInsuranceId;
         record.CompanyInsuranceId = profile.CompanyInsuranceId;
@@ -206,7 +223,7 @@ export default class upload_file extends PureComponent {
         record.IsCheck = true;
         record.Attachment = "";
 
-       
+
         this.send_data_for_server(record);
 
     }
@@ -256,12 +273,14 @@ export default class upload_file extends PureComponent {
 
         var record = this.props.navigation.state.params.record;
 
+        this.setState({ record: record, userProfile: userProfile, userid: userid });
+
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile, record: record }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>

@@ -142,7 +142,7 @@ export default class base_info extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.sheba_No}: {userProfile.ShebaNo == null ? "-" : userProfile.ShebaNo}
+                            {lang.sheba_No}: {userProfile.ShebaNo == null ||  userProfile.ShebaNo==""  ? "-" : userProfile.ShebaNo}
                         </Text>
                     </Form>
                     <List

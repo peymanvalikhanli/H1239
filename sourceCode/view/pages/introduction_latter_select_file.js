@@ -86,7 +86,7 @@ export default class introduction_latter_select_file extends PureComponent {
 
     handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile });
+        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile, record: this.state.record });
         return true;
     }
 
@@ -160,14 +160,16 @@ export default class introduction_latter_select_file extends PureComponent {
         var data = this.props.navigation.state.params.data;
         var keys = this.props.navigation.state.params.keys;
 
-        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent, header_title: header_title, keys:keys });
+        var record = this.props.navigation.state.params.record;
+
+        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent, header_title: header_title, keys:keys , record:record });
 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile, record:record }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>

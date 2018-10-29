@@ -82,6 +82,7 @@ export default class cost_registration extends PureComponent {
 
     create_currency_input() {
         var x = this.state.price;
+        x=x.toString().replace(",","");
         var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this.setState({ price: a });
     }
@@ -146,6 +147,13 @@ export default class cost_registration extends PureComponent {
 
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
+        var record = this.props.navigation.state.params.record;
+
+        if(record != "" ){
+            this.setState({price : record.price , selectedPicker : record.const_type , selectedStartDate: record.date , startDate: record.persian_date })
+           // startDate = record.persian_date;
+            record="";
+        }
 
         this.setState({ userid: userid, userProfile: userProfile });
 

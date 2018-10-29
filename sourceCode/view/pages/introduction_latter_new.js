@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -60,8 +60,8 @@ export default class inroduction_latter_new extends PureComponent {
         axios.post(server_url.CreateIntroductionLetter, {
             userkey: this.state.Token,
             applicantId: userProfile.UserInsuranceId,
-            introductionLetterDate: this.state.req_start_date,
-            receiveIntroductionLetterDate: this.state.req_end_date,
+            introductionLetterDate: this.state.selectedStartDate.format('M/D/YYYY'),
+            receiveIntroductionLetterDate: this.state.selectedendDate.format('M/D/YYYY'),
             tariffCategoryTitle: this.state.selectedPicker_TariffCategory,
             description: '',
             PhoneNumber: this.state.phone_number,
@@ -97,12 +97,12 @@ export default class inroduction_latter_new extends PureComponent {
 
                         AsyncStorage.getItem('name_bime_gozar', (err, result) => {
                             if (result != null && result.trim() != "#") {
-                                this.upload_file_server(response.data.Id,JSON.parse(result));
+                                this.upload_file_server(response.data.Id, JSON.parse(result));
                             }
                         });
                         AsyncStorage.getItem('dastur_pezashk', (err, result) => {
                             if (result != null && result.trim() != "#") {
-                                this.upload_file_server(response.data.Id,JSON.parse(result));
+                                this.upload_file_server(response.data.Id, JSON.parse(result));
                             }
                         });
 
@@ -183,6 +183,20 @@ export default class inroduction_latter_new extends PureComponent {
             }
         });
     }
+     
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace("profile", { userId: this.state.userid, userProfile: this.state.userProfile });
+        return true;
+    }
 
     onDateChange(date) {
         this.setState({
@@ -234,7 +248,19 @@ export default class inroduction_latter_new extends PureComponent {
     upload_file_onlick(header_title, keys) {
 
         AsyncStorage.setItem(keys, "#");
-        this.props.navigation.replace("introduction_latter_select_file", { parent: "inroduction_latter_new", userProfile: this.state.userProfile, userid: this.state.userid, Type: "5", header_title: header_title, data: "", keys: keys });
+
+        var record = {
+            introductionLetterDate: this.state.req_start_date,
+            receiveIntroductionLetterDate: this.state.req_end_date,
+            tariffCategoryTitle: this.state.selectedPicker_TariffCategory,
+            PhoneNumber: this.state.phone_number,
+            GetIntroductionLetterStatusTitle: this.state.selectedPicker,
+            selectedendDate: this.state.selectedendDate,
+            selectedStartDate: this.state.selectedStartDate,
+        };
+
+
+        this.props.navigation.replace("introduction_latter_select_file", { parent: "inroduction_latter_new", userProfile: this.state.userProfile, userid: this.state.userid, Type: "5", header_title: header_title, data: "", keys: keys, record: record });
     }
 
     btn_next(userid, userProfile) {
@@ -275,7 +301,7 @@ export default class inroduction_latter_new extends PureComponent {
             )
             return;
         }
-       
+
         this.register(userProfile);
 
     }
@@ -285,9 +311,26 @@ export default class inroduction_latter_new extends PureComponent {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
         const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
+        const { selectedendDate } = this.state;
+        const endDate = selectedendDate ? selectedendDate.format('jYYYY/jM/jD') : '';
 
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
+        var record = this.props.navigation.state.params.record;
+
+        if (record != "") {
+
+            this.setState({
+              //  req_start_date: record.introductionLetterDate,
+              //  req_end_date: record.receiveIntroductionLetterDate,
+                selectedPicker_TariffCategory: record.tariffCategoryTitle,
+                phone_number: record.PhoneNumber,
+                selectedPicker: record.GetIntroductionLetterStatusTitle,
+                selectedendDate: record.selectedendDate,
+                selectedStartDate: record.selectedStartDate,
+            });
+            record = "";
+        }
 
         this.setState({ userid: userid, userProfile: userProfile })
 
@@ -333,7 +376,7 @@ export default class inroduction_latter_new extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.tarikh_bastari}: {this.state.startDate}
+                                        {lang.tarikh_bastari}: {startDate}
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -352,7 +395,7 @@ export default class inroduction_latter_new extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.tarikh_daryaft}: {this.state.endDate}
+                                        {lang.tarikh_daryaft}: {endDate}
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>

@@ -18,18 +18,18 @@ export default class profile extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
+
     handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
         this.props.navigation.replace("home");
         return true;
     }
 
-    btn_send_onclick(){
+    btn_send_onclick() {
         this.props.navigation.replace("home");
     }
 
@@ -39,15 +39,15 @@ export default class profile extends PureComponent {
         var userProfile = this.props.navigation.state.params.userProfile;
         return (
             <Container style={{ flex: 1 }}>
-            <Header> 
-                <Right>
-                    <Button
-                    onPress={()=>{this.props.navigation.replace("home");}}
-                    >
-                        <Icon name="home" />
-                    </Button>
-                </Right>
-                </Header> 
+                <Header>
+                    <Right>
+                        <Button
+                            onPress={() => { this.props.navigation.replace("home"); }}
+                        >
+                            <Icon name="home" />
+                        </Button>
+                    </Right>
+                </Header>
                 <Content>
                     <View>
                         <Image
@@ -57,23 +57,23 @@ export default class profile extends PureComponent {
                     </View>
                     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 10, backgroundColor: '#ffffff', paddingBottom: 30 }}>
                         <View>
-                            
-                                <Image
-                                    style={{
-                                        paddingVertical: 30,
-                                        width: width*0.35,
-                                        height: width*0.35,
-                                        borderRadius: width*0.5,
-                                    }}
-                                    resizeMode='stretch'
-                                    source={
-                                         require('../image/default_avatar.jpg')
-                                    }
-                                />
+
+                            <Image
+                                style={{
+                                    paddingVertical: 30,
+                                    width: width * 0.35,
+                                    height: width * 0.35,
+                                    borderRadius: width * 0.5,
+                                }}
+                                resizeMode='stretch'
+                                source={
+                                    require('../image/default_avatar.jpg')
+                                }
+                            />
                         </View>
                         <View>
-                            <Text 
-                            style={styles.font_name}
+                            <Text
+                                style={styles.font_name}
                             >{userProfile.PatientName}</Text>
                         </View>
                     </View>
@@ -82,14 +82,14 @@ export default class profile extends PureComponent {
                             <Text></Text>
                         </ListItem>
                         <ListItem icon
-                        onPress={()=>{this.props.navigation.replace("base_info",{userId:userid ,userProfile: userProfile});}}
+                            onPress={() => { this.props.navigation.replace("base_info", { userId: userid, userProfile: userProfile }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
                                 <Text
-                            style={styles.font_name}                                
+                                    style={styles.font_name}
                                 >
 
                                     {lang.baseData}
@@ -100,15 +100,15 @@ export default class profile extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                        onPress={()=>{this.props.navigation.replace("cost_registration",{userId:userid ,userProfile: userProfile});}}
+                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile, record: "" }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
                                 <Text
-                            style={styles.font_name}
-                                
+                                    style={styles.font_name}
+
                                 >
                                     {lang.cost_registration}
                                 </Text>
@@ -118,15 +118,15 @@ export default class profile extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                         onPress={()=>{this.props.navigation.replace("report_detail_cost",{userId:userid ,userProfile: userProfile, start_date: null , end_date: null });}}
+                            onPress={() => { this.props.navigation.replace("report_detail_cost", { userId: userid, userProfile: userProfile, start_date: null, end_date: null }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
                                 <Text
-                            style={styles.font_name}
-                                
+                                    style={styles.font_name}
+
                                 >
                                     {lang.reportHazine}
                                 </Text>
@@ -136,14 +136,14 @@ export default class profile extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                        onPress={()=>{this.props.navigation.replace("inroduction_latter_new",{userId:userid ,userProfile: userProfile});}}                        
+                            onPress={() => { this.props.navigation.replace("inroduction_latter_new", { userId: userid, userProfile: userProfile, record: "" }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
                             <Body>
                                 <Text
-                            style={styles.font_name}                                
+                                    style={styles.font_name}
                                 >
                                     {lang.darkhast}
                                 </Text>
@@ -155,7 +155,7 @@ export default class profile extends PureComponent {
                     </List>
                 </Content>
                 <Footer>
-                    
+
                 </Footer>
             </Container>
         );
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#2e2878",
         fontFamily: "DinarTwoMedium_MRT",
     },
-    font_name:{
+    font_name: {
         fontFamily: "DinarTwoMedium_MRT",
     },
     form_item: {
