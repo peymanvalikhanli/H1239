@@ -122,7 +122,7 @@ export default class introduction_letter_list extends PureComponent {
                         renderRow={data =>
                             <ListItem icon
                                 style={{backgroundColor: (data.IntroductionLetterStatusId==1? "#cad6cd": data.IntroductionLetterStatusId==2?"#f6c04e":data.IntroductionLetterStatusId==3?"#8cbbf1":data.IntroductionLetterStatusId==4?"white":"#ea412c")}}
-                            onPress={()=>{this.props.navigation.replace("introduction_letter",{data:data});}}                            
+                            onPress={()=>{if (data.IntroductionLetterStatusId==5){this.props.navigation.replace("introduction_letter_retern",{data:data});}else {this.props.navigation.replace("introduction_letter",{data:data});}}}                            
                             >
                                 <Left>
                                     <Icon name="arrow-back" />

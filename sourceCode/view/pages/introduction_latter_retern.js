@@ -14,7 +14,7 @@ import axios from 'axios';
 import server_url from '../../model/server_config/controller_url.json';
 
 
-export default class introduction_letter extends PureComponent {
+export default class introduction_letter_retern extends PureComponent {
 
     // get_data_from_server() {
     //     axios.post(server_url.GetTariffCategoryList, {
@@ -101,9 +101,7 @@ export default class introduction_letter extends PureComponent {
     }
 
     create_currency_input(x) {
-        if(x==null){
-            return x;
-        }
+
         var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return a;
     }
@@ -238,7 +236,73 @@ export default class introduction_letter extends PureComponent {
                             {lang.IntroductionLetterStatusTitle}: {data.IntroductionLetterStatusTitle}
                         </Text>
                     </Form>
-                   
+                    <List
+                        style={{ marginTop: height * 0.02,}}
+                    >
+                        <ListItem itemDivider>
+                            <Body >
+                                <Text
+                                    // style={styles.text}
+                                >
+                                    {lang.description}
+                                </Text>
+                            </Body>
+                        </ListItem>
+                    </List>
+                    <Form>
+                        <Text
+                            style={styles.text}
+                        >
+                            {data.Description}
+                        </Text>
+                    </Form>
+                    <List
+                        style={{ marginTop: height * 0.02, }}
+                    >
+                        <ListItem itemDivider>
+                            <Left />
+                            <Body />
+                            <Right>
+                            </Right>
+                        </ListItem>
+                        <ListItem icon
+                        // onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile, userid: userid }); }}
+                        >
+                            <Left>
+                                <Icon name="arrow-back" />
+                            </Left>
+                            <Body>
+                                <Text
+                                    style={styles.font_name}
+                                >
+
+                                    {lang.dastur_pezashk}
+                                </Text>
+                            </Body>
+                            <Right>
+                                {/* <Icon name="card" /> */}
+                            </Right>
+                        </ListItem>
+                        <ListItem icon
+                        // onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile, userid: userid }); }}
+                        >
+                            <Left>
+                                <Icon name="arrow-back" />
+                            </Left>
+                            <Body>
+                                <Text
+                                    style={styles.font_name}
+                                >
+
+                                    {lang.name_bime_gozar}
+                                </Text>
+                            </Body>
+                            <Right>
+                                {/* <Icon name="card" /> */}
+                            </Right>
+                        </ListItem>
+                    </List>
+
                 </Content>
             </Container >
         );

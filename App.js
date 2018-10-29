@@ -31,6 +31,7 @@ import base_info from './sourceCode/view/pages/base_info';
 import introduction_letter_list from './sourceCode/view/pages/introduction_letter_list';
 import introduction_letter from './sourceCode/view/pages/inroduction_letter';
 import inroduction_latter_new from './sourceCode/view/pages/introduction_latter_new';
+import introduction_letter_retern from './sourceCode/view/pages/introduction_latter_retern';
 import show_files from './sourceCode/view/pages/show_files';
 import fractional_document_file from './sourceCode/view/pages/fractional_documents_files';
 
@@ -65,6 +66,7 @@ const nave = StackNavigator({
   introduction_letter_list: { screen: introduction_letter_list },
   introduction_letter: { screen: introduction_letter },
   inroduction_latter_new: { screen: inroduction_latter_new },
+  introduction_letter_retern: { screen: introduction_letter_retern },
   
 
 },{
