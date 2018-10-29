@@ -15,9 +15,65 @@ import server_url from '../../model/server_config/controller_url.json';
 
 export default class personal_upload extends PureComponent {
 
+    get_images() {
+        if (this.state.userProfile.UserId == null || this.state.userProfile.UserId == undefined || this.state.userProfile.UserId == "") {
+            setTimeout(() => {
+                this.get_images();
+            }, 1000);
+            return;
+        }
+        axios.post(server_url.GetTransDocumentDetail, {
+            userkey: this.state.Token,
+            id: this.state.userProfile.UserId,
+            fileType: this.state.Type
+        })
+            .then(response => {
+                // alert(JSON.stringify(response));
+                if (response.data.act != undefined || response.data.act != null) {
+                    //alert(JSON.stringify(response.data));
+                    switch (response.data.act) {
+                        case "Error":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        case "msg":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        case "Success":
+                            if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
+                                var tem = [];
+                                response.data.UserDocumentDetail.map((img, i) => {
+                                    tem.push(img.Content_String)
+                                }
+                                );
+                                this.setState({ images: tem });
+                            }
+                            break;
+
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     upload_file_server(Id) {
         // alert(Id);
-        this.state.images.map((img, i) => {
+        this.state.up_images.map((img, i) => {
             let data = new FormData();
 
             data.append('transId', Id);
@@ -64,6 +120,7 @@ export default class personal_upload extends PureComponent {
             Token: '#',
             image_index: 0,
             images: [],
+            up_images: [],
             avatar: null,
             data_list: [],
         };
@@ -72,8 +129,10 @@ export default class personal_upload extends PureComponent {
             if (result != null) {
                 this.setState({ Token: result });
                 //     this.get_data_from_server();
+                this.get_images();
             }
         });
+
     }
 
     componentDidMount() {
@@ -117,8 +176,11 @@ export default class personal_upload extends PureComponent {
 
         if (this.state.avatar !== null) {
             var tem = this.state.images;
+            var tem_2 = this.state.up_images;
             var a = tem.unshift(this.state.avatar);
+            var b = tem_2.unshift(this.state.avatar);
             this.setState({ images: tem });
+            this.setState({ up_images: tem_2 });
             //alert(this.state.avatar);
             this.setState({ avatar: null });
         }
@@ -136,8 +198,8 @@ export default class personal_upload extends PureComponent {
             )
             return;
         }
-
-        this.upload_file_server(this.state.userid);
+        // alert(JSON.stringify(this.state.userProfile.UserId));
+        this.upload_file_server(this.state.userProfile.UserId);
     }
 
     render() {

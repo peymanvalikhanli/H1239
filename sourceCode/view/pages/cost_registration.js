@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 

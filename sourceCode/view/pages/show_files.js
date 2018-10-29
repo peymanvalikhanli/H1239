@@ -24,7 +24,8 @@ export default class show_files extends PureComponent {
         }
         axios.post(server_url.GetTransDocumentDetail, {
             userkey: this.state.Token,
-            transId: this.state.transId,
+            id: this.state.transId,
+            fileType: 3
         })
             .then(response => {
                 // alert(JSON.stringify(response));

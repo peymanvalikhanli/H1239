@@ -16,7 +16,7 @@ import server_url from '../../model/server_config/controller_url.json';
 export default class fractional_document_file extends PureComponent {
 
     upload_file_server(Id) {
-        this.state.images.map((img, i) => {
+        this.state.up_images.map((img, i) => {
             let data = new FormData();
 
             data.append('transId', Id);
@@ -61,7 +61,8 @@ export default class fractional_document_file extends PureComponent {
         }
         axios.post(server_url.GetTransDocumentDetail, {
             userkey: this.state.Token,
-            transId: this.state.transId,
+            id: this.state.transId,
+            fileType: 3
         })
             .then(response => {
                 // alert(JSON.stringify(response));
@@ -116,6 +117,7 @@ export default class fractional_document_file extends PureComponent {
             Token: '#',
             image_index: 0,
             images: [],
+            up_images: [],
             avatar: null,
             data_list: [],
         };
@@ -171,8 +173,11 @@ export default class fractional_document_file extends PureComponent {
 
         if (this.state.avatar !== null) {
             var tem = this.state.images;
+            var tem2 = this.state.images;
             var a = tem.unshift(this.state.avatar);
+            var a = tem2.unshift(this.state.avatar);
             this.setState({ images: tem });
+            this.setState({ up_images: tem2 });
             //alert(this.state.avatar);
             this.setState({ avatar: null });
         }
@@ -192,17 +197,18 @@ export default class fractional_document_file extends PureComponent {
     }
 
     btn_save_onclick() {//(record, profile) {
-        // if (this.state.images.length <= 0) {
-        //     Alert.alert(
-        //         lang.error,
-        //         lang.insert_attachment,
-        //         [
-        //             { text: lang.yes },
-        //         ],
-        //         { cancelable: false }
-        //     )
-        //     return;
-        // }
+        
+        if (this.state.up_images.length <= 0) {
+            Alert.alert(
+                lang.error,
+                lang.insert_attachment,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
 
         // if (record != undefined) {
         //     switch (record.act) {
