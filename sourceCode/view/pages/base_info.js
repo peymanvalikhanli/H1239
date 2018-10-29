@@ -24,7 +24,7 @@ export default class base_info extends PureComponent {
             price: '',
             picker: '',
             TariffCategory: [{ Title: '', TariffCategoryTypeTitle: '' }],
-            userId:"" ,
+            userId: "",
             userProfile: "",
         };
 
@@ -33,14 +33,14 @@ export default class base_info extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace("profile",{userId:this.state.userId ,userProfile: this.state.userProfile});
+        this.props.navigation.replace("profile", { userId: this.state.userId, userProfile: this.state.userProfile });
         return true;
     }
 
@@ -59,10 +59,10 @@ export default class base_info extends PureComponent {
 
     }
 
-    create_currency_input(x){
-        
+    create_currency_input(x) {
+
         var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-       return a;
+        return a;
     }
 
     render() {
@@ -73,9 +73,9 @@ export default class base_info extends PureComponent {
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
 
-       // alert(JSON.stringify(userProfile));
+        // alert(JSON.stringify(userProfile));
 
-        this.setState({userid:userid, userProfile:userProfile}); 
+        this.setState({ userid: userid, userProfile: userProfile });
 
         var data = [];//this.props.navigation.state.params.data;
 
@@ -84,7 +84,7 @@ export default class base_info extends PureComponent {
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace("profile",{userId:userid ,userProfile: userProfile}); }}
+                            onPress={() => { this.props.navigation.replace("profile", { userId: userid, userProfile: userProfile }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -137,25 +137,27 @@ export default class base_info extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.birthday}: {userProfile.BirthDateFa} 
+                            {lang.birthday}: {userProfile.BirthDateFa}
                         </Text>
                         <Text
                             style={styles.text}
                         >
-                            {lang.sheba_No}: {userProfile.ShebaNo==null? "-":userProfile.ShebaNo}  
+                            {lang.sheba_No}: {userProfile.ShebaNo == null ? "-" : userProfile.ShebaNo}
                         </Text>
                     </Form>
                     <List
                         style={{ marginTop: height * 0.02, }}
                     >
                         <ListItem itemDivider>
-                            <Left/>
-                            <Body/>
+                            <Left />
+                            <Body />
                             <Right>
                                 <Text style={styles.font_name} >{lang.documents}</Text>
                             </Right>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.health_insurance_card, data: "" }); }}
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
@@ -170,7 +172,9 @@ export default class base_info extends PureComponent {
                                 {/* <Icon name="card" /> */}
                             </Right>
                         </ListItem>
-                        <ListItem icon>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}                        
+                        >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

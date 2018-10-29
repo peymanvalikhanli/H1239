@@ -28,10 +28,13 @@ import report_detail_cost from './sourceCode/view/pages/report_detail_cost';
 import report_detail_cost_family from './sourceCode/view/pages/report_detail_cost_family';
 import show_report_detail_cost from './sourceCode/view/pages/show_report_detail_cost';
 import base_info from './sourceCode/view/pages/base_info';
+import personal_upload from './sourceCode/view/pages/personal_upload';
 import introduction_letter_list from './sourceCode/view/pages/introduction_letter_list';
 import introduction_letter from './sourceCode/view/pages/inroduction_letter';
 import inroduction_latter_new from './sourceCode/view/pages/introduction_latter_new';
 import introduction_letter_retern from './sourceCode/view/pages/introduction_latter_retern';
+import introduction_latter_upload from './sourceCode/view/pages/introduction_latter_upload';
+import introduction_latter_select_file from './sourceCode/view/pages/introduction_latter_select_file';
 import show_files from './sourceCode/view/pages/show_files';
 import fractional_document_file from './sourceCode/view/pages/fractional_documents_files';
 
@@ -62,11 +65,14 @@ const nave = StackNavigator({
   show_report_detail_cost: { screen: show_report_detail_cost },
 
   base_info: { screen: base_info },
+  personal_upload: { screen: personal_upload },
   
   introduction_letter_list: { screen: introduction_letter_list },
   introduction_letter: { screen: introduction_letter },
   inroduction_latter_new: { screen: inroduction_latter_new },
   introduction_letter_retern: { screen: introduction_letter_retern },
+  introduction_latter_upload: { screen: introduction_latter_upload },
+  introduction_latter_select_file: { screen: introduction_latter_select_file },
   
 
 },{

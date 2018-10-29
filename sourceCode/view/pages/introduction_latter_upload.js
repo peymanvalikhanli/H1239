@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -13,7 +13,7 @@ import axios from 'axios';
 import server_url from '../../model/server_config/controller_url.json';
 
 
-export default class upload_file extends PureComponent {
+export default class introduction_latter_upload extends PureComponent {
 
     upload_file_server(Id) {
         // alert(Id);
@@ -22,7 +22,7 @@ export default class upload_file extends PureComponent {
 
             data.append('transId', Id);
             data.append('fileName', "peymantest.png");
-            data.append('fileType', 3);
+            data.append('fileType', this.state.Type);
             data.append('contentType', "image/png");
             data.append('content', img);
 
@@ -32,20 +32,7 @@ export default class upload_file extends PureComponent {
                 }
             })
                 .then(response => {
-                    // alert(JSON.stringify(response));
-                    //if (response.data.msg != undefined || response.data.msg != null) {
-                    // this.get_data();
-
-                    // }
-                    // Alert.alert(
-                    //                 lang.info,
-                    //                 response.data.Message,
-                    //                 [
-                    //                     { text: lang.yes },
-                    //                 ],
-                    //                 { cancelable: false }
-                    //             )
-                    //            // alert(response.data.Id);  
+                    // alert(JSON.stringify(response));  
                     switch (response.data.act) {
                         case "Success":
                             Alert.alert(
@@ -68,78 +55,6 @@ export default class upload_file extends PureComponent {
     }
 
 
-
-    send_data_for_server(data) {
-        axios.post(server_url.CreateTrans, {
-            userkey: this.state.Token,
-            userInsuranceId: data.UserInsuranceId,
-            transAmount: data.price,
-            transDate: data.date,
-            companyInsuranceId: data.CompanyInsuranceId,
-            tariffCategoryTitle: data.const_type,
-            pageCount: this.state.images.length,
-        })
-            .then(response => {
-
-                if (response.data.act != undefined || response.data.act != null) {
-                    //alert(JSON.stringify(response.data));
-                    switch (response.data.act) {
-                        case "Error":
-                            Alert.alert(
-                                lang.error,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
-                            break;
-                        case "msg":
-                            Alert.alert(
-                                lang.error,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
-                            break;
-                        case "Success":
-                            if (response.data.Id != undefined || response.data.Id != null || response.data.Id != '') {
-                                // Alert.alert(
-                                //     lang.info,
-                                //     response.data.Message,
-                                //     [
-                                //         { text: lang.yes },
-                                //     ],
-                                //     { cancelable: false }
-                                // )
-                                //alert(response.data.Id);  
-                                this.upload_file_server(response.data.Id);
-                                data.transId = response.data.Id;
-
-                                var data_list = this.state.data_list;
-                                if (data_list != null && data_list != undefined && data_list != "") {
-                                    data_list = JSON.parse(data_list);
-                                    data_list.push(data);
-                                } else {
-                                    data_list = [data,];
-                                }
-                                //  alert(JSON.stringify(data_list));
-                        
-                                AsyncStorage.setItem('const_list', JSON.stringify(data_list));
-                        
-                            }
-                            break;
-                    }
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-
     constructor() {
         super();
         Orientation.lockToPortrait();
@@ -159,6 +74,20 @@ export default class upload_file extends PureComponent {
                 //     this.get_data_from_server();
             }
         });
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile, data: this.state.data });
+        return true;
     }
 
     onDateChange(date) {
@@ -195,23 +124,7 @@ export default class upload_file extends PureComponent {
         }
     }
 
-    save_register_const(record, profile) {
-
-        
-        //alert(data_list); 
-        record.UserInsuranceId = profile.UserInsuranceId;
-        record.CompanyInsuranceId = profile.CompanyInsuranceId;
-        record.PatientName = profile.PatientName;
-        record.PatientNationalCode = profile.PatientNationalCode;
-        record.IsCheck = true;
-        record.Attachment = "";
-
-       
-        this.send_data_for_server(record);
-
-    }
-
-    btn_save_onclick(record, profile) {
+    btn_save_onclick() {
         if (this.state.images.length <= 0) {
             Alert.alert(
                 lang.error,
@@ -224,44 +137,37 @@ export default class upload_file extends PureComponent {
             return;
         }
 
-        if (record != undefined) {
-            switch (record.act) {
-                case "register":
-                    AsyncStorage.getItem('const_list', (err, result) => {
-                        if (result != null) {
-                            this.setState({ data_list: result });
-                        }
-                        this.save_register_const(record, profile);
-                        //alert('test mikonasm'); 
-                    });
-                    break;
-            }
-        }
-        // this.props.navigation.replace("home");
+        this.upload_file_server(this.state.data.Id);
     }
 
     render() {
 
-        var { navigate } = this.props.navigation;
-
-        const { selectedStartDate } = this.state;
-
-        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
-
         const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
+
+        var { navigate } = this.props.navigation;
 
         var userid = this.props.navigation.state.params.userId;
 
         var userProfile = this.props.navigation.state.params.userProfile;
 
-        var record = this.props.navigation.state.params.record;
+        var Type = this.props.navigation.state.params.Type;
+
+        var header_title = this.props.navigation.state.params.header_title;
+
+        var parent = this.props.navigation.state.params.parent;
+
+        var data = this.props.navigation.state.params.data;
+
+       // alert(JSON.stringify( data));
+
+        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent , data:data });
 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile, data: data }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -270,7 +176,7 @@ export default class upload_file extends PureComponent {
                         <Text
                             style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
-                            {lang.cost_registration}
+                            {header_title}
                         </Text>
                     </Body>
                     <Right>
@@ -287,7 +193,7 @@ export default class upload_file extends PureComponent {
                     <Button
                         style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.02, marginLeft: width * 0.05, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
                         //   onPress={() => { alert(JSON.stringify(userProfile)) }}
-                        onPress={() => { this.btn_save_onclick(record, userProfile) }}
+                        onPress={() => { this.btn_save_onclick() }}
                     >
                         <Text
                             style={[styles.font,]}
@@ -300,7 +206,6 @@ export default class upload_file extends PureComponent {
                     <View
                         style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
-
                         <PhotoUpload
                             onPhotoSelect={avatar => {
                                 if (avatar) {

@@ -44,7 +44,7 @@ export default class cost_registration extends PureComponent {
             national_code: '#',
             selectedStartDate: null,
             price: '',
-            TariffCategory: [{ Title: lang.cost_type , TariffCategoryTypeTitle: '' }],
+            TariffCategory: [{ Title: lang.cost_type, TariffCategoryTypeTitle: '' }],
             selectedPicker: '#',
         };
 
@@ -54,6 +54,20 @@ export default class cost_registration extends PureComponent {
                 this.get_data_from_server();
             }
         });
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        //this.btn_exit_onclick(); // works best when the goBack is async
+        this.props.navigation.replace("profile", { userId: this.state.userid, userProfile: this.state.userProfile });
+        return true;
     }
 
     onDateChange(date) {
@@ -82,39 +96,39 @@ export default class cost_registration extends PureComponent {
         return items;
     }
 
-    btn_next(userid,userProfile) {
+    btn_next(userid, userProfile) {
 
-        if(this.state.price == '#' || this.state.price == null || this.state.price == ''){
+        if (this.state.price == '#' || this.state.price == null || this.state.price == '') {
 
             Alert.alert(
                 lang.error,
                 lang.enter_price,
                 [
-                {text: lang.yes},
+                    { text: lang.yes },
                 ],
                 { cancelable: false }
             )
             return;
         }
-        if(this.state.selectedPicker == '#' || this.state.selectedPicker == null || this.state.selectedPicker == ''){
+        if (this.state.selectedPicker == '#' || this.state.selectedPicker == null || this.state.selectedPicker == '') {
 
             Alert.alert(
                 lang.error,
                 lang.enter_cost_type,
                 [
-                {text: lang.yes},
+                    { text: lang.yes },
                 ],
                 { cancelable: false }
             )
             return;
         }
-        if(this.state.selectedStartDate == '#' || this.state.selectedStartDate == null || this.state.selectedStartDate == ''){
+        if (this.state.selectedStartDate == '#' || this.state.selectedStartDate == null || this.state.selectedStartDate == '') {
 
             Alert.alert(
                 lang.error,
                 lang.select_dateـcost,
                 [
-                {text: lang.yes},
+                    { text: lang.yes },
                 ],
                 { cancelable: false }
             )
@@ -122,7 +136,7 @@ export default class cost_registration extends PureComponent {
         }
 
         //AsyncStorage.setItem('cost', response.data.Token ); 
-        this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile ,record: {act:"register" ,price: this.state.price , const_type: this.state.selectedPicker , date: this.state.selectedStartDate , persian_date:this.state.selectedStartDate.format('jYYYY/jM/jD')} }); 
+        this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile, record: { act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') } });
     }
 
     render() {
@@ -132,6 +146,8 @@ export default class cost_registration extends PureComponent {
 
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
+
+        this.setState({ userid: userid, userProfile: userProfile });
 
         let date_picker = this.get_picker();
 
@@ -239,7 +255,7 @@ export default class cost_registration extends PureComponent {
                         <Item>
                             <Button
                                 style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                                onPress={() => { this.btn_next(userid,userProfile) }}
+                                onPress={() => { this.btn_next(userid, userProfile) }}
                             >
                                 <Text>{lang.next}</Text>
                             </Button>

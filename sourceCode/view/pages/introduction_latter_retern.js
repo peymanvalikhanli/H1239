@@ -111,8 +111,8 @@ export default class introduction_letter_retern extends PureComponent {
         const { selectedStartDate } = this.state;
         const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
 
-        // var userid = this.props.navigation.state.params.userId;
-        // var userProfile = this.props.navigation.state.params.userProfile;
+        var userid = "";//this.props.navigation.state.params.userId;
+        var userProfile = "";//this.props.navigation.state.params.userProfile;
         // var parent = this.props.navigation.state.params.parent;
         // var start_date = this.props.navigation.state.params.start_date;
         // var end_date = this.props.navigation.state.params.end_date;
@@ -120,6 +120,7 @@ export default class introduction_letter_retern extends PureComponent {
         // this.setState({ userid: userid, userProfile: userProfile, parent: parent, start_date: start_date, end_date: end_date });
 
         var data = this.props.navigation.state.params.data;
+        //alert(JSON.stringify(data))
 
         // let date_picker = this.get_picker();
 
@@ -266,8 +267,7 @@ export default class introduction_letter_retern extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                        // onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile, userid: userid }); }}
-                        >
+                            onPress={() => { this.props.navigation.replace("introduction_latter_upload", { data: data, parent: "introduction_letter_retern", userProfile: userProfile, userid: userid, Type: "5", header_title: lang.dastur_pezashk }); }}                            >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>
@@ -284,8 +284,8 @@ export default class introduction_letter_retern extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                        // onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile, userid: userid }); }}
-                        >
+                            onPress={() => { this.props.navigation.replace("introduction_latter_upload", { data: data, parent: "introduction_letter_retern", userProfile: userProfile, userid: userid, Type: "5", header_title: lang.name_bime_gozar }); }}
+                            >
                             <Left>
                                 <Icon name="arrow-back" />
                             </Left>

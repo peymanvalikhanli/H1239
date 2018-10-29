@@ -16,6 +16,46 @@ import server_url from '../../model/server_config/controller_url.json';
 
 export default class inroduction_latter_new extends PureComponent {
 
+    upload_file_server(Id, images) {
+        // alert(Id);
+        images.map((img, i) => {
+            let data = new FormData();
+
+            data.append('transId', Id);
+            data.append('fileName', "peymantest.png");
+            data.append('fileType', 5);
+            data.append('contentType', "image/png");
+            data.append('content', img);
+
+            axios.post(server_url.UploadDocument, data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(response => {
+                    // alert(JSON.stringify(response));  
+                    switch (response.data.act) {
+                        case "Success":
+                            Alert.alert(
+                                lang.info,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                    }
+                })
+                .catch(function (error) {
+                    //console.log(error);
+                    alert(JSON.stringify(error));
+                });
+
+        });
+    }
+
+
     register(userProfile) {
         axios.post(server_url.CreateIntroductionLetter, {
             userkey: this.state.Token,
@@ -28,7 +68,7 @@ export default class inroduction_latter_new extends PureComponent {
             GetIntroductionLetterStatusTitle: this.state.selectedPicker
         })
             .then(response => {
-                alert(JSON.stringify(response));
+                // alert(JSON.stringify(response));
                 switch (response.data.act) {
                     case "Error":
                         Alert.alert(
@@ -44,6 +84,8 @@ export default class inroduction_latter_new extends PureComponent {
                         // if (response.data.TariffCategory != undefined || response.data.TariffCategory != null || response.data.TariffCategory != '') {
                         //     this.setState({ TariffCategory: response.data.TariffCategory });
                         // }
+                        // alert(JSON.stringify(response.data));
+                        // return;
                         Alert.alert(
                             lang.info,
                             response.data.Message,
@@ -52,7 +94,20 @@ export default class inroduction_latter_new extends PureComponent {
                             ],
                             { cancelable: false }
                         )
-                        this.props.navigation.replace("home");
+
+                        AsyncStorage.getItem('name_bime_gozar', (err, result) => {
+                            if (result != null && result.trim() != "#") {
+                                this.upload_file_server(response.data.Id,JSON.parse(result));
+                            }
+                        });
+                        AsyncStorage.getItem('dastur_pezashk', (err, result) => {
+                            if (result != null && result.trim() != "#") {
+                                this.upload_file_server(response.data.Id,JSON.parse(result));
+                            }
+                        });
+
+
+                        //this.props.navigation.replace("home");
                         break;
                 }
             })
@@ -176,48 +231,51 @@ export default class inroduction_latter_new extends PureComponent {
         return items;
     }
 
+    upload_file_onlick(header_title, keys) {
+
+        AsyncStorage.setItem(keys, "#");
+        this.props.navigation.replace("introduction_latter_select_file", { parent: "inroduction_latter_new", userProfile: this.state.userProfile, userid: this.state.userid, Type: "5", header_title: header_title, data: "", keys: keys });
+    }
+
     btn_next(userid, userProfile) {
 
-        // if (this.state.price == '#' || this.state.price == null || this.state.price == '') {
+        if (this.state.phone_number == '#' || this.state.phone_number == null || this.state.phone_number == '') {
 
-        //     Alert.alert(
-        //         lang.error,
-        //         lang.enter_price,
-        //         [
-        //             { text: lang.yes },
-        //         ],
-        //         { cancelable: false }
-        //     )
-        //     return;
-        // }
-        // if (this.state.selectedPicker == '#' || this.state.selectedPicker == null || this.state.selectedPicker == '') {
+            Alert.alert(
+                lang.error,
+                lang.enter_phone_number,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if (this.state.selectedPicker == '#' || this.state.selectedPicker == null || this.state.selectedPicker == '') {
 
-        //     Alert.alert(
-        //         lang.error,
-        //         lang.enter_cost_type,
-        //         [
-        //             { text: lang.yes },
-        //         ],
-        //         { cancelable: false }
-        //     )
-        //     return;
-        // }
-        // if (this.state.selectedStartDate == '#' || this.state.selectedStartDate == null || this.state.selectedStartDate == '') {
+            Alert.alert(
+                lang.error,
+                lang.enter_nahve_ersal,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if (this.state.selectedPicker_TariffCategory == '#' || this.state.selectedPicker_TariffCategory == null || this.state.selectedPicker_TariffCategory == '') {
 
-        //     Alert.alert(
-        //         lang.error,
-        //         lang.select_dateـcost,
-        //         [
-        //             { text: lang.yes },
-        //         ],
-        //         { cancelable: false }
-        //     )
-        //     return;
-        // }
-
-        // //AsyncStorage.setItem('cost', response.data.Token ); 
-        // this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile, record: { act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') } });
-
+            Alert.alert(
+                lang.error,
+                lang.enter_cost_type,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+       
         this.register(userProfile);
 
     }
@@ -231,7 +289,7 @@ export default class inroduction_latter_new extends PureComponent {
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
 
-        // alert(JSON.stringify(userProfile));
+        this.setState({ userid: userid, userProfile: userProfile })
 
         let date_picker = this.get_picker();
 
@@ -406,7 +464,7 @@ export default class inroduction_latter_new extends PureComponent {
                                 </Body>
                             </ListItem>
                             <ListItem icon
-                            // onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile, userid: userid }); }}
+                                onPress={() => { this.upload_file_onlick(lang.dastur_pezashk, "dastur_pezashk") }}
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
@@ -424,7 +482,7 @@ export default class inroduction_latter_new extends PureComponent {
                                 </Right>
                             </ListItem>
                             <ListItem icon
-                            // onPress={() => { this.props.navigation.replace("fractional_document_file", { data: data, parent: "fractional_documents", main_parent: "", userProfile: userProfile, userid: userid }); }}
+                                onPress={() => { this.upload_file_onlick(lang.name_bime_gozar, "name_bime_gozar") }}
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
