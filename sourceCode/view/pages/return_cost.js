@@ -83,9 +83,6 @@ export default class return_cost extends PureComponent {
         this.props.navigation.replace("home");
     }
 
-    create_currency_input() {
-
-    }
 
 
     get_picker() {
@@ -99,6 +96,13 @@ export default class return_cost extends PureComponent {
 
     }
 
+    create_currency_input() {
+        var x = this.state.price;
+        x=x.toString().replace(",","");
+        var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        this.setState({ price: a });
+    }
+
     render() {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
@@ -108,6 +112,15 @@ export default class return_cost extends PureComponent {
         var userProfile = "";//this.props.navigation.state.params.userProfile;
 
         var data = this.props.navigation.state.params.data;
+
+       // alert(JSON.stringify(data));
+        this.setState({ 
+            selectedPicker: data.TariffCategoryTitle, 
+            price : data.TransAmount 
+        });
+
+        // this.state.selectedStartDate = data.TransDate;
+
 
         let date_picker = this.get_picker();
 
@@ -180,7 +193,7 @@ export default class return_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.cost_date}: {data.TransDateFa}
+                                        {lang.cost_date}: {startDate}
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -212,9 +225,9 @@ export default class return_cost extends PureComponent {
                             <Input
                                 style={styles.form_input}
                                 keyboardType="numeric"
-                                value={data.TransAmount}
-                            // onChange={(event)=>{this.create_currency_input()}}                     
-                            // placeholder={lang.cost_price}
+                                value={this.state.price}
+                                onChange={(event) => { this.setState({ price: event.nativeEvent.text }); }}
+                                onBlur={() => { this.create_currency_input(); }}
                             />
                         </Item>
 
@@ -248,7 +261,7 @@ export default class return_cost extends PureComponent {
                             <Text></Text>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("show_files", { data: data, parent: "return_cost",main_parent:"" , userProfile: userProfile , userid: userid }); }}
+                            onPress={() => { this.props.navigation.replace("show_files", { data: data, parent: "return_cost", main_parent: "", userProfile: userProfile, userid: userid }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />

@@ -173,7 +173,7 @@ export default class fractional_document_file extends PureComponent {
 
         if (this.state.avatar !== null) {
             var tem = this.state.images;
-            var tem2 = this.state.images;
+            var tem2 = this.state.up_images;
             var a = tem.unshift(this.state.avatar);
             var a = tem2.unshift(this.state.avatar);
             this.setState({ images: tem });
