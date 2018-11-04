@@ -169,7 +169,7 @@ export default class base_info extends PureComponent {
                                 </Text>
                             </Body>
                             <Right>
-                                {/* <Icon name="card" /> */}
+                                <Icon name="" />
                             </Right>
                         </ListItem>
                         <ListItem icon
@@ -186,7 +186,45 @@ export default class base_info extends PureComponent {
                                 </Text>
                             </Body>
                             <Right>
+                                <Icon name="" />
+                            </Right>
+                        </ListItem>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}                        
+                        >
+                            <Left>
+                                <Icon name="arrow-back" />
+                            </Left>
+                            <Body>
+                                <Text
+                                    style={styles.font_name}
+                                >
+                                    {lang.copy_gharardad_hamkari}
+                                </Text>
+                            </Body>
+                            <Right>
                                 {/* <Icon name="card" /> */}
+                                {/* <Icon name="md-checkbox-outline" style={{ color: 'green'}} /> */}
+                                <Icon name="md-checkmark" style={{ color: 'green'}} />
+                            </Right>
+                        </ListItem>
+                        <ListItem icon
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}                        
+                        >
+                            <Left>
+                                <Icon name="arrow-back" />
+                            </Left>
+                            <Body>
+                                <Text
+                                    style={styles.font_name}
+                                >
+                                    {lang.copy_eshteghal_tahsil}
+                                </Text>
+                            </Body>
+                            <Right>
+                                <Icon name="md-close" style={{ color: 'red'}} />
+                                {/* <Icon name="md-checkbox-outline" /> */}
+                                {/* <Icon name="ios-checkmark" /> */}
                             </Right>
                         </ListItem>
                     </List>

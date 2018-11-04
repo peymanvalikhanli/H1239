@@ -46,7 +46,7 @@
     "enter_cost_type": "لطفا نوع هزینه را صحیح وارد کنید",
     "select_dateـcost": "لطفا تاریخ هزینه را انتخاب کنید",
     "are_you_log_out": "آیا می خواهید از حساب کاربری خود خارج شوید",
-    "data_saving_has_been": "اطلاعات با موفقیت ذخیره شد",
+    "data_saving_has_been": "اطلاعات با موفقیت ارسال شد",
     "info": "اطلاع",
     "insert_attachment": "لطفا تصاویر مدارک را ثبت کنید",
     "national_code": "کدملی",
@@ -80,5 +80,11 @@
     "address":"آدرس",
     "enter_phone_number":"لطفا موبایل خود را وارد کنید",
     "enter_nahve_ersal": "لطفا نحوه ارسال را وارد کنید",
+    "copy_gharardad_hamkari": "کپی قرار همکاری",
+    "copy_eshteghal_tahsil": "کپی اشتغال به تحصیل",
+    "ready_to_send":"پس از ارسال امکان ویرایش وجود ندارد.آیا از ارسال اطمینان دارید؟", 
+    "markaz_darmani":"مرکز درمانی", 
+    "az_taraf_ghgradad_motmaeniii":"از طرف قرارداد بودن مرکز درمانی اطمینان حاصل کنید", 
+
     "": ""
 }

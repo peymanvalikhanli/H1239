@@ -130,13 +130,13 @@ export default class introduction extends PureComponent {
                             paginationDefaultColor='#8382ae'
                             paginationActiveColor='#2e2878'
                         >
-                            <View key="view_1_1" style={[styles.child, { backgroundColor: "#ffffff" }]} >
+                            {/* <View key="view_1_1" style={[styles.child, { backgroundColor: "#ffffff" }]} >
                                 <Body style={{ backgroundColor: "#ffffff" }}>
                                     <Image
                                         source={require("../image/2.png")}
                                     />
                                 </Body>
-                            </View>
+                            </View> */}
                             <View key="view_1_2" style={[styles.child, { backgroundColor: "#ffffff" }]}>
                                 <Body>
                                     <Image

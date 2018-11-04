@@ -241,6 +241,21 @@ export default class upload_file extends PureComponent {
             return;
         }
 
+        Alert.alert(
+            lang.warning,
+            lang.ready_to_send,
+            [
+                { text: lang.no },
+                { text: lang.yes, onPress: () => { this.send_data(record, profile) } },
+            ],
+            { cancelable: false }
+        )
+
+        // this.props.navigation.replace("home");
+    }
+
+    send_data(record, profile) {
+
         if (record != undefined) {
             switch (record.act) {
                 case "register":
@@ -254,8 +269,9 @@ export default class upload_file extends PureComponent {
                     break;
             }
         }
-        // this.props.navigation.replace("home");
+
     }
+
 
     render() {
 

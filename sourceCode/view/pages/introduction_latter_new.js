@@ -438,6 +438,26 @@ export default class inroduction_latter_new extends PureComponent {
                                 {get_picker_TariffCategory}
                             </Picker>
                         </Item>
+                        <Item>
+                            <Body>
+                                <Text
+                                    style={styles.font_name}
+                                >
+                                    {lang.az_taraf_ghgradad_motmaeniii}
+                                </Text>
+                            </Body>
+
+                        </Item>
+                        <Item floatingLabel>
+                            <Label style={styles.form_input} >{lang.markaz_darmani}</Label>
+                            <Input
+                                style={styles.form_input}
+                                // keyboardType="numeric"
+                                value={this.state.markaz_darmani}
+                                onChange={(event) => { this.setState({ phone_number: event.nativeEvent.text }); }}
+                            // onBlur={() => { this.create_currency_input(); }}
+                            />
+                        </Item>
                         <Text
                             style={styles.text}
                         >
