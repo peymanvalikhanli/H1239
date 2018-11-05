@@ -32,6 +32,7 @@ export default class base_info extends PureComponent {
             documents: [0, 0, 0, 0, 0],
             doc_icon: ["", "", "", "", ""],
             doc_color: ["", "", "", "", ""],
+            doc_data: [0, 0, 0, 0, 0],
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -88,6 +89,7 @@ export default class base_info extends PureComponent {
 
         var doc_icon = this.props.navigation.state.params.doc_icon;
         var doc_color = this.props.navigation.state.params.doc_color;
+        var doc_data = this.props.navigation.state.params.doc_data;
 
         //alert(JSON.stringify(doc_icon));
         //alert(JSON.stringify(doc_color));
@@ -170,7 +172,7 @@ export default class base_info extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.health_insurance_card, data: "" }); }}
+                            onPress={() => { this.props.navigation.replace((doc_data[2]==0?"personal_upload":"personal_document"), { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "2", header_title: lang.health_insurance_card, data: "" , doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
@@ -187,7 +189,7 @@ export default class base_info extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}
+                            onPress={() => { this.props.navigation.replace((doc_data[1]==0?"personal_upload":"personal_document"), { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "1", header_title: lang.copyـofـbirthـcertificate, data: "", doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
@@ -205,7 +207,7 @@ export default class base_info extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}
+                            onPress={() => { this.props.navigation.replace((doc_data[3]==0?"personal_upload":"personal_document"), { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "3", header_title: lang.copy_gharardad_hamkari, data: "", doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
@@ -225,7 +227,7 @@ export default class base_info extends PureComponent {
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}
+                            onPress={() => { this.props.navigation.replace((doc_data[4]==0?"personal_upload":"personal_document"), { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copy_eshteghal_tahsil, data: "", doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />

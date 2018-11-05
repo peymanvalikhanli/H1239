@@ -29,6 +29,7 @@ import report_detail_cost_family from './sourceCode/view/pages/report_detail_cos
 import show_report_detail_cost from './sourceCode/view/pages/show_report_detail_cost';
 import base_info from './sourceCode/view/pages/base_info';
 import personal_upload from './sourceCode/view/pages/personal_upload';
+import personal_document from './sourceCode/view/pages/personal_document';
 import introduction_letter_list from './sourceCode/view/pages/introduction_letter_list';
 import introduction_letter from './sourceCode/view/pages/inroduction_letter';
 import inroduction_latter_new from './sourceCode/view/pages/introduction_latter_new';
@@ -66,6 +67,7 @@ const nave = StackNavigator({
 
   base_info: { screen: base_info },
   personal_upload: { screen: personal_upload },
+  personal_document: { screen: personal_document },
   
   introduction_letter_list: { screen: introduction_letter_list },
   introduction_letter: { screen: introduction_letter },

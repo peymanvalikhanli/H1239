@@ -57,6 +57,22 @@ export default class profile extends PureComponent {
                 break;
         }
     }
+    get_data_doc(data) {
+        switch (data) {
+            case 0:// not exist
+                return 0;
+                break;
+            case 1:// wait
+                return 1;
+                break;
+            case 2: // reject
+                return 0;
+                break;
+            case 3: // accept
+                return 1;
+                break;
+        }
+    }
 
     check_PFD(id) {
         axios.post(server_url.GetuserDocumentTypeDetail, {
@@ -79,7 +95,9 @@ export default class profile extends PureComponent {
                                 temp1[id] = this.get_icon(temp[id]);
                                 var temp2 = this.state.doc_color;
                                 temp2[id] = this.get_color(temp[id]);
-                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                                var temp3 = this.state.doc_data;
+                                temp3[id] = this.get_data_doc(temp[id]);
+                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
                                 return;
                             } else if (response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile == 2 && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != "" && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != null) {
                                 var temp = this.state.documents;
@@ -88,7 +106,9 @@ export default class profile extends PureComponent {
                                 temp1[id] = this.get_icon(temp[id]);
                                 var temp2 = this.state.doc_color;
                                 temp2[id] = this.get_color(temp[id]);
-                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                                var temp3 = this.state.doc_data;
+                                temp3[id] = this.get_data_doc(temp[id]);
+                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
                                 return;
                             } else {
                                 // alert("test");
@@ -98,7 +118,9 @@ export default class profile extends PureComponent {
                                 temp1[id] = this.get_icon(temp[id]);
                                 var temp2 = this.state.doc_color;
                                 temp2[id] = this.get_color(temp[id]);
-                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                                var temp3 = this.state.doc_data;
+                                temp3[id] = this.get_data_doc(temp[id]);
+                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
                                 return;
                             }
                             break;
@@ -111,7 +133,9 @@ export default class profile extends PureComponent {
                             temp1[id] = this.get_icon(temp[id]);
                             var temp2 = this.state.doc_color;
                             temp2[id] = this.get_color(temp[id]);
-                            this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                            var temp3 = this.state.doc_data;
+                            temp3[id] = this.get_data_doc(temp[id]);
+                            this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
                             return;
                             break;
                     }
@@ -134,6 +158,7 @@ export default class profile extends PureComponent {
             documents: [0, 0, 0, 0, 0],
             doc_icon: ["", "", "", "", ""],
             doc_color: ["", "", "", "", ""],
+            doc_data: [0, 0, 0, 0, 0],
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -213,7 +238,7 @@ export default class profile extends PureComponent {
                             <Text></Text>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("base_info", { userId: userid, userProfile: userProfile, doc_icon: this.state.doc_icon, doc_color: this.state.doc_color }); }}
+                            onPress={() => { this.props.navigation.replace("base_info", { userId: userid, userProfile: userProfile, doc_icon: this.state.doc_icon, doc_color: this.state.doc_color , doc_data: this.state.doc_data }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
