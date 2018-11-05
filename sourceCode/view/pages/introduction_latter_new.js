@@ -332,6 +332,7 @@ export default class inroduction_latter_new extends PureComponent {
             record = "";
         }
 
+
         this.setState({ userid: userid, userProfile: userProfile })
 
         let date_picker = this.get_picker();
@@ -406,7 +407,9 @@ export default class inroduction_latter_new extends PureComponent {
                                 </CollapseBody>
                             </Collapse>
                         </Item>
-                        <Item>
+                        <Item
+                        style={styles.div}
+                        >
                             <Body>
                                 <Text
                                     style={styles.font_name}
@@ -414,7 +417,6 @@ export default class inroduction_latter_new extends PureComponent {
                                     {lang.tarikh_etebar_5_ruze}
                                 </Text>
                             </Body>
-
                         </Item>
                         {/* <List>
                             <ListItem itemDivider>
@@ -438,7 +440,9 @@ export default class inroduction_latter_new extends PureComponent {
                                 {get_picker_TariffCategory}
                             </Picker>
                         </Item>
-                        <Item>
+                        <Item
+                        style={styles.div}
+                        >
                             <Body>
                                 <Text
                                     style={styles.font_name}
@@ -506,7 +510,9 @@ export default class inroduction_latter_new extends PureComponent {
                             // onBlur={() => { this.create_currency_input(); }}
                             />
                         </Item>
-                        <Item>
+                        <Item
+                        style={styles.div}
+                        >
                             <Body>
                                 <Text
                                     style={styles.font_name}
@@ -520,7 +526,7 @@ export default class inroduction_latter_new extends PureComponent {
                                 <Left />
                                 <Body style={{ width: width * 0.5 }}>
                                     <Text
-                                        style={styles.font_name}
+                                        style={[styles.font_name,{color:"#000000"}]}
                                     >
                                         {lang.hazine_ersal_be_ohde}
                                     </Text>
@@ -607,6 +613,10 @@ const styles = StyleSheet.create({
         color: "#000000",
         fontFamily: "DinarTwoMedium_MRT",
     },
+    font_name:{
+        fontFamily: "DinarTwoMedium_MRT",
+        color:"#ffffff",
+    },
     form: {
         width: width * 0.6,
         marginTop: height * 0.08,
@@ -644,5 +654,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         resizeMode: 'stretch',
+    },
+    div:{
+        backgroundColor:"#8284ae", 
+
     },
 });

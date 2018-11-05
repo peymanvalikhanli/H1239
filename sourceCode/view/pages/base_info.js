@@ -9,9 +9,12 @@ import lang from '../../model/lang/fa.json';
 
 import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
+import axios from 'axios';
+
+import server_url from '../../model/server_config/controller_url.json';
+
 
 export default class base_info extends PureComponent {
-
     constructor() {
         super();
         Orientation.lockToPortrait();
@@ -26,7 +29,17 @@ export default class base_info extends PureComponent {
             TariffCategory: [{ Title: '', TariffCategoryTypeTitle: '' }],
             userId: "",
             userProfile: "",
+            documents: [0, 0, 0, 0, 0],
+            doc_icon: ["", "", "", "", ""],
+            doc_color: ["", "", "", "", ""],
         };
+
+        AsyncStorage.getItem('Token', (err, result) => {
+            if (result != null) {
+                this.setState({ Token: result });
+               // this.init_list();
+            }
+        });
 
     }
 
@@ -73,7 +86,13 @@ export default class base_info extends PureComponent {
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
 
-        // alert(JSON.stringify(userProfile));
+        var doc_icon = this.props.navigation.state.params.doc_icon;
+        var doc_color = this.props.navigation.state.params.doc_color;
+
+        //alert(JSON.stringify(doc_icon));
+        //alert(JSON.stringify(doc_color));
+
+   
 
         this.setState({ userid: userid, userProfile: userProfile });
 
@@ -108,11 +127,6 @@ export default class base_info extends PureComponent {
                 <Content
                     style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                    <List>
-                        <ListItem itemDivider>
-                            <Text></Text>
-                        </ListItem>
-                    </List>
                     <Form
                         style={{ justifyContent: 'center', textAlign: 'center', }}
                     >
@@ -142,7 +156,7 @@ export default class base_info extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.sheba_No}: {userProfile.ShebaNo == null ||  userProfile.ShebaNo==""  ? "-" : userProfile.ShebaNo}
+                            {lang.sheba_No}: {userProfile.ShebaNo == null || userProfile.ShebaNo == "" ? "-" : userProfile.ShebaNo}
                         </Text>
                     </Form>
                     <List
@@ -169,11 +183,11 @@ export default class base_info extends PureComponent {
                                 </Text>
                             </Body>
                             <Right>
-                                <Icon name="" />
+                                <Icon name={doc_icon[2]} style={{ color: doc_color[2] }} />
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}                        
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
@@ -186,11 +200,12 @@ export default class base_info extends PureComponent {
                                 </Text>
                             </Body>
                             <Right>
-                                <Icon name="" />
+                                {/* <Icon name="md-stopwatch" style={{ color: "#eec79f" }} /> */}
+                                <Icon name={doc_icon[1]} style={{ color: doc_color[1] }} />
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}                        
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
@@ -205,11 +220,12 @@ export default class base_info extends PureComponent {
                             <Right>
                                 {/* <Icon name="card" /> */}
                                 {/* <Icon name="md-checkbox-outline" style={{ color: 'green'}} /> */}
-                                <Icon name="md-checkmark" style={{ color: 'green'}} />
+                                <Icon name={doc_icon[3]} style={{ color: doc_color[3] }} />
+                                {/* <Icon name="md-checkmark" style={{ color: 'green' }} /> */}
                             </Right>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}                        
+                            onPress={() => { this.props.navigation.replace("personal_upload", { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "4", header_title: lang.copyـofـbirthـcertificate, data: "" }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
@@ -218,11 +234,13 @@ export default class base_info extends PureComponent {
                                 <Text
                                     style={styles.font_name}
                                 >
-                                    {lang.copy_eshteghal_tahsil}
+                                    {lang.copy_eshteghal_tahsil} 
+                                    {/* {this.state.doc_icon[1]} {this.state.doc_icon[2]} {this.state.doc_icon[3]} {this.state.doc_icon[4]} */}
                                 </Text>
                             </Body>
                             <Right>
-                                <Icon name="md-close" style={{ color: 'red'}} />
+                                {/* <Icon name="md-close" style={{ color: 'red' }} /> */}
+                                <Icon name={doc_icon[4]} style={{ color: doc_color[4] }} />
                                 {/* <Icon name="md-checkbox-outline" /> */}
                                 {/* <Icon name="ios-checkmark" /> */}
                             </Right>

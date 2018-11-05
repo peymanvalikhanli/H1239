@@ -82,7 +82,7 @@ export default class cost_registration extends PureComponent {
 
     create_currency_input() {
         var x = this.state.price;
-        x=x.toString().replace(",","");
+        x = x.toString().replace(",", "");
         var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         this.setState({ price: a });
     }
@@ -149,10 +149,10 @@ export default class cost_registration extends PureComponent {
         var userProfile = this.props.navigation.state.params.userProfile;
         var record = this.props.navigation.state.params.record;
 
-        if(record != "" ){
-            this.setState({price : record.price , selectedPicker : record.const_type , selectedStartDate: record.date , startDate: record.persian_date })
-           // startDate = record.persian_date;
-            record="";
+        if (record != "") {
+            this.setState({ price: record.price, selectedPicker: record.const_type, selectedStartDate: record.date, startDate: record.persian_date })
+            // startDate = record.persian_date;
+            record = "";
         }
 
         this.setState({ userid: userid, userProfile: userProfile });
@@ -253,13 +253,15 @@ export default class cost_registration extends PureComponent {
                                 onBlur={() => { this.create_currency_input(); }}
                             />
                         </Item>
-                        {/* <Item
-                            style={{ textAlign: 'center', justifyContent: 'center', marginTop: height * 0.05, }}
-                        >
-                            <Label
-                                style={styles.form_input}
-                            >{lang.cost_price}</Label>
-                        </Item> */}
+                        <Item>
+                            <Button light 
+                            // transparent dark
+                                style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
+                            // onPress={() => { this.btn_next(userid, userProfile) }}
+                            >
+                                <Text>{lang.dec_cost}</Text>
+                            </Button>
+                        </Item>
                         <Item>
                             <Button
                                 style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}

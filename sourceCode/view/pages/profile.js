@@ -1,18 +1,147 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, BackHandler, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, BackHandler, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, } from 'native-base';
 import Orientation from 'react-native-orientation';
 
 import lang from '../../model/lang/fa.json';
 
+import axios from 'axios';
 
+import server_url from '../../model/server_config/controller_url.json';
 
 
 export default class profile extends PureComponent {
 
+    init_list() {
+        if (this.state.userProfile == "") {
+
+            setTimeout(this.init_list(), 100);
+            return;
+        }
+        this.check_PFD(1);
+        this.check_PFD(2);
+        this.check_PFD(3);
+        this.check_PFD(4);
+    }
+
+    get_icon(data) {
+        switch (data) {
+            case 0:// not exist
+                return "";
+                break;
+            case 1:// wait
+                return "md-stopwatch";
+                break;
+            case 2: // reject
+                return "md-close";
+                break;
+            case 3: // accept
+                return "md-checkmark";
+                break;
+        }
+    }
+
+    get_color(data) {
+        switch (data) {
+            case 0:// not exist
+                return "#000000";
+                break;
+            case 1:// wait
+                return "#eec79f";
+                break;
+            case 2: // reject
+                return "red";
+                break;
+            case 3: // accept
+                return "green";
+                break;
+        }
+    }
+
+    check_PFD(id) {
+        axios.post(server_url.GetuserDocumentTypeDetail, {
+            userkey: this.state.Token,
+            userId: this.state.userProfile.UserId,
+            userDocumentType: id
+        })
+            .then(response => {
+                // alert(JSON.stringify(response)); 
+                // return;
+                if (response.data.act != undefined || response.data.act != null) {
+                    switch (response.data.act) {
+
+                        case "Success":
+                            //  alert(JSON.stringify(response.data.UserDocumentDetail[0].IsDocumentApproved));
+                            if (response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile == 3 && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != "" && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != null) {
+                                var temp = this.state.documents;
+                                temp[id] = 3; // true is accept
+                                var temp1 = this.state.doc_icon;
+                                temp1[id] = this.get_icon(temp[id]);
+                                var temp2 = this.state.doc_color;
+                                temp2[id] = this.get_color(temp[id]);
+                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                                return;
+                            } else if (response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile == 2 && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != "" && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != null) {
+                                var temp = this.state.documents;
+                                temp[id] = 2; // false is reject
+                                var temp1 = this.state.doc_icon;
+                                temp1[id] = this.get_icon(temp[id]);
+                                var temp2 = this.state.doc_color;
+                                temp2[id] = this.get_color(temp[id]);
+                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                                return;
+                            } else {
+                                // alert("test");
+                                var temp = this.state.documents;
+                                temp[id] = 1;// null is wait 
+                                var temp1 = this.state.doc_icon;
+                                temp1[id] = this.get_icon(temp[id]);
+                                var temp2 = this.state.doc_color;
+                                temp2[id] = this.get_color(temp[id]);
+                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                                return;
+                            }
+                            break;
+
+                        case "Error":
+                            // error is not exis
+                            var temp = this.state.documents;
+                            temp[id] = 0;
+                            var temp1 = this.state.doc_icon;
+                            temp1[id] = this.get_icon(temp[id]);
+                            var temp2 = this.state.doc_color;
+                            temp2[id] = this.get_color(temp[id]);
+                            this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2 });
+                            return;
+                            break;
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+
     constructor() {
         super();
         Orientation.lockToPortrait();
+
+        this.state = {
+            Token: '#',
+            userId: "",
+            userProfile: "",
+            documents: [0, 0, 0, 0, 0],
+            doc_icon: ["", "", "", "", ""],
+            doc_color: ["", "", "", "", ""],
+        };
+
+        AsyncStorage.getItem('Token', (err, result) => {
+            if (result != null) {
+                this.setState({ Token: result });
+                this.init_list();
+            }
+        });
     }
 
     componentDidMount() {
@@ -37,6 +166,8 @@ export default class profile extends PureComponent {
         var { navigate } = this.props.navigation;
         var userid = this.props.navigation.state.params.userId;
         var userProfile = this.props.navigation.state.params.userProfile;
+        this.setState({ userid: userid, userProfile: userProfile });
+
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
@@ -82,7 +213,7 @@ export default class profile extends PureComponent {
                             <Text></Text>
                         </ListItem>
                         <ListItem icon
-                            onPress={() => { this.props.navigation.replace("base_info", { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace("base_info", { userId: userid, userProfile: userProfile, doc_icon: this.state.doc_icon, doc_color: this.state.doc_color }); }}
                         >
                             <Left>
                                 <Icon name="arrow-back" />
