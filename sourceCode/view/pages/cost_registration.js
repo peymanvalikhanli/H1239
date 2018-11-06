@@ -146,6 +146,11 @@ export default class cost_registration extends PureComponent {
         this.props.navigation.replace("upload_file", { userId: userid, userProfile: userProfile, record: { act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') } });
     }
 
+    help_click(userid, userProfile){
+        this.props.navigation.replace("cost_help", { userId: userid, userProfile: userProfile, record: ""});//{ act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') } });
+
+    }
+
     render() {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
@@ -263,8 +268,7 @@ export default class cost_registration extends PureComponent {
                             <Button light 
                             // transparent dark
                                 style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                           
-                            onPress={() => { this.props.navigation.navigate("cost_help", { userId: userid, userProfile: userProfile }); }}
+                                onPress={() => { this.help_click(userid, userProfile); }}
 
                             >
                                 <Text>{lang.dec_cost}</Text>

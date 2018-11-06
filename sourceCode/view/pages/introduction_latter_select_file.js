@@ -138,7 +138,7 @@ export default class introduction_latter_select_file extends PureComponent {
         }
 
         AsyncStorage.setItem(this.state.keys, JSON.stringify(this.state.images));
-        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile });        
+        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile, record: this.state.record });        
     }
 
     render() {

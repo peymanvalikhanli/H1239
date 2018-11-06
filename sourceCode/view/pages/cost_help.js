@@ -3,11 +3,7 @@ import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler }
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
-import JalaliCalendarPicker from 'react-native-jalali-calendar-picker';
-
 import lang from '../../model/lang/fa.json';
-
-import { Collapse, CollapseHeader, CollapseBody, AccordionList } from 'accordion-collapse-react-native';
 
 import axios from 'axios';
 
@@ -72,7 +68,7 @@ export default class cost_help extends PureComponent {
 
     handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace("profile", { userId: this.state.userid, userProfile: this.state.userProfile });
+        this.props.navigation.replace("cost_registration", { userId: this.state.userid, userProfile: this.state.userProfile, record: this.state.record });
         return true;
     }
 
@@ -148,29 +144,20 @@ export default class cost_help extends PureComponent {
 
     render() {
         var { navigate } = this.props.navigation;
-        // const { selectedStartDate } = this.state;
-        // const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
+        var userid = this.props.navigation.state.params.userId;
 
-        // var userid = this.props.navigation.state.params.userId;
-        // var userProfile = this.props.navigation.state.params.userProfile;
-        // var record = this.props.navigation.state.params.record;
+        var userProfile = this.props.navigation.state.params.userProfile;
 
-        // if (record != "") {
-        //     this.setState({ price: record.price, selectedPicker: record.const_type, selectedStartDate: record.date, startDate: record.persian_date })
-        //     // startDate = record.persian_date;
-        //     record = "";
-        // }
+        var record = this.props.navigation.state.params.record;
 
-        // this.setState({ userid: userid, userProfile: userProfile });
-
-        let date_picker = this.get_picker();
-
+        this.setState({ record: record, userProfile: userProfile, userid: userid });
+            
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace("profile", { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace("cost_registration", { userId: userid, userProfile: userProfile, record: record }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -179,7 +166,7 @@ export default class cost_help extends PureComponent {
                         <Text
                             style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
-                            {lang.cost_registration}
+                            {lang.dec_cost}
                         </Text>
                     </Body>
                     <Right>
@@ -194,7 +181,28 @@ export default class cost_help extends PureComponent {
                 <Content
                     style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                    
+                <Body>
+                        <Image
+                            source={ require('../image/1-1.jpg') }
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: width * 0.8 }]}
+                        />
+                        <Image
+                            source={ require('../image/1-2.jpg') }
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: width * 0.8 }]}
+                        />
+                        <Image
+                            source={ require('../image/1-3.jpg') }
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: width * 0.8 }]}
+                        />
+                        <Image
+                            source={ require('../image/1-4.jpg') }
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: width * 0.8 }]}
+                        />
+                      </Body>  
                 </Content>
             </Container>
         );

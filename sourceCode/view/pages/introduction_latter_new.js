@@ -65,7 +65,10 @@ export default class inroduction_latter_new extends PureComponent {
             tariffCategoryTitle: this.state.selectedPicker_TariffCategory,
             description: '',
             PhoneNumber: this.state.phone_number,
-            GetIntroductionLetterStatusTitle: this.state.selectedPicker
+            GetIntroductionLetterStatusTitle: this.state.selectedPicker,
+            hospitalName: this.state.markaz_darmani, 
+            resiveTime:this.state.time,
+            address: this.state.address,
         })
             .then(response => {
                 // alert(JSON.stringify(response));
@@ -173,6 +176,7 @@ export default class inroduction_latter_new extends PureComponent {
             TariffCategory: [{ Title: lang.cost_type, TariffCategoryTypeTitle: '' }],
             selectedPicker: '#',
             selectedPicker_TariffCategory: '#',
+            markaz_darmani:'',
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -257,6 +261,7 @@ export default class inroduction_latter_new extends PureComponent {
             GetIntroductionLetterStatusTitle: this.state.selectedPicker,
             selectedendDate: this.state.selectedendDate,
             selectedStartDate: this.state.selectedStartDate,
+            markaz_darmani: this.state.markaz_darmani,
         };
 
 
@@ -458,7 +463,7 @@ export default class inroduction_latter_new extends PureComponent {
                                 style={styles.form_input}
                                 // keyboardType="numeric"
                                 value={this.state.markaz_darmani}
-                                onChange={(event) => { this.setState({ phone_number: event.nativeEvent.text }); }}
+                                onChange={(event) => { this.setState({ markaz_darmani: event.nativeEvent.text }); }}
                             // onBlur={() => { this.create_currency_input(); }}
                             />
                         </Item>
@@ -540,7 +545,7 @@ export default class inroduction_latter_new extends PureComponent {
                                 </Left>
                                 <Body>
                                     <Text
-                                        style={styles.font_name}
+                                        style={[styles.font_name,{color:"#000000"}]}
                                     >
 
                                         {lang.dastur_pezashk}
@@ -558,7 +563,7 @@ export default class inroduction_latter_new extends PureComponent {
                                 </Left>
                                 <Body>
                                     <Text
-                                        style={styles.font_name}
+                                        style={[styles.font_name,{color:"#000000"}]}
                                     >
 
                                         {lang.name_bime_gozar}
