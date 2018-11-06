@@ -22,10 +22,10 @@ export default class personal_upload extends PureComponent {
             }, 1000);
             return;
         }
-        axios.post(server_url.GetTransDocumentDetail, {
+        axios.post(server_url.GetUserDocumentDetail, {
             userkey: this.state.Token,
-            id: this.state.userProfile.UserId,
-            fileType: this.state.Type
+            userId: this.state.userProfile.UserId,
+            userDocumentType: this.state.Type
         })
             .then(response => {
                 // alert(JSON.stringify(response));
@@ -76,13 +76,13 @@ export default class personal_upload extends PureComponent {
         this.state.up_images.map((img, i) => {
             let data = new FormData();
 
-            data.append('transId', Id);
+            data.append('userId', Id);
+            data.append('userDocumentType', this.state.Type);
             data.append('fileName', "peymantest.png");
-            data.append('fileType', this.state.Type);
+            data.append('fileType', 4);
             data.append('contentType', "image/png");
             data.append('content', img);
-
-            axios.post(server_url.UploadDocument, data, {
+            axios.post(server_url.UploadUserDocument, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -145,7 +145,7 @@ export default class personal_upload extends PureComponent {
 
     handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile });
+        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile,doc_icon: this.state.doc_icon, doc_color: this.state.doc_color , doc_data: this.state.doc_data });
         return true;
     }
 
@@ -220,14 +220,20 @@ export default class personal_upload extends PureComponent {
 
         var data = this.props.navigation.state.params.data;
 
-        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent });
+        var doc_color = this.props.navigation.state.params.doc_color;
+        var doc_icon = this.props.navigation.state.params.doc_icon;
+        var doc_data = this.props.navigation.state.params.doc_data;
+        var Type = this.props.navigation.state.params.Type;
+
+
+        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent, doc_data:doc_data, doc_icon:doc_icon, doc_color:doc_color });
 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile }); }}
+                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile, doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data  }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>

@@ -15,5 +15,6 @@
 "CreateIntroductionLetter":"http://new.armanins-maskan.com/Mobile/CreateIntroductionLetter",
 "GetUserDocumentDetail":"http://new.armanins-maskan.com/Mobile/GetUserDocumentDetail",
 "GetuserDocumentTypeDetail":"http://new.armanins-maskan.com/Mobile/GetuserDocumentTypeDetail",
+"UploadUserDocument":"http://new.armanins-maskan.com/Mobile/UploadUserDocument", 
 "":""
 }
