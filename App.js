@@ -17,6 +17,7 @@ import verification from './sourceCode/view/pages/verification';
 import home from './sourceCode/view/pages/home'; 
 import profile from './sourceCode/view/pages/profile';
 import cost_registration from './sourceCode/view/pages/cost_registration';
+import cost_help from './sourceCode/view/pages/cost_help';
 import upload_file from './sourceCode/view/pages/upload_file';
 import cost_list from './sourceCode/view/pages/cost_list';
 import cost_edit from './sourceCode/view/pages/cost_edit';
@@ -48,6 +49,7 @@ const nave = StackNavigator({
   profile: {screen: profile},
 
   cost_registration: {screen: cost_registration}, 
+  cost_help: {screen: cost_help}, 
   upload_file:{screen: upload_file},
   show_files:{screen: show_files},
 

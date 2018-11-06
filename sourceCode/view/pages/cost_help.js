@@ -14,7 +14,7 @@ import axios from 'axios';
 import server_url from '../../model/server_config/controller_url.json';
 
 
-export default class cost_registration extends PureComponent {
+export default class cost_help extends PureComponent {
 
     get_data_from_server() {
         axios.post(server_url.GetTariffCategoryList, {
@@ -148,20 +148,20 @@ export default class cost_registration extends PureComponent {
 
     render() {
         var { navigate } = this.props.navigation;
-        const { selectedStartDate } = this.state;
-        const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
+        // const { selectedStartDate } = this.state;
+        // const startDate = selectedStartDate ? selectedStartDate.format('jYYYY/jM/jD') : '';
 
-        var userid = this.props.navigation.state.params.userId;
-        var userProfile = this.props.navigation.state.params.userProfile;
-        var record = this.props.navigation.state.params.record;
+        // var userid = this.props.navigation.state.params.userId;
+        // var userProfile = this.props.navigation.state.params.userProfile;
+        // var record = this.props.navigation.state.params.record;
 
-        if (record != "") {
-            this.setState({ price: record.price, selectedPicker: record.const_type, selectedStartDate: record.date, startDate: record.persian_date })
-            // startDate = record.persian_date;
-            record = "";
-        }
+        // if (record != "") {
+        //     this.setState({ price: record.price, selectedPicker: record.const_type, selectedStartDate: record.date, startDate: record.persian_date })
+        //     // startDate = record.persian_date;
+        //     record = "";
+        // }
 
-        this.setState({ userid: userid, userProfile: userProfile });
+        // this.setState({ userid: userid, userProfile: userProfile });
 
         let date_picker = this.get_picker();
 
@@ -194,91 +194,7 @@ export default class cost_registration extends PureComponent {
                 <Content
                     style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                    <Form
-                        style={{ justifyContent: 'center', textAlign: 'center', }}
-                    >
-
-                        <Text
-                            style={styles.text}
-                        >
-                            {lang.name}: {userProfile.PatientName}
-                        </Text>
-                        <Text
-                            style={styles.text}
-                        >
-                            {lang.national_code_}: {userProfile.PatientNationalCode}
-                        </Text>
-                        <List>
-                            <ListItem itemDivider>
-                            </ListItem>
-                        </List>
-                        <Item>
-                            <Collapse
-                                style={{ width: width * 0.95 }}
-                            >
-                                <CollapseHeader>
-                                    <Text
-                                        style={styles.text}
-                                    >
-                                        {lang.cost_date}: {startDate}
-                                    </Text>
-                                </CollapseHeader>
-                                <CollapseBody>
-                                    <JalaliCalendarPicker
-                                        onDateChange={this.onDateChange}
-                                        textStyle={{ fontFamily: "DinarTwoMedium_MRT", }}
-                                    />
-                                </CollapseBody>
-                            </Collapse>
-                        </Item>
-                        <Text
-                            style={styles.text}
-                        >
-                            {lang.cost_type}
-                        </Text>
-                        <Item picker >
-                            <Picker
-                                mode="dropdown"
-                                iosIcon={<Icon name="ios-arrow-down-outline" />}
-                                style={[{ width: undefined, }, styles.form_input]}
-                                placeholderStyle={[{ color: "#bfc6ea" }, styles.form_input]}
-                                placeholderIconColor="#007aff"
-                                onValueChange={(service) => (this.setState({ selectedPicker: service }))}
-                                selectedValue={this.state.selectedPicker}
-                            >
-                                {date_picker}
-                            </Picker>
-                        </Item>
-                        <Item floatingLabel>
-                            <Label style={styles.form_input} >{lang.cost_price}</Label>
-                            <Input
-                                style={styles.form_input}
-                                keyboardType="numeric"
-                                value={this.state.price}
-                                onChange={(event) => { this.setState({ price: event.nativeEvent.text }); }}
-                                onBlur={() => { this.create_currency_input(); }}
-                            />
-                        </Item>
-                        <Item>
-                            <Button light 
-                            // transparent dark
-                                style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                           
-                            onPress={() => { this.props.navigation.navigate("cost_help", { userId: userid, userProfile: userProfile }); }}
-
-                            >
-                                <Text>{lang.dec_cost}</Text>
-                            </Button>
-                        </Item>
-                        <Item>
-                            <Button
-                                style={{ width: width * 0.9, marginTop: height * 0.02, marginBottom: height * 0.025, marginLeft: width * 0.025, marginRight: width * 0.05, textAlign: 'center', justifyContent: 'center', fontFamily: "DinarTwoMedium_MRT", }}
-                                onPress={() => { this.btn_next(userid, userProfile) }}
-                            >
-                                <Text>{lang.next}</Text>
-                            </Button>
-                        </Item>
-                    </Form>
+                    
                 </Content>
             </Container>
         );

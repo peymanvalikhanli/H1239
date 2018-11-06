@@ -59,7 +59,7 @@ export default class show_files extends PureComponent {
                                     tem.push(img.Content_String)
                                 }
                                 );
-                                this.setState({ images: tem });
+                                this.setState({ images: tem , avatar: tem[0]});
                             }
                             break;
 

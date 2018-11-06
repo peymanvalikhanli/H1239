@@ -79,7 +79,7 @@ export default class personal_upload extends PureComponent {
             data.append('userId', Id);
             data.append('userDocumentType', this.state.Type);
             data.append('fileName', "peymantest.png");
-            data.append('fileType', 4);
+            // data.append('fileType', 4);
             data.append('contentType', "image/png");
             data.append('content', img);
             axios.post(server_url.UploadUserDocument, data, {
