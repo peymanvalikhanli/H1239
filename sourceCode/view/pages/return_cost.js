@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, BackHandler, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, BackHandler, Alert, } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -34,6 +34,77 @@ export default class return_cost extends PureComponent {
             });
     }
 
+    send_data_to_server(){
+        axios.post(server_url.EditTrans, {
+            userkey: this.state.Token,
+            transId:this.state.data.TransId,
+            transAmount:this.state.price,
+            transDate: this.state.selectedStartDate,
+            tariffCategoryTitle:this.state.selectedPicker,
+            pageCount:this.state.data.PageCount, 
+        })
+            .then(response => {
+             //    alert(JSON.stringify(response));
+                if (response.data.act != undefined || response.data.act != null) {
+                    //alert(JSON.stringify(response.data));
+                    switch (response.data.act) {
+                        case "Error":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        case "msg":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        case "Success":
+                            if (response.data.Id != undefined || response.data.Id != null || response.data.Id != '') {
+                                Alert.alert(
+                                    lang.info,
+                                    response.data.Message,
+                                    [
+                                        { text: lang.yes },
+                                    ],
+                                    { cancelable: false }
+                                )
+                                // alert(response.data.Id);  
+                                // this.upload_file_server(response.data.Id);
+                                // data.transId = response.data.Id;
+
+                                // var data_list = this.state.data_list;
+                                // if (data_list != null && data_list != undefined && data_list != "") {
+                                //     data_list = JSON.parse(data_list);
+                                //     // data_list.push(data);
+                                //     data_list.unshift(data);
+                                // } else {
+                                //     data_list = [data,];
+                                // }
+                                //  alert(JSON.stringify(data_list));
+
+                                // AsyncStorage.setItem('const_list', JSON.stringify(data_list));
+
+                            }
+                            break;
+                    }
+                }
+                
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     constructor() {
         super();
         Orientation.lockToPortrait();
@@ -46,6 +117,7 @@ export default class return_cost extends PureComponent {
             price: '',
             picker: '',
             TariffCategory: [{ Title: '', TariffCategoryTypeTitle: '' }],
+            selectedPicker: '#',
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -79,12 +151,6 @@ export default class return_cost extends PureComponent {
         });
     }
 
-    btn_send_onclick() {
-        this.props.navigation.replace("home");
-    }
-
-
-
     get_picker() {
         // style={stylesTitle.form_input}
         const items = this.state.TariffCategory.map((s, i) => {
@@ -103,6 +169,47 @@ export default class return_cost extends PureComponent {
         this.setState({ price: a });
     }
 
+    btn_send_onclick(){
+        if (this.state.price == '#' || this.state.price == null || this.state.price == '') {
+
+            Alert.alert(
+                lang.error,
+                lang.enter_price,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if (this.state.selectedPicker == '#' || this.state.selectedPicker == null || this.state.selectedPicker == '') {
+
+            Alert.alert(
+                lang.error,
+                lang.enter_cost_type,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if (this.state.selectedStartDate == '#' || this.state.selectedStartDate == null || this.state.selectedStartDate == '') {
+
+            Alert.alert(
+                lang.error,
+                lang.select_dateـcost,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+
+        this.send_data_to_server();
+    }
+
     render() {
         var { navigate } = this.props.navigation;
         const { selectedStartDate } = this.state;
@@ -113,7 +220,9 @@ export default class return_cost extends PureComponent {
 
         var data = this.props.navigation.state.params.data;
 
-       // alert(JSON.stringify(data));
+        this.setState({data: data});
+
+       //alert(JSON.stringify(data));
         this.setState({ 
             selectedPicker: data.TariffCategoryTitle, 
             price : data.TransAmount 
@@ -155,6 +264,7 @@ export default class return_cost extends PureComponent {
                 >
                     <Button
                         style={styles.form_btn}
+                        onPress={()=>{this.btn_send_onclick()}}
                     >
                         <Text
                             style={styles.font_name}
