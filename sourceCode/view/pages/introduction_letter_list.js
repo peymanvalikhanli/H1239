@@ -127,7 +127,9 @@ export default class introduction_letter_list extends PureComponent {
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
-                                <Text>
+                                <Text
+                                    style={styles.font_name}
+                                >
                                     {data.RequestDateFa}
                                 </Text>
                                 <Body>

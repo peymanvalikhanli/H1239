@@ -124,7 +124,9 @@ export default class cost_list extends PureComponent {
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
-                                <Text>
+                                <Text
+                                        style={styles.font_name}                                
+                                >
                                     {data.persian_date}
                                     {/* {data.date.substring(0,10)} */}
                             </Text>

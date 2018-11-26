@@ -9,7 +9,7 @@ import lang from '../../model/lang/fa.json';
 
 import axios from 'axios';
 
-import server_url from '../../model/server_config/controller_url.json'; 
+import server_url from '../../model/server_config/controller_url.json';
 
 const datas = [
     'Simon Mignolet',
@@ -24,23 +24,23 @@ const datas = [
 
 export default class fractional_documents_list extends PureComponent {
 
-    get_data_from_server(){ 
+    get_data_from_server() {
         axios.post(server_url.GetBackedTransList, {
             userkey: this.state.Token,
         })
-        .then(response=> {
-           // alert(JSON.stringify(response)); 
-            if(response.data.act != undefined || response.data.act != null){
-             //   alert(JSON.stringify(response.data.LstBackTrans));
-                 if(response.data.LstBackTrans != undefined || response.data.LstBackTrans != null || response.data.LstBackTrans != ''){
-                     this.setState({LstBackTrans:response.data.LstBackTrans}); 
-                    // alert(JSON.stringify(this.state.LstOdatTrans));
-                 }
-            }         
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(response => {
+                // alert(JSON.stringify(response)); 
+                if (response.data.act != undefined || response.data.act != null) {
+                    //   alert(JSON.stringify(response.data.LstBackTrans));
+                    if (response.data.LstBackTrans != undefined || response.data.LstBackTrans != null || response.data.LstBackTrans != '') {
+                        this.setState({ LstBackTrans: response.data.LstBackTrans });
+                        // alert(JSON.stringify(this.state.LstOdatTrans));
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     constructor() {
@@ -50,7 +50,7 @@ export default class fractional_documents_list extends PureComponent {
         this.state = {
             basic: true,
             listViewData: datas,
-            LstBackTrans:[],
+            LstBackTrans: [],
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -64,12 +64,12 @@ export default class fractional_documents_list extends PureComponent {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      componentWillUnmount() {
+
+    componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
-    
-      handleBackPress = () => {
+
+    handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
         this.props.navigation.replace("home");
         return true;
@@ -121,23 +121,25 @@ export default class fractional_documents_list extends PureComponent {
                     <List
                         style={{ marginLeft: width * 0.01 }}
                         // dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-                        dataArray = {this.state.LstBackTrans}                        
+                        dataArray={this.state.LstBackTrans}
                         renderRow={data =>
                             <ListItem icon
-                            onPress={()=>{this.props.navigation.replace("fractional_documents",{data:data});}}                            
+                                onPress={() => { this.props.navigation.replace("fractional_documents", { data: data }); }}
                             >
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
-                                <Text>
+                                <Text
+                                    style={styles.font_name}
+                                >
                                     {data.TransDateFa}
-                            </Text>
+                                </Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}
 
                                     >
-                                        {data.PatientName} {"  "} {data.TariffCategoryTitle}   
+                                        {data.PatientName} {"  "} {data.TariffCategoryTitle}
                                     </Text>
                                 </Body>
                                 <Right>
@@ -146,10 +148,10 @@ export default class fractional_documents_list extends PureComponent {
                             </ListItem>
 
                         }
-                        // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-                        //     <Button full danger >
-                        //         <Icon active name="trash" />
-                        //     </Button>}
+                    // renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+                    //     <Button full danger >
+                    //         <Icon active name="trash" />
+                    //     </Button>}
 
 
                     />

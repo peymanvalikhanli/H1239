@@ -154,7 +154,9 @@ export default class return_cost_list extends PureComponent {
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
-                                <Text>
+                                <Text
+                                    style={styles.font_name}                                
+                                >
                                     {data.TransDateFa}
                             </Text>
                                 <Body>
