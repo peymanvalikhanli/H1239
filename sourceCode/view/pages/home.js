@@ -422,7 +422,7 @@ export default class home extends PureComponent {
                                             style={styles.btn_main_footer}
                                             resizeMode='stretch'
                                             source={require('../image/btn2.png')}
-                                        />
+                                        /> 
                                     </Button>
                                 </View>
                                 <View
