@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -218,11 +218,11 @@ export default class cost_registration extends PureComponent {
                         </List>
                         <Item>
                             <Collapse
-                                style={{ width: width * 0.95 }}
+                                style={{ width: width * 0.95  }}
                             >
                                 <CollapseHeader>
                                     <Text
-                                        style={styles.text}
+                                        style ={[styles.text, {marginRight: PixelRatio.get()==1?0:width*0.05}]} 
                                     >
                                         {lang.cost_date}: {startDate}
                                     </Text>
@@ -236,7 +236,7 @@ export default class cost_registration extends PureComponent {
                             </Collapse>
                         </Item>
                         <Text
-                            style={styles.text}
+                          style ={[styles.text, {marginRight: PixelRatio.get()==1?0:width*0.03}]} 
                         >
                             {lang.cost_type}
                         </Text>

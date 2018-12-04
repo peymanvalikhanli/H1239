@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Badge } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -148,7 +148,9 @@ export default class home extends PureComponent {
     }
 
     render() {
+      //  alert(PixelRatio.get());
         var { navigate } = this.props.navigation;
+        const mobile_margin_top = 10;
         return (
             <Container style={{ flex: 1 }}>
 
@@ -226,7 +228,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.45, marginTop: (height * 0.03) * -1 }]}
+                                    style={[styles.row_view, { width:PixelRatio.get()==1? width * 0.45:width * 0.53, marginTop: PixelRatio.get()==1? (height * 0.03) * -1 : (height * 0.015) * -1 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 2 ? this.state.LstUserInsurance[2].UserInsuranceId : undefined, 2) }}
@@ -252,7 +254,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.68, marginTop: height * 0.025 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get()==1?width * 0.68:width * 0.78, marginTop:PixelRatio.get()==1? height * 0.025:height * 0.02 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 4 ? this.state.LstUserInsurance[4].UserInsuranceId : undefined, 4) }}
@@ -278,7 +280,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.75, marginTop: height * 0.05 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get()==1?width * 0.75:width * 0.85, marginTop: PixelRatio.get()==1?height * 0.05:height * 0.046 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 6 ? this.state.LstUserInsurance[6].UserInsuranceId : undefined, 6) }}
@@ -312,7 +314,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.68, marginTop: height * 0.05 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get()==1?width * 0.68:width * 0.78, marginTop: PixelRatio.get()==1?height * 0.05:height * 0.046 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 8 ? this.state.LstUserInsurance[8].UserInsuranceId : undefined, 8) }}
@@ -339,7 +341,7 @@ export default class home extends PureComponent {
 
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: width * 0.45, marginTop: height * 0.025 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get()==1? width * 0.45:width * 0.53, marginTop: PixelRatio.get()==1? height * 0.025:height * 0.02 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 10 ? this.state.LstUserInsurance[10].UserInsuranceId : undefined, 10) }}
@@ -464,7 +466,7 @@ const styles = StyleSheet.create({
 
     header_btn: {
         width: width * 0.2,
-        height: width * 0.15,
+        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
         paddingVertical: 30,
         resizeMode: 'stretch',
         marginTop: (height * 0.1) * -1,
@@ -472,7 +474,7 @@ const styles = StyleSheet.create({
     },
     header_btn_image: {
         width: width * 0.2,
-        height: width * 0.15,
+        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
         paddingVertical: 30,
         resizeMode: 'stretch',
         // marginTop: (height*0.1)*-1,
@@ -532,15 +534,15 @@ const styles = StyleSheet.create({
     },
 
     btn_personal: {
-        width: width * 0.15,
-        height: width * 0.15,
+        width: PixelRatio.get()==1?width * 0.15:width * 0.18,
+        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
         paddingVertical: 30,
         borderRadius: 75,
         marginTop: height * -0.03,
     },
     btn_personal_image: {
-        width: width * 0.15,
-        height: width * 0.15,
+        width: PixelRatio.get()==1?width * 0.15:width * 0.18,
+        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
         paddingVertical: 30,
         borderRadius: 75,
     },
@@ -549,7 +551,7 @@ const styles = StyleSheet.create({
         height: width * 0.4,
         paddingVertical: 30,
         borderRadius: width * 0.5,
-        marginTop: height * -0.125,
+        marginTop: PixelRatio.get()==1?height * -0.125:height * -0.09,
     },
     btn_main_personal_image: {
         width: width * 0.4,

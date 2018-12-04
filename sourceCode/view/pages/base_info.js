@@ -165,11 +165,12 @@ export default class base_info extends PureComponent {
                         style={{ marginTop: height * 0.02, }}
                     >
                         <ListItem itemDivider>
-                            <Left />
-                            <Body />
-                            <Right>
-                                <Text style={styles.font_name} >{lang.documents}</Text>
-                            </Right>
+                            {/* <Left /> */}
+                            <Body >
+                            <Text style={styles.font_name} >{lang.documents}</Text>
+                                </Body>
+                            {/* <Right/> */}
+                               
                         </ListItem>
                         <ListItem icon
                             onPress={() => { this.props.navigation.replace((doc_data[2]==0?"personal_upload":"personal_document"), { data: data, parent: "base_info", userProfile: userProfile, userid: userid, Type: "2", header_title: lang.health_insurance_card, data: "" , doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data }); }}

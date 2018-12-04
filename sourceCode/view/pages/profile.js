@@ -310,9 +310,9 @@ export default class profile extends PureComponent {
                         </ListItem>
                     </List>
                 </Content>
-                <Footer>
+                {/* <Footer>
 
-                </Footer>
+                </Footer> */}
             </Container>
         );
     }
