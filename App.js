@@ -40,8 +40,12 @@ import introduction_latter_select_file from './sourceCode/view/pages/introductio
 import show_files from './sourceCode/view/pages/show_files';
 import fractional_document_file from './sourceCode/view/pages/fractional_documents_files';
 
+import test from './sourceCode/view/pages/test'
+
 
 const nave = StackNavigator({
+
+  // test: {screen: test}, 
   
   introduction: { screen: introduction },
   verification: {screen: verification},

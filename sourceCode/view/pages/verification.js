@@ -220,7 +220,7 @@ export default class verification extends PureComponent {
                         </Text>
 
                         <Button transparent 
-                            style={{ marginTop: height * 0.05, marginRight: width * 0.05, width: width * 0.5, textAlign: 'center' }}
+                            style={{ marginTop: height * 0.05, marginRight: width * 0.05, width: width * 0.7, textAlign: 'center' }}
                             onPress={()=>{this.btn_try_again_onclick(national_code)}}
                         >
                             <Right>
@@ -230,7 +230,7 @@ export default class verification extends PureComponent {
                                 />
                             </Right>
                             <Body>
-                                <Text style={{ color: "#000000", fontFamily: "DinarTwoMedium_MRT", }}>
+                                <Text style={{ color: "#000000", fontFamily: "DinarTwoMedium_MRT",fontSize: width * 0.03, }}>
                                     {lang.try_again}
 
                                 </Text>
@@ -287,8 +287,8 @@ const styles = StyleSheet.create({
         marginTop: height * 0.08,
     },
     form_btn: {
-        marginTop: height * 0.1,
-        marginLeft: width * 0.05,
+        marginTop: height * 0.05,
+        marginLeft: ((width*0.5)/4),
         width: width * 0.5,
         backgroundColor: "#2e2878",
         fontFamily: "DinarTwoMedium_MRT",

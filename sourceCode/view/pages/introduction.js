@@ -1,6 +1,6 @@
 
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, NetInfo, AsyncStorage } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, NetInfo, AsyncStorage , PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text } from 'native-base';
 import Orientation from 'react-native-orientation';
 import SwiperFlatList from 'react-native-swiper-flatlist';
@@ -140,7 +140,9 @@ export default class introduction extends PureComponent {
                             <View key="view_1_2" style={[styles.child, { backgroundColor: "#ffffff" }]}>
                                 <Body>
                                     <Image
+                                        style={{width:width, height:height*0.6,resizeMode: 'contain'}}
                                         source={require("../image/1.png")}
+
                                     />
                                 </Body>
                             </View>

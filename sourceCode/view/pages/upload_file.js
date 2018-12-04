@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, TouchableOpacity, PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -7,6 +7,8 @@ import Orientation from 'react-native-orientation';
 import lang from '../../model/lang/fa.json';
 
 import PhotoUpload from 'react-native-photo-upload';
+
+import ImagePicker from 'react-native-image-picker';
 
 import axios from 'axios';
 
@@ -66,8 +68,6 @@ export default class upload_file extends PureComponent {
 
         });
     }
-
-
 
     send_data_for_server(data) {
         axios.post(server_url.CreateTrans, {
@@ -161,6 +161,9 @@ export default class upload_file extends PureComponent {
                 //     this.get_data_from_server();
             }
         });
+
+        this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
+        this.selectVideoTapped = this.selectVideoTapped.bind(this);
     }
 
     componentDidMount() {
@@ -194,7 +197,10 @@ export default class upload_file extends PureComponent {
                 <Button
                     style={[styles.btn_img]}
                 >
-                    <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
+                    {/* <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} /> */}
+                    {/* <Image style={[styles.btn_img_]} source={{ uri:  img }} />                     */}
+                    <Image style={[styles.btn_img_]} source={ img } />                    
+                
                 </Button>
             );
         });
@@ -203,12 +209,12 @@ export default class upload_file extends PureComponent {
 
     btn_add_onclick() {
 
-        if (this.state.avatar !== null) {
+        if (this.state.avatarSource !== null) {
             var tem = this.state.images;
-            var a = tem.unshift(this.state.avatar);
+            var a = tem.unshift(this.state.avatarSource);
             this.setState({ images: tem });
             //alert(this.state.avatar);
-            this.setState({ avatar: null });
+            this.setState({ avatarSource: null });
         }
     }
 
@@ -272,6 +278,63 @@ export default class upload_file extends PureComponent {
 
     }
 
+    // new code 
+    selectPhotoTapped() {
+        const options = {
+          quality: 1.0,
+          maxWidth: 500,
+          maxHeight: 500,
+          storageOptions: {
+            skipBackup: true,
+          },
+    };
+    
+    ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+        console.log('User cancelled photo picker');
+        } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        } else {
+        let source = { uri: response.uri };
+
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+            avatarSource: source,
+        });
+        }
+    });
+    }
+
+    selectVideoTapped() {
+    const options = {
+        title: 'Video Picker',
+        takePhotoButtonTitle: 'Take Video...',
+        mediaType: 'video',
+        videoQuality: 'medium',
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+        console.log('User cancelled video picker');
+        } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        } else {
+        this.setState({
+            videoSource: response.uri,
+        });
+        }
+    });
+    }
 
     render() {
 
@@ -336,7 +399,7 @@ export default class upload_file extends PureComponent {
                         style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
 
-                        <PhotoUpload
+                        {/* <PhotoUpload
                             onPhotoSelect={avatar => {
                                 if (avatar) {
                                     this.setState({
@@ -345,13 +408,32 @@ export default class upload_file extends PureComponent {
                                     console.log('Image base64 string: ', avatar);
                                 }
                             }}
+                            maxWidth={5000}
+                            maxHeight={5000}
                         >
                             <Image
                                 source={require('../image/camera.png')}
                                 resizeMode='stretch'
                                 style={[{ flex: 1, width: width * 0.8 }]}
                             />
-                        </PhotoUpload>
+                        </PhotoUpload> */}
+
+                        {/* select photo  */}
+                        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                            <View
+                                style={[
+                                styles.avatar,
+                                styles.avatarContainer,
+                                { marginBottom: 20 },
+                                ]}
+                            >
+                                {this.state.avatarSource === null ? (
+                                <Text>Select a Photo</Text>
+                                ) : (
+                                <Image style={styles.avatar} source={this.state.avatarSource} />
+                                )}
+                            </View>
+                        </TouchableOpacity>
 
                     </View>
                     <List>
@@ -437,4 +519,15 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         resizeMode: 'stretch',
     },
+    avatarContainer: {
+        borderColor: '#9B9B9B',
+        borderWidth: 1 / PixelRatio.get(),
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      avatar: {
+        borderRadius: 0,
+        width: width,
+        height: height*0.6,
+      },
 });
