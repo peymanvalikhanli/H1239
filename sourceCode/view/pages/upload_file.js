@@ -14,6 +14,8 @@ import axios from 'axios';
 
 import server_url from '../../model/server_config/controller_url.json';
 
+import RNFetchBlob from 'react-native-fetch-blob';
+
 //const image_url = '../image/camera.png';
 export default class upload_file extends PureComponent {
 
@@ -21,50 +23,55 @@ export default class upload_file extends PureComponent {
         // alert(Id);
         this.state.images.map((img, i) => {
             let data = new FormData();
+            //alert(JSON.stringify(img.uri));
+            RNFetchBlob.fs.readFile(img.uri, 'base64')
+                .then((img_data) => {
+                    data.append('transId', Id);
+                    data.append('fileName', "peymantest.png");
+                    data.append('fileType', 3);
+                    data.append('contentType', "image/png");
+                    data.append('content', img_data);
 
-            data.append('transId', Id);
-            data.append('fileName', "peymantest.png");
-            data.append('fileType', 3);
-            data.append('contentType', "image/png");
-            data.append('content', img);
+                    axios.post(server_url.UploadDocument, data, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                        .then(response => {
+                            // alert(JSON.stringify(response));
+                            //if (response.data.msg != undefined || response.data.msg != null) {
+                            // this.get_data();
 
-            axios.post(server_url.UploadDocument, data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-                .then(response => {
-                    // alert(JSON.stringify(response));
-                    //if (response.data.msg != undefined || response.data.msg != null) {
-                    // this.get_data();
+                            // }
+                            // Alert.alert(
+                            //                 lang.info,
+                            //                 response.data.Message,
+                            //                 [
+                            //                     { text: lang.yes },
+                            //                 ],
+                            //                 { cancelable: false }
+                            //             )
+                            //            // alert(response.data.Id);  
+                            switch (response.data.act) {
+                                case "Success":
+                                    Alert.alert(
+                                        lang.info,
+                                        response.data.Message,
+                                        [
+                                            { text: lang.yes },
+                                        ],
+                                        { cancelable: false }
+                                    )
+                                    break;
+                            }
+                        })
+                        .catch(function (error) {
+                            //console.log(error);
+                            alert(JSON.stringify(error));
+                        });
 
-                    // }
-                    // Alert.alert(
-                    //                 lang.info,
-                    //                 response.data.Message,
-                    //                 [
-                    //                     { text: lang.yes },
-                    //                 ],
-                    //                 { cancelable: false }
-                    //             )
-                    //            // alert(response.data.Id);  
-                    switch (response.data.act) {
-                        case "Success":
-                            Alert.alert(
-                                lang.info,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
-                            break;
-                    }
                 })
-                .catch(function (error) {
-                    //console.log(error);
-                    alert(JSON.stringify(error));
-                });
+
 
         });
     }
@@ -199,8 +206,8 @@ export default class upload_file extends PureComponent {
                 >
                     {/* <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} /> */}
                     {/* <Image style={[styles.btn_img_]} source={{ uri:  img }} />                     */}
-                    <Image style={[styles.btn_img_]} source={ img } />                    
-                
+                    <Image style={[styles.btn_img_]} source={img} />
+
                 </Button>
             );
         });
@@ -281,59 +288,59 @@ export default class upload_file extends PureComponent {
     // new code 
     selectPhotoTapped() {
         const options = {
-          quality: 1.0,
-          maxWidth: 500,
-          maxHeight: 500,
-          storageOptions: {
-            skipBackup: true,
-          },
-    };
-    
-    ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true,
+            },
+        };
 
-        if (response.didCancel) {
-        console.log('User cancelled photo picker');
-        } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        } else {
-        let source = { uri: response.uri };
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
 
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                let source = { uri: response.uri };
 
-        this.setState({
-            avatarSource: source,
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                this.setState({
+                    avatarSource: source,
+                });
+            }
         });
-        }
-    });
     }
 
     selectVideoTapped() {
-    const options = {
-        title: 'Video Picker',
-        takePhotoButtonTitle: 'Take Video...',
-        mediaType: 'video',
-        videoQuality: 'medium',
-    };
+        const options = {
+            title: 'Video Picker',
+            takePhotoButtonTitle: 'Take Video...',
+            mediaType: 'video',
+            videoQuality: 'medium',
+        };
 
-    ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
 
-        if (response.didCancel) {
-        console.log('User cancelled video picker');
-        } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-        } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-        } else {
-        this.setState({
-            videoSource: response.uri,
+            if (response.didCancel) {
+                console.log('User cancelled video picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                this.setState({
+                    videoSource: response.uri,
+                });
+            }
         });
-        }
-    });
     }
 
     render() {
@@ -422,16 +429,16 @@ export default class upload_file extends PureComponent {
                         <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
                             <View
                                 style={[
-                                styles.avatar,
-                                styles.avatarContainer,
-                                { marginBottom: 20 },
+                                    styles.avatar,
+                                    styles.avatarContainer,
+                                    { marginBottom: 20 },
                                 ]}
                             >
                                 {this.state.avatarSource === null ? (
-                                <Text>Select a Photo</Text>
+                                    <Text>Select a Photo</Text>
                                 ) : (
-                                <Image style={styles.avatar} source={this.state.avatarSource} />
-                                )}
+                                        <Image style={styles.avatar} source={this.state.avatarSource} />
+                                    )}
                             </View>
                         </TouchableOpacity>
 
@@ -524,10 +531,10 @@ const styles = StyleSheet.create({
         borderWidth: 1 / PixelRatio.get(),
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      avatar: {
+    },
+    avatar: {
         borderRadius: 0,
         width: width,
-        height: height*0.6,
-      },
+        height: height * 0.6,
+    },
 });
