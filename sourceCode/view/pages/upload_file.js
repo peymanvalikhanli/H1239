@@ -160,6 +160,7 @@ export default class upload_file extends PureComponent {
             avatar: null,
             data_list: [],
             // image_url:image_url,
+            avatarSource: null,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -203,15 +204,38 @@ export default class upload_file extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
+                    onPress={() => {this.btn_delete(i)}}
                 >
                     {/* <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} /> */}
                     {/* <Image style={[styles.btn_img_]} source={{ uri:  img }} />                     */}
-                    <Image style={[styles.btn_img_]} source={img} />
+                    <Image style={[styles.btn_img_]} source={img}
+                    />
 
                 </Button>
             );
         });
         return tem;
+    }
+
+    btn_delete(id) {
+        Alert.alert(
+            lang.warning,
+            lang.are_you_deleted,
+            [
+                { text: lang.no },
+                { text: lang.yes, onPress: () => { this.delete_image(id) } },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    delete_image(id){
+        var tem = []; 
+        tem = this.state.images;
+        tem.splice(id,1);
+        //alert(JSON.stringify(tem));
+        this.setState({images:tem});
+        this.forceUpdate();
     }
 
     btn_add_onclick() {
@@ -435,7 +459,11 @@ export default class upload_file extends PureComponent {
                                 ]}
                             >
                                 {this.state.avatarSource === null ? (
-                                    <Text>Select a Photo</Text>
+                                    <Image
+                                        source={require('../image/camera.png')}
+                                        resizeMode='stretch'
+                                        style={[{ flex: 1, width: width * 0.8 }]}
+                                    />
                                 ) : (
                                         <Image style={styles.avatar} source={this.state.avatarSource} />
                                     )}

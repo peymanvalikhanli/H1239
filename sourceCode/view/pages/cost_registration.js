@@ -46,6 +46,7 @@ export default class cost_registration extends PureComponent {
             price: '',
             TariffCategory: [{ Title: lang.cost_type, TariffCategoryTypeTitle: '' }],
             selectedPicker: '#',
+            read_record : false,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -147,7 +148,7 @@ export default class cost_registration extends PureComponent {
     }
 
     help_click(userid, userProfile){
-        this.props.navigation.replace("cost_help", { userId: userid, userProfile: userProfile, record: { act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') }});//{ act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') } });
+        this.props.navigation.replace("cost_help", { userId: userid, userProfile: userProfile, record: { act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate!=null? this.state.selectedStartDate.format('jYYYY/jM/jD'):"" }});//{ act: "register", price: this.state.price, const_type: this.state.selectedPicker, date: this.state.selectedStartDate, persian_date: this.state.selectedStartDate.format('jYYYY/jM/jD') } });
     }
 
     render() {
@@ -159,10 +160,10 @@ export default class cost_registration extends PureComponent {
         var userProfile = this.props.navigation.state.params.userProfile;
         var record = this.props.navigation.state.params.record;
 
-        if (record != "") {
+        if (this.state.read_record == false) {
             this.setState({ price: record.price, selectedPicker: record.const_type, selectedStartDate: record.date, startDate: record.persian_date })
             // startDate = record.persian_date;
-            record = "";
+            this.setState({read_record:true});
         }
 
         this.setState({ userid: userid, userProfile: userProfile });
@@ -256,7 +257,7 @@ export default class cost_registration extends PureComponent {
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.cost_price}</Label>
                             <Input
-                                style={styles.form_input}
+                              //  style={styles.form_input}
                                 keyboardType="numeric"
                                 value={this.state.price}
                                 onChange={(event) => { this.setState({ price: event.nativeEvent.text }); }}

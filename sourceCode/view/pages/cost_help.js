@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -151,7 +151,7 @@ export default class cost_help extends PureComponent {
         var record = this.props.navigation.state.params.record;
 
         this.setState({ record: record, userProfile: userProfile, userid: userid });
-            
+
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
@@ -181,28 +181,29 @@ export default class cost_help extends PureComponent {
                 <Content
                     style={{ paddingLeft: width * 0.01, paddingRight: width * 0.02, fontFamily: "DinarTwoMedium_MRT", }}
                 >
-                <Body>
+                    <Body>
                         <Image
-                            source={ require('../image/cost_help_1.jpg') }
-                           // resizeMode='stretch'
-                            style={[{ flex: 1, width: width * 0.8 }]}
+                            source={require('../image/cost_help_1.jpg')}
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: PixelRatio.get() == 1 ? width * 0.8 : width * 0.99, height: PixelRatio.get() == 1 ? height : height * 0.9, }]}
                         />
                         <Image
-                            source={ require('../image/cost_help_2.jpg') }
-                            //resizeMode='stretch'
-                            style={[{ flex: 1, width: width * 0.8 }]}
+                            source={require('../image/cost_help_2.jpg')}
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: PixelRatio.get() == 1 ? width * 0.8 : width * 0.99, height: PixelRatio.get() == 1 ? height : height * 0.9, }]}
+
                         />
                         <Image
-                            source={ require('../image/cost_help_3.jpg') }
-                           // resizeMode='stretch'
-                            style={[{ flex: 1, width: width * 0.8 }]}
+                            source={require('../image/cost_help_3.jpg')}
+                            resizeMode='stretch'
+                            style={[{ flex: 1, width: PixelRatio.get() == 1 ? width * 0.8 : width * 0.99, height: PixelRatio.get() == 1 ? height : height * 0.9, }]}
                         />
                         {/* <Image
                             source={ require('../image/1-4.jpg') }
                             resizeMode='stretch'
                             style={[{ flex: 1, width: width * 0.8 }]}
                         /> */}
-                      </Body>  
+                    </Body>
                 </Content>
             </Container>
         );
