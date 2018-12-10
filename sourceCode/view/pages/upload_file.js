@@ -54,14 +54,24 @@ export default class upload_file extends PureComponent {
                             //            // alert(response.data.Id);  
                             switch (response.data.act) {
                                 case "Success":
-                                    Alert.alert(
-                                        lang.info,
-                                        response.data.Message,
-                                        [
-                                            { text: lang.yes },
-                                        ],
-                                        { cancelable: false }
-                                    )
+                                    // check it for send file
+                                    var count = this.state.file_send_count;
+                                    count++;
+                                    this.setState({ file_send_count: count });
+
+                                    if (this.state.FileNumber !== null && this.state.file_send_count == this.state.images.length) {
+                                        alert(this.state.FileNumber);
+
+                                        Alert.alert(
+                                            lang.info,
+                                            response.data.Message + " " + lang.file_NO + ": " + this.state.FileNumber,
+                                            [
+                                                { text: lang.yes },
+                                            ],
+                                            { cancelable: false }
+                                        )
+                                        this.props.navigation.replace("cost_registration", { userId: this.state.userid, userProfile: this.state.userProfile, record: "" });
+                                    }
                                     break;
                             }
                         })
@@ -121,7 +131,10 @@ export default class upload_file extends PureComponent {
                                 //     ],
                                 //     { cancelable: false }
                                 // )
-                                //alert(response.data.Id);  
+                                //alert(JSON.stringify(response.data.FileNumber));  
+                                this.setState({ FileNumber: response.data.FileNumber })
+                                this.setState({ file_send_count: 0 });
+                                //FileNumber
                                 this.upload_file_server(response.data.Id);
                                 data.transId = response.data.Id;
 
@@ -161,6 +174,8 @@ export default class upload_file extends PureComponent {
             data_list: [],
             // image_url:image_url,
             avatarSource: null,
+            file_send_count: -1,
+            FileNumber: null,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -204,7 +219,7 @@ export default class upload_file extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
-                    onPress={() => {this.btn_delete(i)}}
+                    onPress={() => { this.btn_delete(i) }}
                 >
                     {/* <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} /> */}
                     {/* <Image style={[styles.btn_img_]} source={{ uri:  img }} />                     */}
@@ -229,12 +244,12 @@ export default class upload_file extends PureComponent {
         )
     }
 
-    delete_image(id){
-        var tem = []; 
+    delete_image(id) {
+        var tem = [];
         tem = this.state.images;
-        tem.splice(id,1);
+        tem.splice(id, 1);
         //alert(JSON.stringify(tem));
-        this.setState({images:tem});
+        this.setState({ images: tem });
         this.forceUpdate();
     }
 
@@ -384,6 +399,8 @@ export default class upload_file extends PureComponent {
         var record = this.props.navigation.state.params.record;
 
         this.setState({ record: record, userProfile: userProfile, userid: userid });
+
+
 
         return (
             <Container style={{ flex: 1 }}>
