@@ -33,6 +33,44 @@ export default class home extends PureComponent {
                 console.log(error);
             });
     }
+    get_backed_trans_count() {
+        axios.post(server_url.GetBackedTransCount, {
+            userkey: this.state.Token,
+        })
+            .then(response => {
+
+                if (response.data.act != undefined || response.data.act != null) {
+                     //alert(JSON.stringify(response.data));
+                    if (response.data.act != undefined || response.data.act != null || response.data.act != '') {
+
+                        this.setState({ BackedTransCount: response.data.count });
+                    
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    get_odat_trans_count() {
+        axios.post(server_url.GetOdatTransCount, {
+            userkey: this.state.Token,
+        })
+            .then(response => {
+
+                if (response.data.act != undefined || response.data.act != null) {
+                     //alert(JSON.stringify(response.data));
+                    if (response.data.act != undefined || response.data.act != null || response.data.act != '') {
+
+                        this.setState({ GetOdatTransCount: response.data.count });
+                    
+                    }
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     constructor() {
         super();
@@ -43,12 +81,17 @@ export default class home extends PureComponent {
             national_code: '#',
             LstUserInsurance: '#',
             btn_count: 0,
+            BackedTransCount:0, 
+            GetOdatTransCount:0,
+
         }
 
         AsyncStorage.getItem('Token', (err, result) => {
             if (result != null) {
                 this.setState({ Token: result });
                 this.get_personal_data();
+                this.get_backed_trans_count();
+                this.get_backed_trans_count();
             }
         });
 
@@ -60,7 +103,7 @@ export default class home extends PureComponent {
         //         alert(result );
         //     }
         // });
-        
+
 
         AsyncStorage.getItem('national_code', (err, result) => {
             if (result != null) {
@@ -89,58 +132,58 @@ export default class home extends PureComponent {
             lang.are_you_log_out,
             [
                 { text: lang.no },
-                { text: lang.yes,onPress: () => {this. exit_app() }},
+                { text: lang.yes, onPress: () => { this.exit_app() } },
             ],
             { cancelable: false }
         )
 
-        
-     }
 
-     get_image_btn(data){ 
-       // alert(JSON.stringify(data));
-        switch (data.RelationTypeId){
-            case 2: 
+    }
+
+    get_image_btn(data) {
+        // alert(JSON.stringify(data));
+        switch (data.RelationTypeId) {
+            case 2:
                 return require('../image/p22.png');
-            break; 
-            case 3: 
+                break;
+            case 3:
                 return require('../image/p51.png');
-            break; 
-            case 4: 
+                break;
+            case 4:
                 return require('../image/p52.png');
-            break; 
-            case 5: 
+                break;
+            case 5:
                 return require('../image/p11.png');
-            break; 
-            case 6: 
+                break;
+            case 6:
                 return require('../image/p12.png');
-            break; 
-            case 7: 
+                break;
+            case 7:
                 return require('../image/p31.png');
-            break; 
-            case 8: 
+                break;
+            case 8:
                 return require('../image/p32.png');
-            break; 
-            
+                break;
+
         }
         return require('../image/p.png');
-     }
-    
-     // componentDidMount() {
+    }
+
+    // componentDidMount() {
     //     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     //   }
-    
+
     //   componentWillUnmount() {
     //     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     //   }
-    
+
     //   handleBackPress = () => {
     //     //this.btn_exit_onclick(); // works best when the goBack is async
     //     exitApp();
     //     return true;
     //   }
 
-    exit_app(){
+    exit_app() {
         AsyncStorage.setItem('Token', null);
         AsyncStorage.setItem('national_code', null);
         AsyncStorage.clear();
@@ -148,7 +191,7 @@ export default class home extends PureComponent {
     }
 
     render() {
-      //  alert(PixelRatio.get());
+        //  alert(PixelRatio.get());
         var { navigate } = this.props.navigation;
         const mobile_margin_top = 10;
         return (
@@ -189,7 +232,7 @@ export default class home extends PureComponent {
                                 </Button>
                                 <Button transparent
                                     style={styles.header_btn}
-                                    onPress={()=>{this.props.navigation.replace("report_detail_cost_family",{ start_date: null , end_date: null });}}
+                                    onPress={() => { this.props.navigation.replace("report_detail_cost_family", { start_date: null, end_date: null }); }}
                                 >
                                     <Image
                                         style={styles.header_btn_image}
@@ -199,7 +242,7 @@ export default class home extends PureComponent {
                                 </Button>
                                 <Button transparent
                                     style={styles.header_btn}
-                                    onPress={()=>{this.props.navigation.replace("introduction_letter_list");}}
+                                    onPress={() => { this.props.navigation.replace("introduction_letter_list"); }}
                                 >
                                     <Image
                                         style={styles.header_btn1_image}
@@ -228,7 +271,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width:PixelRatio.get()==1? width * 0.45:width * 0.53, marginTop: PixelRatio.get()==1? (height * 0.03) * -1 : (height * 0.015) * -1 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get() == 1 ? width * 0.45 : width * 0.53, marginTop: PixelRatio.get() == 1 ? (height * 0.03) * -1 : (height * 0.015) * -1 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 2 ? this.state.LstUserInsurance[2].UserInsuranceId : undefined, 2) }}
@@ -254,7 +297,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: PixelRatio.get()==1?width * 0.68:width * 0.78, marginTop:PixelRatio.get()==1? height * 0.025:height * 0.02 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get() == 1 ? width * 0.68 : width * 0.78, marginTop: PixelRatio.get() == 1 ? height * 0.025 : height * 0.02 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 4 ? this.state.LstUserInsurance[4].UserInsuranceId : undefined, 4) }}
@@ -280,7 +323,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: PixelRatio.get()==1?width * 0.75:width * 0.85, marginTop: PixelRatio.get()==1?height * 0.05:height * 0.046 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get() == 1 ? width * 0.75 : width * 0.85, marginTop: PixelRatio.get() == 1 ? height * 0.05 : height * 0.046 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 6 ? this.state.LstUserInsurance[6].UserInsuranceId : undefined, 6) }}
@@ -314,7 +357,7 @@ export default class home extends PureComponent {
                                     </Button>
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: PixelRatio.get()==1?width * 0.68:width * 0.78, marginTop: PixelRatio.get()==1?height * 0.05:height * 0.046 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get() == 1 ? width * 0.68 : width * 0.78, marginTop: PixelRatio.get() == 1 ? height * 0.05 : height * 0.046 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 8 ? this.state.LstUserInsurance[8].UserInsuranceId : undefined, 8) }}
@@ -341,7 +384,7 @@ export default class home extends PureComponent {
 
                                 </View>
                                 <View
-                                    style={[styles.row_view, { width: PixelRatio.get()==1? width * 0.45:width * 0.53, marginTop: PixelRatio.get()==1? height * 0.025:height * 0.02 }]}
+                                    style={[styles.row_view, { width: PixelRatio.get() == 1 ? width * 0.45 : width * 0.53, marginTop: PixelRatio.get() == 1 ? height * 0.025 : height * 0.02 }]}
                                 >
                                     <Button Transparent
                                         onPress={() => { this.btn_send_onclick(this.state.btn_count > 10 ? this.state.LstUserInsurance[10].UserInsuranceId : undefined, 10) }}
@@ -395,44 +438,59 @@ export default class home extends PureComponent {
                                 <View
                                     style={styles.footer}
                                 >
+
                                     <Button transparent
-                                        style={[styles.btn_footer,{marginLeft:width*0.22,}]}
-                                         onPress={()=>{this.props.navigation.replace("cost_list");}}
+                                        style={[styles.btn_footer, { marginLeft: PixelRatio.get() == 1 ? width * 0.22 : width * 0.1, }]}
+                                        onPress={() => { this.props.navigation.replace("cost_list"); }}
                                     >
                                         <Image
                                             style={styles.btn_footer}
                                             resizeMode='stretch'
                                             source={require('../image/btn_x2.png')}
                                         />
-                                        {/* <Badge
-                                        style={{ marginBottom: height * 0.2, }}
+                                    </Button>
+                                    {/* <Badge
+                                        style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.06, }}
                                     >
                                         <Text>2</Text>
                                     </Badge> */}
-
-                                    </Button>
+                                    <Text
+                                        style={{color: "#ffffff", marginLeft:PixelRatio.get() == 1 ? width * 0.22 : width * 0.1,fontSize: width * 0.05, marginTop:PixelRatio.get() == 1 ? width * 0.22 : height * -0.02}}
+                                    >
+                                        {lang.cost}
+                                    </Text>
                                 </View>
 
                                 <View
                                     style={{ flex: 0, justifyContent: 'center', }}
                                 >
                                     <Button transparent
-                                        style={[styles.btn_main_footer, { marginTop: height * 0.05, height: width * 0.22 }]}
-                                     onPress={()=>{this.props.navigation.replace("return_cost_list");}}
+                                        style={[styles.btn_main_footer, { marginTop: PixelRatio.get() == 1 ? height * 0.05 : height * -0.07, height: PixelRatio.get() == 1 ? width * 0.22 : width * 0.26 }]}
+                                        onPress={() => { this.props.navigation.replace("return_cost_list"); }}
                                     >
                                         <Image
                                             style={styles.btn_main_footer}
                                             resizeMode='stretch'
                                             source={require('../image/btn2.png')}
-                                        /> 
+                                        />
                                     </Button>
+                                    <Badge
+                                        style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.15, marginLeft: PixelRatio.get() == 1 ? width * 0.05 : width * -0.05, }}
+                                    >
+                                        <Text>{this.state.GetOdatTransCount}</Text>
+                                    </Badge>
+                                    <Text
+                                        style={{color: "#ffffff", marginTop:PixelRatio.get() == 1 ? height * 0.22 : height * 0.025,fontSize: width * 0.03,}}
+                                    >
+                                        {lang.return}
+                                    </Text>
                                 </View>
                                 <View
                                     style={styles.footer}
                                 >
                                     <Button transparent
-                                        style={[styles.btn_footer, { marginLeft: width * 0.05 }]}
-                                     onPress={()=>{this.props.navigation.replace("fractional_documents_list");}}
+                                        style={[styles.btn_footer, { marginLeft: PixelRatio.get() == 1 ? width * 0.05 : width * 0.2, }]}
+                                        onPress={() => { this.props.navigation.replace("fractional_documents_list"); }}
                                     >
                                         <Image
                                             style={styles.btn_footer}
@@ -440,7 +498,16 @@ export default class home extends PureComponent {
                                             source={require('../image/btn_x1.png')}
                                         />
                                     </Button>
-
+                                    <Badge
+                                        style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.06, marginLeft: PixelRatio.get() == 1 ? width * 0.05 : width * 0.1, }}
+                                    >
+                                        <Text>{this.state.BackedTransCount}</Text>
+                                    </Badge>
+                                    <Text
+                                        style={{color: "#ffffff", marginLeft:PixelRatio.get() == 1 ? width * 0.22 : width * -0.07,fontSize: width * 0.05,}}
+                                    >
+                                        {lang.kasri}
+                                    </Text>
                                 </View>
 
                             </View>
@@ -466,7 +533,7 @@ const styles = StyleSheet.create({
 
     header_btn: {
         width: width * 0.2,
-        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
+        height: PixelRatio.get() == 1 ? width * 0.15 : width * 0.18,
         paddingVertical: 30,
         resizeMode: 'stretch',
         marginTop: (height * 0.1) * -1,
@@ -474,7 +541,7 @@ const styles = StyleSheet.create({
     },
     header_btn_image: {
         width: width * 0.2,
-        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
+        height: PixelRatio.get() == 1 ? width * 0.15 : width * 0.18,
         paddingVertical: 30,
         resizeMode: 'stretch',
         // marginTop: (height*0.1)*-1,
@@ -534,15 +601,15 @@ const styles = StyleSheet.create({
     },
 
     btn_personal: {
-        width: PixelRatio.get()==1?width * 0.15:width * 0.18,
-        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
+        width: PixelRatio.get() == 1 ? width * 0.15 : width * 0.18,
+        height: PixelRatio.get() == 1 ? width * 0.15 : width * 0.18,
         paddingVertical: 30,
         borderRadius: 75,
         marginTop: height * -0.03,
     },
     btn_personal_image: {
-        width: PixelRatio.get()==1?width * 0.15:width * 0.18,
-        height: PixelRatio.get()==1?width * 0.15:width * 0.18,
+        width: PixelRatio.get() == 1 ? width * 0.15 : width * 0.18,
+        height: PixelRatio.get() == 1 ? width * 0.15 : width * 0.18,
         paddingVertical: 30,
         borderRadius: 75,
     },
@@ -551,7 +618,7 @@ const styles = StyleSheet.create({
         height: width * 0.4,
         paddingVertical: 30,
         borderRadius: width * 0.5,
-        marginTop: PixelRatio.get()==1?height * -0.125:height * -0.09,
+        marginTop: PixelRatio.get() == 1 ? height * -0.125 : height * -0.09,
     },
     btn_main_personal_image: {
         width: width * 0.4,
@@ -561,7 +628,7 @@ const styles = StyleSheet.create({
     },
     btn_main_footer: {
         width: width * 0.13,
-        height: width * 0.16,
+        height: PixelRatio.get() == 1 ? width * 0.16 : width * 0.002,
         paddingVertical: 30,
         borderRadius: 75,
         marginTop: height * -0.05,

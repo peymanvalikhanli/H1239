@@ -183,25 +183,25 @@ export default class cost_help extends PureComponent {
                 >
                 <Body>
                         <Image
-                            source={ require('../image/1-1.jpg') }
-                            resizeMode='stretch'
+                            source={ require('../image/cost_help_1.jpg') }
+                           // resizeMode='stretch'
                             style={[{ flex: 1, width: width * 0.8 }]}
                         />
                         <Image
-                            source={ require('../image/1-2.jpg') }
-                            resizeMode='stretch'
+                            source={ require('../image/cost_help_2.jpg') }
+                            //resizeMode='stretch'
                             style={[{ flex: 1, width: width * 0.8 }]}
                         />
                         <Image
-                            source={ require('../image/1-3.jpg') }
-                            resizeMode='stretch'
+                            source={ require('../image/cost_help_3.jpg') }
+                           // resizeMode='stretch'
                             style={[{ flex: 1, width: width * 0.8 }]}
                         />
-                        <Image
+                        {/* <Image
                             source={ require('../image/1-4.jpg') }
                             resizeMode='stretch'
                             style={[{ flex: 1, width: width * 0.8 }]}
-                        />
+                        /> */}
                       </Body>  
                 </Content>
             </Container>

@@ -17,5 +17,7 @@
 "GetUserDocumentDetail":"http://new.armanins-maskan.com/Mobile/GetUserDocumentDetail",
 "GetuserDocumentTypeDetail":"http://new.armanins-maskan.com/Mobile/GetuserDocumentTypeDetail",
 "UploadUserDocument":"http://new.armanins-maskan.com/Mobile/UploadUserDocument", 
+"GetBackedTransCount":"http://new.armanins-maskan.com/Mobile/GetBackedTransCount",
+"GetOdatTransCount":"new.armanins-maskan.com/Mobile/GetOdatTransCount", 
 "":""
 }
