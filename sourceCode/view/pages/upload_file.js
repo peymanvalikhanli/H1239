@@ -16,6 +16,8 @@ import server_url from '../../model/server_config/controller_url.json';
 
 import RNFetchBlob from 'react-native-fetch-blob';
 
+import Spinner from 'react-native-loading-spinner-overlay';
+
 //const image_url = '../image/camera.png';
 export default class upload_file extends PureComponent {
 
@@ -176,6 +178,7 @@ export default class upload_file extends PureComponent {
             avatarSource: null,
             file_send_count: -1,
             FileNumber: null,
+            spinner: true,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -404,6 +407,11 @@ export default class upload_file extends PureComponent {
 
         return (
             <Container style={{ flex: 1 }}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={'Loading...'}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Header>
                     <Left>
                         <Button
