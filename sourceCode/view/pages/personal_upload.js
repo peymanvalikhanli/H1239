@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, TouchableOpacity, PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
-
 
 import lang from '../../model/lang/fa.json';
 
@@ -11,6 +10,12 @@ import PhotoUpload from 'react-native-photo-upload';
 import axios from 'axios';
 
 import server_url from '../../model/server_config/controller_url.json';
+
+import ImagePicker from 'react-native-image-picker';
+
+import RNFetchBlob from 'react-native-fetch-blob';
+
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 export default class personal_upload extends PureComponent {
@@ -33,24 +38,24 @@ export default class personal_upload extends PureComponent {
                     //alert(JSON.stringify(response.data));
                     switch (response.data.act) {
                         case "Error":
-                            Alert.alert(
-                                lang.error,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
+                            // Alert.alert(
+                            //     lang.error,
+                            //     response.data.Message,
+                            //     [
+                            //         { text: lang.yes },
+                            //     ],
+                            //     { cancelable: false }
+                            // )
                             break;
                         case "msg":
-                            Alert.alert(
-                                lang.error,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
+                            // Alert.alert(
+                            //     lang.error,
+                            //     response.data.Message,
+                            //     [
+                            //         { text: lang.yes },
+                            //     ],
+                            //     { cancelable: false }
+                            // )
                             break;
                         case "Success":
                             if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
@@ -59,7 +64,7 @@ export default class personal_upload extends PureComponent {
                                     tem.push(img.Content_String)
                                 }
                                 );
-                                this.setState({ images: tem });
+                                this.setState({ images: tem, get_image_count: tem.length, file_send_count:tem.length });
                             }
                             break;
 
@@ -73,41 +78,57 @@ export default class personal_upload extends PureComponent {
 
     upload_file_server(Id) {
         // alert(Id);
-        this.state.up_images.map((img, i) => {
-            let data = new FormData();
+        this.state.images.map((img, i) => {
+            if (i >= this.state.get_image_count) {
+                let data = new FormData();
+                RNFetchBlob.fs.readFile(img.uri, 'base64')
+                    .then((img_data) => {
+                        data.append('userId', Id);
+                        data.append('userDocumentType', this.state.Type);
+                        data.append('fileName', "peymantest.png");
+                        // data.append('fileType', 4);
+                        data.append('contentType', "image/png");
+                        data.append('content', img_data);
 
-            data.append('userId', Id);
-            data.append('userDocumentType', this.state.Type);
-            data.append('fileName', "peymantest.png");
-            // data.append('fileType', 4);
-            data.append('contentType', "image/png");
-            data.append('content', img);
-            axios.post(server_url.UploadUserDocument, data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-                .then(response => {
-                    // alert(JSON.stringify(response));  
-                    switch (response.data.act) {
-                        case "Success":
-                            Alert.alert(
-                                lang.info,
-                                response.data.Message,
-                                [
-                                    { text: lang.yes },
-                                ],
-                                { cancelable: false }
-                            )
-                            break;
-                    }
-                })
-                .catch(function (error) {
-                    //console.log(error);
-                    alert(JSON.stringify(error));
-                });
-
+                        axios.post(server_url.UploadUserDocument, data, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
+                            .then(response => {
+                               // alert(JSON.stringify(response));  
+                                this.setState({ spinner: false });
+                                switch (response.data.act) {
+                                    case "Success":
+                                        var count = this.state.file_send_count;
+                                        count++;
+                                        this.setState({ file_send_count: count });
+                                        //alert(count+""+this.state.images.length)
+                                        if (this.state.FileNumber !== null && count == this.state.images.length) {
+                                            
+                                            Alert.alert(
+                                                lang.info,
+                                                response.data.Message,
+                                                [
+                                                    { text: lang.yes },
+                                                ],
+                                                { cancelable: false }
+                                            )
+                                           // this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile, doc_icon: this.state.doc_icon, doc_color: this.state.doc_color, doc_data: this.state.doc_data });
+                                           this.props.navigation.replace("profile", { userId: this.state.userId, userProfile: this.state.userProfile });
+                                        }
+                                        break;
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                                //alert(JSON.stringify(error));
+                                this.setState({ spinner: false });
+                            });
+                    });
+            }
         });
+
     }
 
 
@@ -123,7 +144,13 @@ export default class personal_upload extends PureComponent {
             up_images: [],
             avatar: null,
             data_list: [],
+            get_image_count: 0,
+            avatarSource: null,
+            file_send_count:0, 
         };
+
+        this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
+        this.selectVideoTapped = this.selectVideoTapped.bind(this);
 
         AsyncStorage.getItem('Token', (err, result) => {
             if (result != null) {
@@ -145,7 +172,7 @@ export default class personal_upload extends PureComponent {
 
     handleBackPress = () => {
         //this.btn_exit_onclick(); // works best when the goBack is async
-        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile,doc_icon: this.state.doc_icon, doc_color: this.state.doc_color , doc_data: this.state.doc_data });
+        this.props.navigation.replace(this.state.parent, { userId: this.state.userid, userProfile: this.state.userProfile, doc_icon: this.state.doc_icon, doc_color: this.state.doc_color, doc_data: this.state.doc_data });
         return true;
     }
 
@@ -164,25 +191,48 @@ export default class personal_upload extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
+                    onPress={() => { this.btn_delete(i) }}
                 >
-                    <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
+                    {i < this.state.get_image_count ? (
+                        <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
+                    ) : (
+                            <Image style={[styles.btn_img_]} source={img} />
+                        )}
                 </Button>
             );
         });
         return tem;
     }
 
+    btn_delete(id) {
+        if (id >= this.state.get_image_count) {
+            Alert.alert(
+                lang.warning,
+                lang.are_you_deleted,
+                [
+                    { text: lang.no },
+                    { text: lang.yes, onPress: () => { this.delete_image(id) } },
+                ],
+                { cancelable: false }
+            )
+        }
+    }
+
+    delete_image(id) {
+        var tem = [];
+        tem = this.state.images;
+        tem.splice(id, 1);
+        this.setState({ images: tem });
+        this.forceUpdate();
+    }
+
     btn_add_onclick() {
 
-        if (this.state.avatar !== null) {
+        if (this.state.avatarSource !== null) {
             var tem = this.state.images;
-            var tem_2 = this.state.up_images;
-            var a = tem.unshift(this.state.avatar);
-            var b = tem_2.unshift(this.state.avatar);
+            var a = tem.push(this.state.avatarSource);
             this.setState({ images: tem });
-            this.setState({ up_images: tem_2 });
-            //alert(this.state.avatar);
-            this.setState({ avatar: null });
+            this.setState({ avatarSource: null });
         }
     }
 
@@ -199,9 +249,67 @@ export default class personal_upload extends PureComponent {
             return;
         }
         // alert(JSON.stringify(this.state.userProfile.UserId));
+        this.setState({ spinner: true });
         this.upload_file_server(this.state.userProfile.UserId);
     }
 
+    // new code 
+    selectPhotoTapped() {
+        const options = {
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true,
+            },
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                let source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                this.setState({
+                    avatarSource: source,
+                });
+            }
+        });
+    }
+
+    selectVideoTapped() {
+        const options = {
+            title: 'Video Picker',
+            takePhotoButtonTitle: 'Take Video...',
+            mediaType: 'video',
+            videoQuality: 'medium',
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled video picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                this.setState({
+                    videoSource: response.uri,
+                });
+            }
+        });
+    }
     render() {
 
         const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
@@ -226,14 +334,19 @@ export default class personal_upload extends PureComponent {
         var Type = this.props.navigation.state.params.Type;
 
 
-        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent, doc_data:doc_data, doc_icon:doc_icon, doc_color:doc_color });
+        this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent, doc_data: doc_data, doc_icon: doc_icon, doc_color: doc_color });
 
         return (
             <Container style={{ flex: 1 }}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={lang.loading}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Header>
                     <Left>
                         <Button
-                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile, doc_icon: doc_icon, doc_color: doc_color , doc_data: doc_data  }); }}
+                            onPress={() => { this.props.navigation.replace(parent, { userId: userid, userProfile: userProfile, doc_icon: doc_icon, doc_color: doc_color, doc_data: doc_data }); }}
                         >
                             <Icon name="arrow-back" />
                         </Button>
@@ -272,23 +385,25 @@ export default class personal_upload extends PureComponent {
                     <View
                         style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
-                        <PhotoUpload
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                    this.setState({
-                                        avatar: avatar
-                                    });
-                                    console.log('Image base64 string: ', avatar);
-                                }
-                            }}
-                        >
-                            <Image
-                                source={require('../image/camera.png')}
-                                resizeMode='stretch'
-                                style={[{ flex: 1, width: width * 0.8 }]}
-                            />
-                        </PhotoUpload>
-
+                        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                            <View
+                                style={[
+                                    styles.avatar,
+                                    styles.avatarContainer,
+                                    { marginBottom: 20 },
+                                ]}
+                            >
+                                {this.state.avatarSource === null ? (
+                                    <Image
+                                        source={require('../image/camera.png')}
+                                        resizeMode='stretch'
+                                        style={[{ flex: 1, width: width * 0.8 }]}
+                                    />
+                                ) : (
+                                        <Image style={styles.avatar} source={this.state.avatarSource} />
+                                    )}
+                            </View>
+                        </TouchableOpacity>
                     </View>
                     <List>
                         <ListItem itemDivider>
@@ -372,5 +487,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         resizeMode: 'stretch',
+    },
+    avatarContainer: {
+        borderColor: '#9B9B9B',
+        borderWidth: 1 / PixelRatio.get(),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    avatar: {
+        borderRadius: 0,
+        width: width,
+        height: height * 0.6,
     },
 });

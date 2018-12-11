@@ -3,10 +3,10 @@ import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, 
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
-
 import lang from '../../model/lang/fa.json';
 
 import PhotoUpload from 'react-native-photo-upload';
+
 
 import axios from 'axios';
 
@@ -15,6 +15,8 @@ import server_url from '../../model/server_config/controller_url.json';
 import RNFetchBlob from 'react-native-fetch-blob';
 
 import ImagePicker from 'react-native-image-picker';
+
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 export default class fractional_document_file extends PureComponent {
@@ -38,14 +40,15 @@ export default class fractional_document_file extends PureComponent {
                             }
                         })
                             .then(response => {
+                                this.setState({ spinner: false });
                                 switch (response.data.act) {
                                     case "Success":
                                         var count = this.state.file_send_count;
                                         count++;
                                         this.setState({ file_send_count: count });
 
-                                        if (this.state.FileNumber !== null && this.state.file_send_count == this.state.images.length) {
-
+                                        if (this.state.FileNumber !== null && count == this.state.images.length) {
+                                           
                                             Alert.alert(
                                                 lang.info,
                                                 response.data.Message,
@@ -114,7 +117,7 @@ export default class fractional_document_file extends PureComponent {
                                     tem.push(img.Content_String)
                                 }
                                 );
-                                this.setState({ images: tem, get_image_count: tem.length });
+                                this.setState({ images: tem, get_image_count: tem.length, file_send_count:tem.length });
                             }
                             break;
 
@@ -142,7 +145,11 @@ export default class fractional_document_file extends PureComponent {
             file_send_count: -1,
             FileNumber: null,
             get_image_count: 0,
+            spinner: false,
         };
+
+        this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
+        this.selectVideoTapped = this.selectVideoTapped.bind(this);
 
         AsyncStorage.getItem('Token', (err, result) => {
             if (result != null) {
@@ -185,11 +192,11 @@ export default class fractional_document_file extends PureComponent {
                     style={[styles.btn_img]}
                     onPress={() => { this.btn_delete(i) }}
                 >
-                {i < this.state.get_image_count?(
-                    <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
-                ):(
-                    <Image style={[styles.btn_img_]} source={img} />
-                )}
+                    {i < this.state.get_image_count ? (
+                        <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
+                    ) : (
+                            <Image style={[styles.btn_img_]} source={img} />
+                        )}
                 </Button>
             );
         });
@@ -224,7 +231,7 @@ export default class fractional_document_file extends PureComponent {
         if (this.state.avatarSource !== null) {
             var tem = this.state.images;
             // var tem2 = this.state.up_images;
-           // var a = tem.unshift(this.state.avatarSource);
+            // var a = tem.unshift(this.state.avatarSource);
             var a = tem.push(this.state.avatarSource);
             // var a = tem2.unshift(this.state.avatarSource);
             this.setState({ images: tem });
@@ -243,6 +250,7 @@ export default class fractional_document_file extends PureComponent {
         record.IsCheck = true;
         record.Attachment = "";
 
+        this.setState({ spinner: true });
         this.send_data_for_server(record);
 
     }
@@ -275,7 +283,8 @@ export default class fractional_document_file extends PureComponent {
         //     }
         // }
         // // this.props.navigation.replace("home");
-        this.setState({ file_send_count: 0 });
+       // this.setState({ file_send_count: 0 });
+        this.setState({ spinner: true });
         this.upload_file_server(this.state.transId);
 
     }
@@ -358,6 +367,11 @@ export default class fractional_document_file extends PureComponent {
 
         return (
             <Container style={{ flex: 1 }}>
+                <Spinner
+                    visible={this.state.spinner}
+                    textContent={lang.loading}
+                    textStyle={styles.spinnerTextStyle}
+                />
                 <Header>
                     <Left>
                         <Button

@@ -3,7 +3,6 @@ import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, 
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
-
 import lang from '../../model/lang/fa.json';
 
 import PhotoUpload from 'react-native-photo-upload';
@@ -62,8 +61,8 @@ export default class upload_file extends PureComponent {
                                     this.setState({ file_send_count: count });
 
                                     if (this.state.FileNumber !== null && this.state.file_send_count == this.state.images.length) {
-                                        alert(this.state.FileNumber);
-
+                                       // alert(this.state.FileNumber);
+                                       this.setState({ spinner:false });
                                         Alert.alert(
                                             lang.info,
                                             response.data.Message + " " + lang.file_NO + ": " + this.state.FileNumber,
@@ -104,6 +103,7 @@ export default class upload_file extends PureComponent {
                     //alert(JSON.stringify(response.data));
                     switch (response.data.act) {
                         case "Error":
+                            this.setState({ spinner:false });
                             Alert.alert(
                                 lang.error,
                                 response.data.Message,
@@ -114,6 +114,7 @@ export default class upload_file extends PureComponent {
                             )
                             break;
                         case "msg":
+                            this.setState({ spinner:false });
                             Alert.alert(
                                 lang.error,
                                 response.data.Message,
@@ -135,7 +136,7 @@ export default class upload_file extends PureComponent {
                                 // )
                                 //alert(JSON.stringify(response.data.FileNumber));  
                                 this.setState({ FileNumber: response.data.FileNumber })
-                                this.setState({ file_send_count: 0 });
+                                this.setState({ file_send_count: 0 , spinner:true  });
                                 //FileNumber
                                 this.upload_file_server(response.data.Id);
                                 data.transId = response.data.Id;
@@ -178,7 +179,7 @@ export default class upload_file extends PureComponent {
             avatarSource: null,
             file_send_count: -1,
             FileNumber: null,
-            spinner: true,
+            spinner: false,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -278,7 +279,7 @@ export default class upload_file extends PureComponent {
         record.IsCheck = true;
         record.Attachment = "";
 
-
+        this.setState({ spinner:true });
         this.send_data_for_server(record);
 
     }
@@ -409,7 +410,7 @@ export default class upload_file extends PureComponent {
             <Container style={{ flex: 1 }}>
                 <Spinner
                     visible={this.state.spinner}
-                    textContent={'Loading...'}
+                    textContent={lang.loading}
                     textStyle={styles.spinnerTextStyle}
                 />
                 <Header>
