@@ -260,7 +260,7 @@ export default class fractional_document_file extends PureComponent {
                         <Text
                             style={{ textAlign: 'center', color: '#ffffff', fontFamily: "DinarTwoMedium_MRT", }}
                         >
-                            {lang.cost_registration}
+                            {lang.fractional_documents}
                         </Text>
                     </Body>
                     <Right>
