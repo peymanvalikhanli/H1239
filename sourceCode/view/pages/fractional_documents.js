@@ -173,13 +173,13 @@ export default class fractional_documents extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code_}: {data.PatientNationalCode}
+                            {lang.national_code_}: <Text style={{ fontFamily: "BNazanin", }}>{data.PatientNationalCode} </Text>
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_date}: {data.TransDateFa}
+                            {lang.cost_date}: <Text style={{ fontFamily: "BNazanin", }}>{data.TransDateFa}</Text>
                         </Text>
 
                         <Text
@@ -190,7 +190,7 @@ export default class fractional_documents extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_price}: {this.create_currency_input(data.TransAmount)} {" "} {"ریال"} 
+                            {lang.cost_price}: <Text style={{ fontFamily: "BNazanin", }}>{this.create_currency_input(data.TransAmount)}</Text> {" "} {"ریال"} 
                         </Text>
                     </Form>
                     <List

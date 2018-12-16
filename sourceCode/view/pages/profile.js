@@ -87,8 +87,25 @@ export default class profile extends PureComponent {
                     switch (response.data.act) {
 
                         case "Success":
-                            //  alert(JSON.stringify(response.data.UserDocumentDetail[0].IsDocumentApproved));
-                            if (response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile == 3 && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != "" && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != null) {
+                            //alert(JSON.stringify(response.data.UserDocumentDetail[0]));
+                            var dacument_type = null;
+                            switch (id) {
+                                case 1:
+                                    dacument_type = response.data.UserDocumentDetail[0].IsBirthCertificateDocumentApproved_Mobile; 
+                                    break;
+                                case 2:
+                                    dacument_type = response.data.UserDocumentDetail[0].IsRecordbookDocumentApproved_Mobile; 
+                                    break;
+                                case 3:
+                                dacument_type = response.data.UserDocumentDetail[0].IsAgreementDocumentApproved_Mobile; 
+                                    break;
+                                case 4:
+                                dacument_type = response.data.UserDocumentDetail[0].IsBusyStudyingDocumentApproved_Mobile;
+                                    break;
+
+
+                            }
+                            if (dacument_type == 3 && dacument_type != "" && dacument_type != null) {
                                 var temp = this.state.documents;
                                 temp[id] = 3; // true is accept
                                 var temp1 = this.state.doc_icon;
@@ -97,9 +114,14 @@ export default class profile extends PureComponent {
                                 temp2[id] = this.get_color(temp[id]);
                                 var temp3 = this.state.doc_data;
                                 temp3[id] = this.get_data_doc(temp[id]);
-                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
+                                this.setState({
+                                    documents: temp,
+                                    doc_icon: temp1,
+                                    doc_color: temp2,
+                                    doc_data: temp3
+                                });
                                 return;
-                            } else if (response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile == 2 && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != "" && response.data.UserDocumentDetail[0].IsDocumentApproved_Mobile != null) {
+                            } else if (dacument_type == 2 && dacument_type != "" && dacument_type != null) {
                                 var temp = this.state.documents;
                                 temp[id] = 2; // false is reject
                                 var temp1 = this.state.doc_icon;
@@ -108,19 +130,29 @@ export default class profile extends PureComponent {
                                 temp2[id] = this.get_color(temp[id]);
                                 var temp3 = this.state.doc_data;
                                 temp3[id] = this.get_data_doc(temp[id]);
-                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
+                                this.setState({
+                                    documents: temp,
+                                    doc_icon: temp1,
+                                    doc_color: temp2,
+                                    doc_data: temp3
+                                });
                                 return;
                             } else {
                                 // alert("test");
                                 var temp = this.state.documents;
-                                temp[id] = 1;// null is wait 
+                                temp[id] = 1; // null is wait 
                                 var temp1 = this.state.doc_icon;
                                 temp1[id] = this.get_icon(temp[id]);
                                 var temp2 = this.state.doc_color;
                                 temp2[id] = this.get_color(temp[id]);
                                 var temp3 = this.state.doc_data;
                                 temp3[id] = this.get_data_doc(temp[id]);
-                                this.setState({ documents: temp, doc_icon: temp1, doc_color: temp2, doc_data: temp3 });
+                                this.setState({
+                                    documents: temp,
+                                    doc_icon: temp1,
+                                    doc_color: temp2,
+                                    doc_data: temp3
+                                });
                                 return;
                             }
                             break;

@@ -157,7 +157,7 @@ export default class report_detail_cost_family extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.start_date}: {this.state.startDate}
+                                        {lang.start_date}: <Text style={{ fontFamily: "BNazanin", }}>{this.state.startDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -176,7 +176,7 @@ export default class report_detail_cost_family extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.end_date}: {this.state.endDate}
+                                        {lang.end_date}: <Text style={{ fontFamily: "BNazanin", }}>{this.state.endDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -215,9 +215,7 @@ export default class report_detail_cost_family extends PureComponent {
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
-                                <Text>
-                                    {data.TransDateFa}
-                                </Text>
+                                <Text style={{ fontFamily: "BNazanin", }}> {data.TransDateFa}</Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}

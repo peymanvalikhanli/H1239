@@ -89,9 +89,11 @@ export default class cost_registration extends PureComponent {
 
     create_currency_input() {
         var x = this.state.price;
-        x = x.toString().replace(",", "");
-        var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        this.setState({ price: a });
+        if (x!= null && x != "" ){
+            x = x.toString().replace(",", "");
+            var a = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            this.setState({ price: a });
+        }
     }
 
 
@@ -211,7 +213,7 @@ export default class cost_registration extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code_}: {userProfile.PatientNationalCode}
+                            {lang.national_code_}: <Text style={{ fontFamily: "BNazanin", }}> {userProfile.PatientNationalCode}</Text>
                         </Text>
                         <List>
                             <ListItem itemDivider>
@@ -225,7 +227,7 @@ export default class cost_registration extends PureComponent {
                                     <Text
                                         style ={[styles.text, {marginRight: PixelRatio.get()==1?0:width*0.05}]} 
                                     >
-                                        {lang.cost_date}: {startDate}
+                                        {lang.cost_date}: <Text style={{ fontFamily: "BNazanin", }}>{startDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -257,7 +259,7 @@ export default class cost_registration extends PureComponent {
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.cost_price}</Label>
                             <Input
-                              //  style={styles.form_input}
+                                style={{ fontFamily: "BNazanin", }}
                                 keyboardType="numeric"
                                 value={this.state.price}
                                 onChange={(event) => { this.setState({ price: event.nativeEvent.text }); }}

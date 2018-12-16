@@ -44,10 +44,11 @@ export default class fractional_document_file extends PureComponent {
                                 switch (response.data.act) {
                                     case "Success":
                                         var count = this.state.file_send_count;
+                                        if (count==-1)count=0; 
                                         count++;
                                         this.setState({ file_send_count: count });
-
-                                        if (this.state.FileNumber !== null && count == this.state.images.length) {
+                                        // alert(count + " : "+ this.state.images.length);
+                                        if (count == this.state.images.length) {
                                            
                                             Alert.alert(
                                                 lang.info,
@@ -57,7 +58,7 @@ export default class fractional_document_file extends PureComponent {
                                                 ],
                                                 { cancelable: false }
                                             )
-                                            this.props.navigation.replace(this.state.parent, { data: this.state.data, parent: this.state.main_parent, userProfile: this.state.userProfile, userid: this.state.userid });
+                                            this.props.navigation.replace("fractional_documents_list", { data: this.state.data, parent: this.state.main_parent, userProfile: this.state.userProfile, userid: this.state.userid });
                                         }
                                         break;
                                 }
@@ -405,7 +406,7 @@ export default class fractional_document_file extends PureComponent {
                     >
                         <Text
                             style={[styles.font,]}
-                        >{lang.save}</Text>
+                        >{lang.send}</Text>
                     </Button>
                     <List>
                         <ListItem itemDivider>

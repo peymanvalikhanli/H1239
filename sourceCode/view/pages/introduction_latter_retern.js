@@ -187,13 +187,13 @@ export default class introduction_letter_retern extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.RequestDate}: {data.RequestDateFa}
+                            {lang.RequestDate}: <Text style={{ fontFamily: "BNazanin", }}>{data.RequestDateFa}</Text>
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.introduction_letter_No}:{data.SystemNumber}
+                            {lang.introduction_letter_No}:<Text style={{ fontFamily: "BNazanin", }}>{data.SystemNumber}</Text>
                         </Text>
                     </Form>
                     <List
@@ -211,13 +211,13 @@ export default class introduction_letter_retern extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.IntroductionLetterDate}: {data.IntroductionLetterDateFa}
+                            {lang.IntroductionLetterDate}: <Text style={{ fontFamily: "BNazanin", }}>{data.IntroductionLetterDateFa}</Text>
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.ValidityDateFa}: {data.ValidityDateFa}
+                            {lang.ValidityDateFa}: <Text style={{ fontFamily: "BNazanin", }}>{data.ValidityDateFa}</Text>
                         </Text>
                     </Form>
                     <List

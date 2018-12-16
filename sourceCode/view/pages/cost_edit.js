@@ -169,7 +169,7 @@ export default class cost_edit extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code_}: {data.PatientNationalCode}
+                            {lang.national_code_}: <Text style={{ fontFamily: "BNazanin", }}>{data.PatientNationalCode}</Text>
                         </Text>
                         <List>
                             <ListItem itemDivider>
@@ -201,7 +201,7 @@ export default class cost_edit extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_date}: {data.persian_date}
+                            {lang.cost_date}: <Text style={{ fontFamily: "BNazanin", }}>{data.persian_date}</Text>
                         </Text>
 
                         {/* <Item picker>
@@ -226,7 +226,7 @@ export default class cost_edit extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_price}: {data.price}
+                            {lang.cost_price}: <Text style={{ fontFamily: "BNazanin", }}>{data.price}</Text>
                         </Text>
 
 

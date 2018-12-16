@@ -65,7 +65,7 @@ export default class upload_file extends PureComponent {
                                        this.setState({ spinner:false });
                                         Alert.alert(
                                             lang.info,
-                                            response.data.Message + " " + lang.file_NO + ": " + this.state.FileNumber,
+                                            response.data.Message + " " + lang.file_NO + " " + this.state.FileNumber+ " "+ lang.write_on_document,
                                             [
                                                 { text: lang.yes },
                                             ],
@@ -446,7 +446,7 @@ export default class upload_file extends PureComponent {
                     >
                         <Text
                             style={[styles.font,]}
-                        >{lang.save}</Text>
+                        >{lang.send}</Text>
                     </Button>
                     <List>
                         <ListItem itemDivider>

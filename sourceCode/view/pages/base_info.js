@@ -136,7 +136,7 @@ export default class base_info extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code}: {userProfile.PatientNationalCode}
+                            {lang.national_code}: <Text style={{ fontFamily: "BNazanin", }}>{userProfile.PatientNationalCode}</Text>
                         </Text>
                         <Text
                             style={styles.text}
@@ -153,12 +153,12 @@ export default class base_info extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.birthday}: {userProfile.BirthDateFa}
+                            {lang.birthday}: <Text style={{ fontFamily: "BNazanin", }}>{userProfile.BirthDateFa}</Text>
                         </Text>
                         <Text
                             style={styles.text}
                         >
-                            {lang.sheba_No}: {userProfile.ShebaNo == null || userProfile.ShebaNo == "" ? "-" : userProfile.ShebaNo}
+                            {lang.sheba_No}: <Text style={{ fontFamily: "BNazanin", }}>{userProfile.ShebaNo == null || userProfile.ShebaNo == "" ? "-" : userProfile.ShebaNo}</Text>
                         </Text>
                     </Form>
                     <List

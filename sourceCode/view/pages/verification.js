@@ -150,15 +150,18 @@ export default class verification extends PureComponent {
                     <Body>
                         <Text style={[styles.text, { width: width * 0.5, textAlign: 'center' }]}>
                             {lang.system_verify}
-                            {mobile.substring(0, 4)}
-                            *****
-                            {mobile.substring(8, 11)}
+                            <Text style={{ fontFamily: "BNazanin", }}>
+                                {mobile.substring(0, 4)}
+                                *****
+                                {mobile.substring(8, 11)}
+                            </Text>
                     {lang.is_sending}
                         </Text>
                         <Form style={[styles.form, { flex: 1, flexDirection: 'row', justifyContent: 'space-between' }]} >
                             <Item floatingLabel
                                 style={styles.form_item} >
                                 <Input
+                                    style={{ fontFamily: "BNazanin", }}
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
@@ -173,6 +176,7 @@ export default class verification extends PureComponent {
                                 style={styles.form_item}
                             >
                                 <Input
+                                    style={{ fontFamily: "BNazanin", }}
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
@@ -188,6 +192,7 @@ export default class verification extends PureComponent {
                                 style={styles.form_item}
                             >
                                 <Input
+                                    style={{ fontFamily: "BNazanin", }}
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}
@@ -203,6 +208,7 @@ export default class verification extends PureComponent {
                                 style={styles.form_item}
                             >
                                 <Input
+                                    style={{ fontFamily: "BNazanin", }}
                                     keyboardType="numeric"
                                     placeholder=""
                                     maxLength={1}

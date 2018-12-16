@@ -382,7 +382,7 @@ export default class inroduction_latter_new extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.tarikh_bastari}: {startDate}
+                                        {lang.tarikh_bastari}: <Text style={{ fontFamily: "BNazanin", }}>{startDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -401,7 +401,7 @@ export default class inroduction_latter_new extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.tarikh_daryaft}: {endDate}
+                                        {lang.tarikh_daryaft}: <Text style={{ fontFamily: "BNazanin", }}>{endDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -460,7 +460,7 @@ export default class inroduction_latter_new extends PureComponent {
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.markaz_darmani}</Label>
                             <Input
-                                style={styles.form_input}
+                                style={{ fontFamily: "BNazanin", }}
                                 // keyboardType="numeric"
                                 value={this.state.markaz_darmani}
                                 onChange={(event) => { this.setState({ markaz_darmani: event.nativeEvent.text }); }}
@@ -488,7 +488,7 @@ export default class inroduction_latter_new extends PureComponent {
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.mobile}</Label>
                             <Input
-                                style={styles.form_input}
+                                style={{ fontFamily: "BNazanin", }}
                                 keyboardType="numeric"
                                 value={this.state.phone_number}
                                 onChange={(event) => { this.setState({ phone_number: event.nativeEvent.text }); }}
@@ -498,7 +498,7 @@ export default class inroduction_latter_new extends PureComponent {
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.sat_jahat_ersal}</Label>
                             <Input
-                                style={styles.form_input}
+                                style={{ fontFamily: "BNazanin", }}
                                 keyboardType="numeric"
                                 value={this.state.time}
                                 onChange={(event) => { this.setState({ time: event.nativeEvent.text }); }}

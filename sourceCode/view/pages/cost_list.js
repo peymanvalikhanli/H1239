@@ -127,7 +127,7 @@ export default class cost_list extends PureComponent {
                                 <Text
                                         style={styles.font_name}                                
                                 >
-                                    {data.persian_date}
+                                   <Text style={{ fontFamily: "BNazanin", }}> {data.persian_date}</Text>
                                     {/* {data.date.substring(0,10)} */}
                             </Text>
                                 <Body>

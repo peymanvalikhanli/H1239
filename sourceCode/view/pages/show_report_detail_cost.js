@@ -120,7 +120,7 @@ export default class show_report_detail_cost extends PureComponent {
         this.setState({ userid: userid, userProfile: userProfile, parent: parent, start_date: start_date, end_date: end_date });
 
         var data = this.props.navigation.state.params.data;
-
+        // alert(JSON.stringify(data));
         let date_picker = this.get_picker();
 
         return (
@@ -186,13 +186,13 @@ export default class show_report_detail_cost extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_price}: {this.create_currency_input(data.TransAmount)} {" "} {"ریال"}
+                            {lang.cost_price}: <Text style={{ fontFamily: "BNazanin", }}>{this.create_currency_input(data.TransAmount)}</Text> {" "} {"ریال"}
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.pay_price}:{this.create_currency_input(data.TotalPaidAmount)} {" "} {"ریال"}
+                            {lang.pay_price}:<Text style={{ fontFamily: "BNazanin", }}>{this.create_currency_input(data.TotalPaidAmount)}</Text> {" "} {"ریال"}
                         </Text>
                     </Form>
                     <List
@@ -210,19 +210,19 @@ export default class show_report_detail_cost extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.cost_date}: {data.TransDateFa}
+                            {lang.cost_date}: <Text style={{ fontFamily: "BNazanin", }}>{data.TransDateFa}</Text>
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.ReadyToPayDate}: {data.ReadyToPayDateFa}
+                            {lang.ReadyToPayDate}: <Text style={{ fontFamily: "BNazanin", }}>{data.SendToInsuranceDateFa}</Text>
                         </Text>
 
                         <Text
                             style={styles.text}
                         >
-                            {lang.pay_date}:{data.PaidDateFa}
+                            {lang.pay_date}: <Text style={{ fontFamily: "BNazanin", }}>{data.PaidDateFa}</Text>
                         </Text>
                     </Form>
                     <List
@@ -248,7 +248,7 @@ export default class show_report_detail_cost extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.file_NO}: {data.FileNumber}
+                            {lang.file_NO}: <Text style={{ fontFamily: "BNazanin", }}>{data.FileNumber}</Text>
                         </Text>
 
                         {/* <Text

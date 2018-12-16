@@ -130,14 +130,14 @@ export default class introduction_letter_list extends PureComponent {
                                 <Text
                                     style={styles.font_name}
                                 >
-                                    {data.RequestDateFa}
+                                   <Text style={{ fontFamily: "BNazanin", }}> {data.RequestDateFa}</Text>
                                 </Text>
                                 <Body>
                                     <Text
                                         style={styles.font_name}
 
                                     >
-                                        {data.ApplicantName} {"  "} {data.IntroductionLetterStatusTitle} {"  "} {data.SystemNumber != null? lang.number:""} {"  "} {data.SystemNumber}
+                                        {data.ApplicantName} {"  "} {data.IntroductionLetterStatusTitle} {"  "} {data.SystemNumber != null? lang.number:""} {"  "} <Text style={{ fontFamily: "BNazanin", }}>{data.SystemNumber}</Text>
                                     </Text>
                                 </Body>
                                 <Right/>

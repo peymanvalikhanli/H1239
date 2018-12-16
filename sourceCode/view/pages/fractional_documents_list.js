@@ -132,7 +132,7 @@ export default class fractional_documents_list extends PureComponent {
                                 <Text
                                     style={styles.font_name}
                                 >
-                                    {data.TransDateFa}
+                                   <Text style={{ fontFamily: "BNazanin", }}> {data.TransDateFa} </Text>
                                 </Text>
                                 <Body>
                                     <Text

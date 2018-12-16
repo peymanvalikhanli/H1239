@@ -154,6 +154,7 @@ export default class introduction extends PureComponent {
                                                 {lang.user_name}
                                             </Label>
                                             <Input
+                                                style={{ fontFamily: "BNazanin", }}
                                                 keyboardType="numeric"
                                                 maxLength={10}
                                                 onChange={(event) => this.setState({national_code: event.nativeEvent.text})}

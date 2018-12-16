@@ -289,7 +289,7 @@ export default class return_cost extends PureComponent {
                         <Text
                             style={styles.text}
                         >
-                            {lang.national_code_}: {data.PatientNationalCode}
+                            {lang.national_code_}: <Text style={{ fontFamily: "BNazanin", }}>{data.PatientNationalCode}</Text>
                         </Text>
                         <List>
                             <ListItem itemDivider>
@@ -303,7 +303,7 @@ export default class return_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.cost_date}: {startDate}
+                                        {lang.cost_date}: <Text style={{ fontFamily: "BNazanin", }}>{startDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -333,7 +333,7 @@ export default class return_cost extends PureComponent {
                         <Item floatingLabel>
                             <Label style={styles.form_input} >{lang.cost_price}</Label>
                             <Input
-                                style={styles.form_input}
+                                style={{ fontFamily: "BNazanin", }}
                                 keyboardType="numeric"
                                 value={this.state.price}
                                 onChange={(event) => { this.setState({ price: event.nativeEvent.text }); }}

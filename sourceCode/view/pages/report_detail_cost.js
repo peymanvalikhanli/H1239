@@ -74,7 +74,7 @@ export default class report_detail_cost extends PureComponent {
                 var data = JSON.parse(result);
                 this.setState({ startDate: data.start, endDate: data.end, req_start_date: data.req_start_date, req_end_date: data.req_end_date });
                 if (data.req_end_date != null && data.req_start_date != null) {
-                    this.get_data_from_server();
+                    this.get_data_from_server(this.state.userProfile.PatientNationalCode);
                 }
             }
         });
@@ -183,11 +183,10 @@ export default class report_detail_cost extends PureComponent {
                     </View>  */}
                     <List >
                         <ListItem itemDivider>
-                            <Left />
-                            <Body />
-                            <Right>
+                            
+                            <Body>
                                 <Text>{userProfile.PatientName}</Text>
-                            </Right>
+                            </Body>
                         </ListItem>
                     </List>
                     <Form>
@@ -199,7 +198,7 @@ export default class report_detail_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.start_date}: {this.state.startDate}
+                                        {lang.start_date}: <Text style={{ fontFamily: "BNazanin", }}>{this.state.startDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -218,7 +217,7 @@ export default class report_detail_cost extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.end_date}: {this.state.endDate}
+                                        {lang.end_date}: <Text style={{ fontFamily: "BNazanin", }}>{this.state.endDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -257,7 +256,7 @@ export default class report_detail_cost extends PureComponent {
                                 <Left>
                                     <Icon name="arrow-back" />
                                 </Left>
-                                <Text>
+                                <Text style={{ fontFamily: "BNazanin", }}>
                                     {data.TransDateFa}
                                 </Text>
                                 <Body>

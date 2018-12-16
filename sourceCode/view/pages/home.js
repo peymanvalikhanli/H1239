@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, PixelRatio } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, AsyncStorage, Alert, BackHandler, PixelRatio,ToastAndroid } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Badge } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -477,7 +477,7 @@ export default class home extends PureComponent {
                                     <Badge
                                         style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.15, marginLeft: PixelRatio.get() == 1 ? width * 0.05 : width * -0.05, }}
                                     >
-                                        <Text>{this.state.GetOdatTransCount}</Text>
+                                        <Text style={{ fontFamily: "BNazanin", }}>{this.state.GetOdatTransCount}</Text>
                                     </Badge>
                                     <Text
                                         style={{color: "#ffffff", marginTop:PixelRatio.get() == 1 ? height * 0.22 : height * 0.025,fontSize: width * 0.03,}}
@@ -501,7 +501,7 @@ export default class home extends PureComponent {
                                     <Badge
                                         style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.06, marginLeft: PixelRatio.get() == 1 ? width * 0.05 : width * 0.1, }}
                                     >
-                                        <Text>{this.state.BackedTransCount}</Text>
+                                        <Text style={{ fontFamily: "BNazanin", }}>{this.state.BackedTransCount}</Text>
                                     </Badge>
                                     <Text
                                         style={{color: "#ffffff", marginLeft:PixelRatio.get() == 1 ? width * 0.22 : width * -0.07,fontSize: width * 0.05,}}
