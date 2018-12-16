@@ -144,7 +144,11 @@ export default class home extends PureComponent {
         // alert(JSON.stringify(data));
         switch (data.RelationTypeId) {
             case 2:
-                return require('../image/p22.png');
+                if(data.GenderTypeId == 2){
+                    return require('../image/p41.png');
+                }else{
+                    return require('../image/p22.png');
+                }
                 break;
             case 3:
                 return require('../image/p51.png');
