@@ -19,5 +19,8 @@
 "UploadUserDocument":"http://new.armanins-maskan.com/Mobile/UploadUserDocument", 
 "GetBackedTransCount":"http://new.armanins-maskan.com/Mobile/GetBackedTransCount",
 "GetOdatTransCount":"new.armanins-maskan.com/Mobile/GetOdatTransCount", 
+"GetDocumentDetailById":"http://new.armanins-maskan.com/Mobile/GetDocumentDetailById",
+"GetDocumentTransId":"http://new.armanins-maskan.com/Mobile/GetDocumentTransId",
+"UpdateTrans":"http://new.armanins-maskan.com/Mobile/UpdateTrans",
 "":""
 }

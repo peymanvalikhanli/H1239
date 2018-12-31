@@ -439,7 +439,7 @@ export default class home extends PureComponent {
                             <View
                                 style={styles.footer_frame}
                             >
-                                <View
+                                {/* <View
                                     style={styles.footer}
                                 >
 
@@ -457,20 +457,21 @@ export default class home extends PureComponent {
                                         style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.06, }}
                                     >
                                         <Text>2</Text>
-                                    </Badge> */}
+                                    </Badge> 
                                     <Text
                                         style={{color: "#ffffff", marginLeft:PixelRatio.get() == 1 ? width * 0.22 : width * 0.1,fontSize: width * 0.05, marginTop:PixelRatio.get() == 1 ? width * 0.22 : height * -0.02}}
                                     >
                                         {lang.cost}
                                     </Text>
-                                </View>
+                                </View> */}
 
                                 <View
                                     style={{ flex: 0, justifyContent: 'center', }}
                                 >
                                     <Button transparent
                                         style={[styles.btn_main_footer, { marginTop: PixelRatio.get() == 1 ? height * 0.05 : height * -0.07, height: PixelRatio.get() == 1 ? width * 0.22 : width * 0.26 }]}
-                                        onPress={() => { this.props.navigation.replace("return_cost_list"); }}
+                                        // onPress={() => { this.props.navigation.replace("return_cost_list"); }}
+                                        onPress={() => { this.props.navigation.replace("fractional_documents_list"); }}
                                     >
                                         <Image
                                             style={styles.btn_main_footer}
@@ -481,15 +482,17 @@ export default class home extends PureComponent {
                                     <Badge
                                         style={{ marginTop: PixelRatio.get() == 1 ? height * 0.2 : height * -0.15, marginLeft: PixelRatio.get() == 1 ? width * 0.05 : width * -0.05, }}
                                     >
-                                        <Text style={{ fontFamily: "BNazanin", }}>{this.state.GetOdatTransCount}</Text>
+                                        {/* <Text style={{ fontFamily: "BNazanin", }}>{this.state.GetOdatTransCount}</Text> */}
+                                        <Text style={{ fontFamily: "BNazanin", }}>{this.state.BackedTransCount}</Text>
                                     </Badge>
                                     <Text
                                         style={{color: "#ffffff", marginTop:PixelRatio.get() == 1 ? height * 0.22 : height * 0.025,fontSize: width * 0.03,}}
                                     >
-                                        {lang.return}
+                                        {/* {lang.return} */}
+                                           {lang.kasri}
                                     </Text>
                                 </View>
-                                <View
+                                {/* <View
                                     style={styles.footer}
                                 >
                                     <Button transparent
@@ -510,9 +513,9 @@ export default class home extends PureComponent {
                                     <Text
                                         style={{color: "#ffffff", marginLeft:PixelRatio.get() == 1 ? width * 0.22 : width * -0.07,fontSize: width * 0.05,}}
                                     >
-                                        {lang.kasri}
+                                        {/* {lang.kasri} 
                                     </Text>
-                                </View>
+                                </View> */}
 
                             </View>
 

@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
     },
     font_name: {
         fontFamily: "DinarTwoMedium_MRT",
+        fontSize: width * 0.03,
     },
     form_item: {
 

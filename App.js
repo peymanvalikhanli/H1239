@@ -45,8 +45,9 @@ import test from './sourceCode/view/pages/test'
 
 const nave = StackNavigator({
 
-  // test: {screen: test}, 
-  
+  // test: {screen: test},
+  // personal_upload: { screen: personal_upload }, 
+
   introduction: { screen: introduction },
   verification: {screen: verification},
   home: {screen: home},

@@ -180,6 +180,7 @@ export default class upload_file extends PureComponent {
             file_send_count: -1,
             FileNumber: null,
             spinner: false,
+            current_image : -1 ,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -223,7 +224,8 @@ export default class upload_file extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
-                    onPress={() => { this.btn_delete(i) }}
+                    // onPress={() => { this.btn_delete(i) }}
+                    onPress={() => { this.btn_select_image(i) }}
                 >
                     {/* <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} /> */}
                     {/* <Image style={[styles.btn_img_]} source={{ uri:  img }} />                     */}
@@ -236,7 +238,18 @@ export default class upload_file extends PureComponent {
         return tem;
     }
 
-    btn_delete(id) {
+    btn_select_image(id){
+        this.setState({
+            avatarSource: this.state.images[id],
+            current_image: id,
+        })
+    }
+
+    btn_delete() {
+        var id = this.state.current_image;
+        if(id == -1 ){ // not select imge 
+            return;
+        }
         Alert.alert(
             lang.warning,
             lang.are_you_deleted,
@@ -253,7 +266,12 @@ export default class upload_file extends PureComponent {
         tem = this.state.images;
         tem.splice(id, 1);
         //alert(JSON.stringify(tem));
-        this.setState({ images: tem });
+        this.setState({
+             images: tem ,
+             current_image: (tem.length-1), 
+             avatarSource: this.state.images[tem.length-1]
+
+        });
         this.forceUpdate();
     }
 
@@ -262,9 +280,14 @@ export default class upload_file extends PureComponent {
         if (this.state.avatarSource !== null) {
             var tem = this.state.images;
             var a = tem.unshift(this.state.avatarSource);
-            this.setState({ images: tem });
-            //alert(this.state.avatar);
-            this.setState({ avatarSource: null });
+            this.setState({ 
+                images: tem,
+                current_image: (tem.length-1),
+             });
+            
+
+
+            //this.setState({ avatarSource: null });
         }
     }
 
@@ -357,6 +380,8 @@ export default class upload_file extends PureComponent {
                 this.setState({
                     avatarSource: source,
                 });
+                
+                this.btn_add_onclick();
             }
         });
     }
@@ -371,7 +396,6 @@ export default class upload_file extends PureComponent {
 
         ImagePicker.showImagePicker(options, (response) => {
             console.log('Response = ', response);
-
             if (response.didCancel) {
                 console.log('User cancelled video picker');
             } else if (response.error) {
@@ -403,8 +427,6 @@ export default class upload_file extends PureComponent {
         var record = this.props.navigation.state.params.record;
 
         this.setState({ record: record, userProfile: userProfile, userid: userid });
-
-
 
         return (
             <Container style={{ flex: 1 }}>
@@ -476,7 +498,10 @@ export default class upload_file extends PureComponent {
                         </PhotoUpload> */}
 
                         {/* select photo  */}
-                        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <TouchableOpacity 
+                        // onPress={this.selectPhotoTapped.bind(this)}
+                        onPress={() => { this.btn_delete() }}
+                        >
                             <View
                                 style={[
                                     styles.avatar,
@@ -484,7 +509,7 @@ export default class upload_file extends PureComponent {
                                     { marginBottom: 20 },
                                 ]}
                             >
-                                {this.state.avatarSource === null ? (
+                                {(this.state.avatarSource === null || this.state.images.length <=0 ) ? (
                                     <Image
                                         source={require('../image/camera.png')}
                                         resizeMode='stretch'
@@ -505,7 +530,8 @@ export default class upload_file extends PureComponent {
                         style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
                         <Button bordered large
-                            onPress={() => { this.btn_add_onclick(); }}
+                            // onPress={() => { this.btn_add_onclick(); }}
+                            onPress={this.selectPhotoTapped.bind(this)}
                             style={[styles.btn_img]}
                         >
                             <Icon large name="add" />

@@ -75,7 +75,7 @@ export default class introduction extends PureComponent {
                     
                     if(response.data.act != undefined || response.data.act != null){
                         
-                        if (response.data.act.trim() == 'NO User' || response.data.mobileNumber == '' ){
+                        if (response.data.act.trim() == 'NO User' || response.data.mobileNumber == '' || response.data.act.trim() == 'msg' ){
                             Alert.alert(
                                 lang.error,
                                 lang.NoUser,

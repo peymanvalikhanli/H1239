@@ -147,6 +147,7 @@ export default class personal_upload extends PureComponent {
             get_image_count: 0,
             avatarSource: null,
             file_send_count:0, 
+            current_image : -1 ,
         };
 
         this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
@@ -191,7 +192,8 @@ export default class personal_upload extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
-                    onPress={() => { this.btn_delete(i) }}
+                    // onPress={() => { this.btn_delete(i) }}
+                    onPress={() => { this.btn_select_image(i) }}
                 >
                     {i < this.state.get_image_count ? (
                         <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
@@ -204,7 +206,18 @@ export default class personal_upload extends PureComponent {
         return tem;
     }
 
-    btn_delete(id) {
+    btn_select_image(id){
+        this.setState({
+            avatarSource: this.state.images[id],
+            current_image: id,
+        })
+    }
+
+    btn_delete() {
+        var id = this.state.current_image;
+        if(id == -1 ){ // not select imge 
+            return;
+        }
         if (id >= this.state.get_image_count) {
             Alert.alert(
                 lang.warning,
@@ -222,7 +235,11 @@ export default class personal_upload extends PureComponent {
         var tem = [];
         tem = this.state.images;
         tem.splice(id, 1);
-        this.setState({ images: tem });
+        this.setState({ 
+            images: tem,  
+            current_image: (tem.length-1), 
+            avatarSource: this.state.images[tem.length-1]
+        });
         this.forceUpdate();
     }
 
@@ -231,8 +248,11 @@ export default class personal_upload extends PureComponent {
         if (this.state.avatarSource !== null) {
             var tem = this.state.images;
             var a = tem.push(this.state.avatarSource);
-            this.setState({ images: tem });
-            this.setState({ avatarSource: null });
+            this.setState({ 
+                images: tem, 
+                current_image: (tem.length-1),
+            });
+            // this.setState({ avatarSource: null });
         }
     }
 
@@ -282,6 +302,8 @@ export default class personal_upload extends PureComponent {
                 this.setState({
                     avatarSource: source,
                 });
+
+                this.btn_add_onclick();
             }
         });
     }
@@ -385,7 +407,10 @@ export default class personal_upload extends PureComponent {
                     <View
                         style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
-                        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <TouchableOpacity 
+                            // onPress={this.selectPhotoTapped.bind(this)}
+                            onPress={() => { this.btn_delete() }}
+                        >
                             <View
                                 style={[
                                     styles.avatar,
@@ -393,7 +418,7 @@ export default class personal_upload extends PureComponent {
                                     { marginBottom: 20 },
                                 ]}
                             >
-                                {this.state.avatarSource === null ? (
+                                {( this.state.avatarSource === null  || this.state.images.length <=0 )? (
                                     <Image
                                         source={require('../image/camera.png')}
                                         resizeMode='stretch'
@@ -413,7 +438,8 @@ export default class personal_upload extends PureComponent {
                         style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
                         <Button bordered large
-                            onPress={() => { this.btn_add_onclick(); }}
+                            // onPress={() => { this.btn_add_onclick(); }}
+                            onPress={this.selectPhotoTapped.bind(this)}
                             style={[styles.btn_img]}
                         >
                             <Icon large name="add" />

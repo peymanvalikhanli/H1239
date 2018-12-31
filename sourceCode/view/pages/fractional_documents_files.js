@@ -72,24 +72,19 @@ export default class fractional_document_file extends PureComponent {
         });
 
     }
-
-
-    get_images() {
-        if (this.state.transId == null || this.state.transId == undefined || this.state.transId == "") {
-            setTimeout(() => {
-                this.get_images();
-            }, 1000);
-            return;
-        }
-        axios.post(server_url.GetTransDocumentDetail, {
+    
+    set_count_document(){
+        
+        axios.post(server_url.UpdateTrans, {
             userkey: this.state.Token,
-            id: this.state.transId,
-            fileType: 3
+            transId: this.state.transId,
+            pageCount: this.state.file_send_count,
         })
             .then(response => {
                 // alert(JSON.stringify(response));
+               // alert(response.data);                
                 if (response.data.act != undefined || response.data.act != null) {
-                    //alert(JSON.stringify(response.data));
+                  //  alert(JSON.stringify(response.data));
                     switch (response.data.act) {
                         case "Error":
                             Alert.alert(
@@ -111,18 +106,189 @@ export default class fractional_document_file extends PureComponent {
                                 { cancelable: false }
                             )
                             break;
-                        case "Success":
-                            if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
-                                var tem = [];
-                                response.data.UserDocumentDetail.map((img, i) => {
+                        }
+                    return;
+                    }
+
+                    //alert(response.data);
+                    this.setState({ 
+                        images_id_list: response.data.split(",")
+                    });
+                     var tem = response.data.split(",");
+                     this.get_images(tem.length-1);                        
+                
+                //}
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
+    get_image_id_list(){
+        if (this.state.transId == null || this.state.transId == undefined || this.state.transId == "") {
+            setTimeout(() => {
+                this.get_images();
+            }, 1000);
+            return;
+        }
+        //alert("hello");
+        axios.post(server_url.GetDocumentTransId, {
+            userkey: this.state.Token,
+            transId: this.state.transId,
+            fileType: 3
+        })
+            .then(response => {
+                // alert(JSON.stringify(response));
+               // alert(response.data);                
+                if (response.data.act != undefined || response.data.act != null) {
+                  //  alert(JSON.stringify(response.data));
+                    switch (response.data.act) {
+                        case "Error":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        case "msg":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        }
+                    return;
+                    }
+
+                    //alert(response.data);
+                    this.setState({ 
+                        images_id_list: response.data.split(",")
+                    });
+                     var tem = response.data.split(",");
+                     this.get_images(tem.length-1);                        
+                
+                //}
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+    /*
+    // get_images() {
+    //     if (this.state.transId == null || this.state.transId == undefined || this.state.transId == "") {
+    //         setTimeout(() => {
+    //             this.get_images();
+    //         }, 1000);
+    //         return;
+    //     }
+    //     axios.post(server_url.GetTransDocumentDetail, {
+    //         userkey: this.state.Token,
+    //         id: this.state.transId,
+    //         fileType: 3
+    //     })
+    //         .then(response => {
+    //             // alert(JSON.stringify(response));
+    //             if (response.data.act != undefined || response.data.act != null) {
+    //                 //alert(JSON.stringify(response.data));
+    //                 switch (response.data.act) {
+    //                     case "Error":
+    //                         Alert.alert(
+    //                             lang.error,
+    //                             response.data.Message,
+    //                             [
+    //                                 { text: lang.yes },
+    //                             ],
+    //                             { cancelable: false }
+    //                         )
+    //                         break;
+    //                     case "msg":
+    //                         Alert.alert(
+    //                             lang.error,
+    //                             response.data.Message,
+    //                             [
+    //                                 { text: lang.yes },
+    //                             ],
+    //                             { cancelable: false }
+    //                         )
+    //                         break;
+    //                     case "Success":
+    //                         if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
+    //                             var tem = [];
+    //                             response.data.UserDocumentDetail.map((img, i) => {
+    //                                 tem.push(img.Content_String)
+    //                             }
+    //                             );
+    //                             this.setState({ images: tem, get_image_count: tem.length, file_send_count:tem.length });
+    //                         }
+    //                         break;
+
+    //                 }
+    //             }
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
+*/
+    get_images(id) {
+      //  alert(this.state.images_id_list[id]);
+        //return;
+        axios.post(server_url.GetDocumentDetailById, {
+            documentId: this.state.images_id_list[id],
+        })
+            .then(response => {
+                // alert(JSON.stringify(response));
+                if (response.data.act != undefined || response.data.act != null) {
+                   // alert(JSON.stringify(response.data));
+                    switch (response.data.act) {
+                        case "Error":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        case "msg":
+                            Alert.alert(
+                                lang.error,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            break;
+                        }
+                        return; 
+                    }
+
+                            if (response.data!= undefined || response.data != null || response.data != '') {
+                                var tem = this.state.images;
+                                response.data.map((img, i) => {
                                     tem.push(img.Content_String)
                                 }
                                 );
-                                this.setState({ images: tem, get_image_count: tem.length, file_send_count:tem.length });
+                                this.setState({ 
+                                    images: tem, 
+                                    get_image_count: tem.length, 
+                                    file_send_count: tem.length 
+                                });
                             }
-                            break;
-
-                    }
+               // }
+                if(id > 0){
+                    this.get_images(id-1); 
                 }
             })
             .catch(function (error) {
@@ -147,6 +313,7 @@ export default class fractional_document_file extends PureComponent {
             FileNumber: null,
             get_image_count: 0,
             spinner: false,
+            current_image : -1 ,
         };
 
         this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
@@ -156,7 +323,9 @@ export default class fractional_document_file extends PureComponent {
             if (result != null) {
                 this.setState({ Token: result });
                 //     this.get_data_from_server();
-                this.get_images();
+               // this.get_images();
+                this.get_image_id_list();
+                //this.get_images(0);
             }
         });
 
@@ -191,7 +360,8 @@ export default class fractional_document_file extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
-                    onPress={() => { this.btn_delete(i) }}
+                    // onPress={() => { this.btn_delete(i) }}
+                    onPress={() => { this.btn_select_image(i) }}                    
                 >
                     {i < this.state.get_image_count ? (
                         <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
@@ -202,6 +372,13 @@ export default class fractional_document_file extends PureComponent {
             );
         });
         return tem;
+    }
+
+    btn_select_image(id){
+        this.setState({
+            avatarSource: this.state.images[id],
+            current_image: id,
+        })
     }
 
     btn_delete(id) {
@@ -223,7 +400,11 @@ export default class fractional_document_file extends PureComponent {
         tem = this.state.images;
         tem.splice(id, 1);
         //alert(JSON.stringify(tem));
-        this.setState({ images: tem });
+        this.setState({ 
+            images: tem,
+            current_image: (tem.length-1), 
+            avatarSource: this.state.images[tem.length-1]
+        });
         this.forceUpdate();
     }
 
@@ -235,10 +416,13 @@ export default class fractional_document_file extends PureComponent {
             // var a = tem.unshift(this.state.avatarSource);
             var a = tem.push(this.state.avatarSource);
             // var a = tem2.unshift(this.state.avatarSource);
-            this.setState({ images: tem });
+            this.setState({
+                 images: tem,
+                 current_image: (tem.length-1),
+            });
             // this.setState({ up_images: tem2 });
             //alert(this.state.avatar);
-            this.setState({ avatarSource: null });
+            // this.setState({ avatarSource: null });
         }
     }
 
@@ -287,6 +471,7 @@ export default class fractional_document_file extends PureComponent {
        // this.setState({ file_send_count: 0 });
         this.setState({ spinner: true });
         this.upload_file_server(this.state.transId);
+        this.set_count_document();
 
     }
 
@@ -319,6 +504,9 @@ export default class fractional_document_file extends PureComponent {
                 this.setState({
                     avatarSource: source,
                 });
+
+                this.btn_add_onclick();
+                
             }
         });
     }
@@ -434,7 +622,10 @@ export default class fractional_document_file extends PureComponent {
                         </PhotoUpload> */}
 
                         {/* select photo  */}
-                        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
+                        <TouchableOpacity 
+                            // onPress={this.selectPhotoTapped.bind(this)}
+                            onPress={() => { this.btn_delete() }}
+                        >
                             <View
                                 style={[
                                     styles.avatar,
@@ -463,7 +654,8 @@ export default class fractional_document_file extends PureComponent {
                         style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
                         <Button bordered large
-                            onPress={() => { this.btn_add_onclick(); }}
+                            // onPress={() => { this.btn_add_onclick(); }}
+                            onPress={this.selectPhotoTapped.bind(this)}                            
                             style={[styles.btn_img]}
                         >
                             <Icon large name="add" />
