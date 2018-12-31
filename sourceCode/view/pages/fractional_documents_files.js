@@ -375,13 +375,21 @@ export default class fractional_document_file extends PureComponent {
     }
 
     btn_select_image(id){
-        this.setState({
-            avatarSource: this.state.images[id],
-            current_image: id,
-        })
+        // if(id >= this.state.get_image_count)
+        // {
+             this.setState({
+                avatarSource: this.state.images[id],
+                current_image: id,
+            });
+
+      //  }  
     }
 
-    btn_delete(id) {
+    btn_delete() {
+        var id = this.state.current_image;
+        if(id == -1 ){ // not select imge 
+            return;
+        }
         if (id >= this.state.get_image_count) {
             Alert.alert(
                 lang.warning,
@@ -640,8 +648,15 @@ export default class fractional_document_file extends PureComponent {
                                         style={[{ flex: 1, width: width * 0.8 }]}
                                     />
                                 ) : (
+                                    this.state.current_image < this.state.get_image_count ? (
+                                        
+                                        <Image style={styles.avatar} source={{ uri: 'data:image/png;base64,' +this.state.avatarSource}} />
+                                        
+                                    ):(
                                         <Image style={styles.avatar} source={this.state.avatarSource} />
-                                    )}
+                                    )
+                                )
+                                }
                             </View>
                         </TouchableOpacity>
 
