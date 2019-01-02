@@ -60,7 +60,7 @@ export default class upload_file extends PureComponent {
                                     count++;
                                     this.setState({ file_send_count: count });
 
-                                    if (this.state.FileNumber !== null && this.state.file_send_count == this.state.images.length) {
+                                    if (this.state.FileNumber !== null && this.state.file_send_count >= this.state.images.length) {
                                        // alert(this.state.FileNumber);
                                        this.setState({ spinner:false });
                                         Alert.alert(

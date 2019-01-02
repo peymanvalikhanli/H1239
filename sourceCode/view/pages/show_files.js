@@ -15,22 +15,80 @@ import server_url from '../../model/server_config/controller_url.json';
 
 export default class show_files extends PureComponent {
 
-    get_images() {
+    // get_images() {
+    //     if (this.state.transId == null || this.state.transId == undefined || this.state.transId == "") {
+    //         setTimeout(() => {
+    //             this.get_images();
+    //         }, 1000);
+    //         return;
+    //     }
+    //     axios.post(server_url.GetTransDocumentDetail, {
+    //         userkey: this.state.Token,
+    //         id: this.state.transId,
+    //         fileType: 3
+    //     })
+    //         .then(response => {
+    //             // alert(JSON.stringify(response));
+    //             if (response.data.act != undefined || response.data.act != null) {
+    //                 //alert(JSON.stringify(response.data));
+    //                 switch (response.data.act) {
+    //                     case "Error":
+    //                         Alert.alert(
+    //                             lang.error,
+    //                             response.data.Message,
+    //                             [
+    //                                 { text: lang.yes },
+    //                             ],
+    //                             { cancelable: false }
+    //                         )
+    //                         break;
+    //                     case "msg":
+    //                         Alert.alert(
+    //                             lang.error,
+    //                             response.data.Message,
+    //                             [
+    //                                 { text: lang.yes },
+    //                             ],
+    //                             { cancelable: false }
+    //                         )
+    //                         break;
+    //                     case "Success":
+    //                         if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
+    //                             var tem = [];
+    //                             response.data.UserDocumentDetail.map((img, i) => {
+    //                                 tem.push(img.Content_String)
+    //                             }
+    //                             );
+    //                             this.setState({ images: tem , avatar: tem[0]});
+    //                         }
+    //                         break;
+
+    //                 }
+    //             }
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
+
+    get_image_id_list(){
         if (this.state.transId == null || this.state.transId == undefined || this.state.transId == "") {
             setTimeout(() => {
                 this.get_images();
             }, 1000);
             return;
         }
-        axios.post(server_url.GetTransDocumentDetail, {
+        //alert("hello");
+        axios.post(server_url.GetDocumentTransId, {
             userkey: this.state.Token,
-            id: this.state.transId,
+            transId: this.state.transId,
             fileType: 3
         })
             .then(response => {
                 // alert(JSON.stringify(response));
+               // alert(response.data);                
                 if (response.data.act != undefined || response.data.act != null) {
-                    //alert(JSON.stringify(response.data));
+                  //  alert(JSON.stringify(response.data));
                     switch (response.data.act) {
                         case "Error":
                             Alert.alert(
@@ -52,24 +110,83 @@ export default class show_files extends PureComponent {
                                 { cancelable: false }
                             )
                             break;
-                        case "Success":
-                            if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
-                                var tem = [];
-                                response.data.UserDocumentDetail.map((img, i) => {
-                                    tem.push(img.Content_String)
-                                }
-                                );
-                                this.setState({ images: tem , avatar: tem[0]});
-                            }
-                            break;
-
+                        }
+                    return;
                     }
-                }
+
+                    //alert(response.data);
+                    this.setState({ 
+                        images_id_list: response.data.split(",")
+                    });
+                     var tem = response.data.split(",");
+                     this.get_images(tem.length-1);                        
+                
+                //}
             })
             .catch(function (error) {
                 console.log(error);
             });
+
     }
+   
+
+    get_images(id) {
+        //  alert(this.state.images_id_list[id]);
+          //return;
+          axios.post(server_url.GetDocumentDetailById, {
+              documentId: this.state.images_id_list[id],
+          })
+              .then(response => {
+                  // alert(JSON.stringify(response));
+                  if (response.data.act != undefined || response.data.act != null) {
+                     // alert(JSON.stringify(response.data));
+                      switch (response.data.act) {
+                          case "Error":
+                              Alert.alert(
+                                  lang.error,
+                                  response.data.Message,
+                                  [
+                                      { text: lang.yes },
+                                  ],
+                                  { cancelable: false }
+                              )
+                              break;
+                          case "msg":
+                              Alert.alert(
+                                  lang.error,
+                                  response.data.Message,
+                                  [
+                                      { text: lang.yes },
+                                  ],
+                                  { cancelable: false }
+                              )
+                              break;
+                          }
+                          return; 
+                      }
+  
+                              if (response.data!= undefined || response.data != null || response.data != '') {
+                                  var tem = this.state.images;
+                                  response.data.map((img, i) => {
+                                      tem.push(img.Content_String)
+                                  }
+                                  );
+                                  this.setState({ 
+                                      images: tem, 
+                                      get_image_count: tem.length, 
+                                      file_send_count: tem.length 
+                                  });
+                              }
+                 // }
+                  if(id > 0){
+                      this.get_images(id-1); 
+                  }
+              })
+              .catch(function (error) {
+                  console.log(error);
+              });
+      }
+  
 
     constructor() {
         super();
@@ -88,7 +205,8 @@ export default class show_files extends PureComponent {
             if (result != null) {
                 this.setState({ Token: result });
                 //     this.get_data_from_server();
-                this.get_images();
+                // this.get_images();
+                get_image_id_list();
             }
         });
     }

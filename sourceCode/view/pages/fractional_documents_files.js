@@ -78,7 +78,7 @@ export default class fractional_document_file extends PureComponent {
         axios.post(server_url.UpdateTrans, {
             userkey: this.state.Token,
             transId: this.state.transId,
-            pageCount: this.state.file_send_count,
+            pageCount: this.state.file_send_count+1,
         })
             .then(response => {
                 // alert(JSON.stringify(response));

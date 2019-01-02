@@ -121,7 +121,7 @@ export default class introduction_letter_list extends PureComponent {
                         dataArray={this.state.LstIntroductionLetterRequestList}
                         renderRow={data =>
                             <ListItem icon
-                                style={{backgroundColor: (data.IntroductionLetterStatusId==1? "#cad6cd": data.IntroductionLetterStatusId==2?"#f6c04e":data.IntroductionLetterStatusId==3?"#8cbbf1":data.IntroductionLetterStatusId==4?"white":"#ea412c")}}
+                                style={{backgroundColor: (data.IntroductionLetterStatusId==1? "#B4F5DC": data.IntroductionLetterStatusId==2?"#96D7BE":data.IntroductionLetterStatusId==3?"#5A9B82":data.IntroductionLetterStatusId==4?"#3C7D64":data.IntroductionLetterStatusId==5?"#C41F1F":data.IntroductionLetterStatusId==6?"#78B9A0":data.IntroductionLetterStatusId==7?"#911F1F":data.IntroductionLetterStatusId==8?"#1E5F46":"#004128")}}
                             onPress={()=>{if (data.IntroductionLetterStatusId==5){this.props.navigation.replace("introduction_letter_retern",{data:data});}else {this.props.navigation.replace("introduction_letter",{data:data});}}}                            
                             >
                                 <Left>
@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     },
     font_name: {
         fontFamily: "DinarTwoMedium_MRT",
+        fontSize: width * 0.025,
     },
     form_item: {
 

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, TouchableOpacity, PixelRatio } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -7,6 +7,10 @@ import Orientation from 'react-native-orientation';
 import lang from '../../model/lang/fa.json';
 
 import PhotoUpload from 'react-native-photo-upload';
+
+import RNFetchBlob from 'react-native-fetch-blob';
+
+import ImagePicker from 'react-native-image-picker';
 
 import axios from 'axios';
 
@@ -66,6 +70,7 @@ export default class introduction_latter_upload extends PureComponent {
             images: [],
             avatar: null,
             data_list: [],
+            current_image : -1 ,
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -74,6 +79,9 @@ export default class introduction_latter_upload extends PureComponent {
                 //     this.get_data_from_server();
             }
         });
+
+        this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
+        this.selectVideoTapped = this.selectVideoTapped.bind(this);
     }
 
     componentDidMount() {
@@ -105,24 +113,73 @@ export default class introduction_latter_upload extends PureComponent {
             return (
                 <Button
                     style={[styles.btn_img]}
+                    // onPress={() => { this.btn_delete(i) }}
+                    onPress={() => { this.btn_select_image(i) }}
                 >
-                    <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} />
+                    {/* <Image style={[styles.btn_img_]} source={{ uri: 'data:image/png;base64,' + img }} /> */}
+                    {/* <Image style={[styles.btn_img_]} source={{ uri:  img }} />                     */}
+                    <Image style={[styles.btn_img_]} source={img}
+                    />
+
                 </Button>
             );
         });
         return tem;
     }
 
+    btn_select_image(id){
+        this.setState({
+            avatarSource: this.state.images[id],
+            current_image: id,
+        })
+    }
+
+    btn_delete() {
+        var id = this.state.current_image;
+        if(id == -1 ){ // not select imge 
+            return;
+        }
+        Alert.alert(
+            lang.warning,
+            lang.are_you_deleted,
+            [
+                { text: lang.no },
+                { text: lang.yes, onPress: () => { this.delete_image(id) } },
+            ],
+            { cancelable: false }
+        )
+    }
+
+    delete_image(id) {
+        var tem = [];
+        tem = this.state.images;
+        tem.splice(id, 1);
+        //alert(JSON.stringify(tem));
+        this.setState({
+             images: tem ,
+             current_image: (tem.length-1), 
+             avatarSource: this.state.images[tem.length-1]
+
+        });
+        this.forceUpdate();
+    }
+
     btn_add_onclick() {
 
-        if (this.state.avatar !== null) {
+        if (this.state.avatarSource !== null) {
             var tem = this.state.images;
-            var a = tem.unshift(this.state.avatar);
-            this.setState({ images: tem });
-            //alert(this.state.avatar);
-            this.setState({ avatar: null });
+            var a = tem.unshift(this.state.avatarSource);
+            this.setState({ 
+                images: tem,
+                current_image: (tem.length-1),
+             });
+            
+
+
+            //this.setState({ avatarSource: null });
         }
     }
+
 
     btn_save_onclick() {
         if (this.state.images.length <= 0) {
@@ -138,6 +195,65 @@ export default class introduction_latter_upload extends PureComponent {
         }
 
         this.upload_file_server(this.state.data.Id);
+    }
+
+    // new code 
+    selectPhotoTapped() {
+        const options = {
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true,
+            },
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                let source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                this.setState({
+                    avatarSource: source,
+                });
+                
+                this.btn_add_onclick();
+            }
+        });
+    }
+
+    selectVideoTapped() {
+        const options = {
+            title: 'Video Picker',
+            takePhotoButtonTitle: 'Take Video...',
+            mediaType: 'video',
+            videoQuality: 'medium',
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+            if (response.didCancel) {
+                console.log('User cancelled video picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                this.setState({
+                    videoSource: response.uri,
+                });
+            }
+        });
     }
 
     render() {
@@ -206,7 +322,7 @@ export default class introduction_latter_upload extends PureComponent {
                     <View
                         style={[{ flex: 1, justifyContent: 'center', width, height: height * 0.6, textAlign: 'center', flexDirection: 'column', alignItems: 'center', marginTop: height * 0.01, marginBottom: height * 0.01 },]}
                     >
-                        <PhotoUpload
+                        {/* <PhotoUpload
                             onPhotoSelect={avatar => {
                                 if (avatar) {
                                     this.setState({
@@ -221,7 +337,31 @@ export default class introduction_latter_upload extends PureComponent {
                                 resizeMode='stretch'
                                 style={[{ flex: 1, width: width * 0.8 }]}
                             />
-                        </PhotoUpload>
+                        </PhotoUpload> */}
+
+                        {/* select photo*/}
+                         <TouchableOpacity 
+                        // onPress={this.selectPhotoTapped.bind(this)}
+                        onPress={() => { this.btn_delete() }}
+                        >
+                            <View
+                                style={[
+                                    styles.avatar,
+                                    styles.avatarContainer,
+                                    { marginBottom: 20 },
+                                ]}
+                            >
+                                {(this.state.avatarSource === null || this.state.images.length <=0 ) ? (
+                                    <Image
+                                        source={require('../image/camera.png')}
+                                        resizeMode='stretch'
+                                        style={[{ flex: 1, width: width * 0.8 }]}
+                                    />
+                                ) : (
+                                        <Image style={styles.avatar} source={this.state.avatarSource} />
+                                    )}
+                            </View>
+                        </TouchableOpacity>
 
                     </View>
                     <List>
@@ -232,7 +372,8 @@ export default class introduction_latter_upload extends PureComponent {
                         style={{ flex: 1, flexDirection: 'row', paddingRight: width * 0.01, paddingRight: width * 0.01 }}
                     >
                         <Button bordered large
-                            onPress={() => { this.btn_add_onclick(); }}
+                            // onPress={() => { this.btn_add_onclick(); }}
+                            onPress={this.selectPhotoTapped.bind(this)}
                             style={[styles.btn_img]}
                         >
                             <Icon large name="add" />
@@ -306,5 +447,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
         resizeMode: 'stretch',
+    },
+    avatarContainer: {
+        borderColor: '#9B9B9B',
+        borderWidth: 1 / PixelRatio.get(),
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    avatar: {
+        borderRadius: 0,
+        width: width,
+        height: height * 0.6,
     },
 });

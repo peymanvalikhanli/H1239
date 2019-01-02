@@ -13,6 +13,7 @@ import axios from 'axios';
 
 import server_url from '../../model/server_config/controller_url.json';
 
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default class inroduction_latter_new extends PureComponent {
 
@@ -35,7 +36,16 @@ export default class inroduction_latter_new extends PureComponent {
                 .then(response => {
                     // alert(JSON.stringify(response));  
                     switch (response.data.act) {
+                       
                         case "Success":
+                        // check it for send file
+                        var count = this.state.file_send_count;
+                        count++;
+                        this.setState({ file_send_count: count });
+
+                        if (this.state.file_send_count >= this.state.images.length) {
+
+                            this.setState({ spinner:false });
                             Alert.alert(
                                 lang.info,
                                 response.data.Message,
@@ -44,11 +54,14 @@ export default class inroduction_latter_new extends PureComponent {
                                 ],
                                 { cancelable: false }
                             )
-                            break;
+                            this.props.navigation.replace("introduction_letter_list");
+                        }
+                        break;
                     }
                 })
                 .catch(function (error) {
                     //console.log(error);
+                    this.setState({ spinner:false });
                     alert(JSON.stringify(error));
                 });
 
@@ -89,32 +102,39 @@ export default class inroduction_latter_new extends PureComponent {
                         // }
                         // alert(JSON.stringify(response.data));
                         // return;
-                        Alert.alert(
-                            lang.info,
-                            response.data.Message,
-                            [
-                                { text: lang.yes },
-                            ],
-                            { cancelable: false }
-                        )
-
+                       
+                        var show_msg = true ; 
                         AsyncStorage.getItem('name_bime_gozar', (err, result) => {
                             if (result != null && result.trim() != "#") {
                                 this.upload_file_server(response.data.Id, JSON.parse(result));
+                                show_msg =false; 
                             }
                         });
                         AsyncStorage.getItem('dastur_pezashk', (err, result) => {
                             if (result != null && result.trim() != "#") {
                                 this.upload_file_server(response.data.Id, JSON.parse(result));
+                                show_msg = false; 
                             }
                         });
-
+                        if(show_msg == true){
+                            this.setState({ spinner:false });
+                            Alert.alert(
+                                lang.info,
+                                response.data.Message,
+                                [
+                                    { text: lang.yes },
+                                ],
+                                { cancelable: false }
+                            )
+                            this.props.navigation.replace("introduction_letter_list");
+                        }
 
                         //this.props.navigation.replace("home");
                         break;
                 }
             })
             .catch(function (error) {
+                this.setState({ spinner:false });
                 console.log(error);
             });
     }
@@ -177,6 +197,9 @@ export default class inroduction_latter_new extends PureComponent {
             selectedPicker: '#',
             selectedPicker_TariffCategory: '#',
             markaz_darmani:'',
+            read_record : false,
+            file_send_count: -1,
+            spinner:false, 
         };
 
         AsyncStorage.getItem('Token', (err, result) => {
@@ -270,6 +293,30 @@ export default class inroduction_latter_new extends PureComponent {
 
     btn_next(userid, userProfile) {
 
+        if (this.state.selectedendDate == '#' || this.state.selectedendDate == null || this.state.selectedendDate == '') {
+
+            Alert.alert(
+                lang.error,
+                lang.enter_end_date,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
+        if (this.state.selectedStartDate == '#' || this.state.selectedStartDate == null || this.state.selectedStartDate == '') {
+
+            Alert.alert(
+                lang.error,
+                lang.enter_start_date,
+                [
+                    { text: lang.yes },
+                ],
+                { cancelable: false }
+            )
+            return;
+        }
         if (this.state.phone_number == '#' || this.state.phone_number == null || this.state.phone_number == '') {
 
             Alert.alert(
@@ -306,7 +353,7 @@ export default class inroduction_latter_new extends PureComponent {
             )
             return;
         }
-
+        this.setState({ spinner:true });
         this.register(userProfile);
 
     }
@@ -323,7 +370,7 @@ export default class inroduction_latter_new extends PureComponent {
         var userProfile = this.props.navigation.state.params.userProfile;
         var record = this.props.navigation.state.params.record;
 
-        if (record != "") {
+        if (this.state.read_record == false) {
 
             this.setState({
               //  req_start_date: record.introductionLetterDate,
@@ -334,7 +381,7 @@ export default class inroduction_latter_new extends PureComponent {
                 selectedendDate: record.selectedendDate,
                 selectedStartDate: record.selectedStartDate,
             });
-            record = "";
+            this.setState({read_record:true});
         }
 
 
@@ -382,7 +429,7 @@ export default class inroduction_latter_new extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.tarikh_bastari}: <Text style={{ fontFamily: "BNazanin", }}>{startDate}</Text>
+                                       {"  "} {lang.tarikh_bastari}: <Text style={{ fontFamily: "BNazanin", }}>{startDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>
@@ -401,7 +448,7 @@ export default class inroduction_latter_new extends PureComponent {
                                     <Text
                                         style={styles.text}
                                     >
-                                        {lang.tarikh_daryaft}: <Text style={{ fontFamily: "BNazanin", }}>{endDate}</Text>
+                                        {"  "} {lang.tarikh_daryaft}: <Text style={{ fontFamily: "BNazanin", }}>{endDate}</Text>
                                     </Text>
                                 </CollapseHeader>
                                 <CollapseBody>

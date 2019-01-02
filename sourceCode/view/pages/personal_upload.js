@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, TouchableOpacity, PixelRatio } from 'react-native';
+import { Image, View, Dimensions, StyleSheet, Alert, AsyncStorage, BackHandler, TouchableOpacity, PixelRatio, ToastAndroid } from 'react-native';
 import { Container, Header, Content, Body, Label, Form, Button, Input, Item, Text, Right, Icon, Left, Footer, List, ListItem, Picker, Thumbnail } from 'native-base';
 import Orientation from 'react-native-orientation';
 
@@ -60,7 +60,18 @@ export default class personal_upload extends PureComponent {
                         case "Success":
                             if (response.data.UserDocumentDetail != undefined || response.data.UserDocumentDetail != null || response.data.UserDocumentDetail != '') {
                                 var tem = [];
+                                var show_msg = false; 
                                 response.data.UserDocumentDetail.map((img, i) => {
+                                    if(show_msg== false){
+                                        ToastAndroid.showWithGravityAndOffset(
+                                            img.Description,
+                                            ToastAndroid.LONG,
+                                            ToastAndroid.BOTTOM,
+                                            25,
+                                            50,
+                                          );
+                                        show_msg = true;
+                                    }
                                     tem.push(img.Content_String)
                                 }
                                 );
@@ -148,6 +159,7 @@ export default class personal_upload extends PureComponent {
             avatarSource: null,
             file_send_count:0, 
             current_image : -1 ,
+            show_msg: true,
         };
 
         this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
@@ -357,6 +369,22 @@ export default class personal_upload extends PureComponent {
 
 
         this.setState({ Type: Type, userid: userid, userProfile: userProfile, parent: parent, doc_data: doc_data, doc_icon: doc_icon, doc_color: doc_color });
+
+        if(this.state.show_msg == false){
+
+        ToastAndroid.showWithGravityAndOffset(
+            'A wild toast appeared!',
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50,
+          );
+
+          this.setState({
+            show_msg: true,
+          })
+        }
+
 
         return (
             <Container style={{ flex: 1 }}>
