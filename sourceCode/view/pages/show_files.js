@@ -206,7 +206,7 @@ export default class show_files extends PureComponent {
                 this.setState({ Token: result });
                 //     this.get_data_from_server();
                 // this.get_images();
-                get_image_id_list();
+                this.get_image_id_list();
             }
         });
     }
