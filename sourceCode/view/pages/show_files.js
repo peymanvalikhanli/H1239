@@ -135,6 +135,7 @@ export default class show_files extends PureComponent {
           //return;
           axios.post(server_url.GetDocumentDetailById, {
               documentId: this.state.images_id_list[id],
+              userkey: this.state.Token,
           })
               .then(response => {
                   // alert(JSON.stringify(response));

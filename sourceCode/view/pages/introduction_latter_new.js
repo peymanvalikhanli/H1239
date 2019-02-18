@@ -27,6 +27,7 @@ export default class inroduction_latter_new extends PureComponent {
             data.append('fileType', 5);
             data.append('contentType', "image/png");
             data.append('content', img);
+            data.append('userkey', this.state.Token); 
 
             axios.post(server_url.UploadDocument, data, {
                 headers: {

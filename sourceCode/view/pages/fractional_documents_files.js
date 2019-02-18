@@ -33,6 +33,7 @@ export default class fractional_document_file extends PureComponent {
                         data.append('fileType', 3);
                         data.append('contentType', "image/png");
                         data.append('content', img_data);
+                        data.append('userkey',this.state.Token);
 
                         axios.post(server_url.UploadDocument, data, {
                             headers: {
@@ -244,6 +245,7 @@ export default class fractional_document_file extends PureComponent {
         //return;
         axios.post(server_url.GetDocumentDetailById, {
             documentId: this.state.images_id_list[id],
+            userkey: this.state.Token,
         })
             .then(response => {
                 // alert(JSON.stringify(response));

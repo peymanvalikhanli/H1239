@@ -100,6 +100,7 @@ export default class personal_upload extends PureComponent {
                         // data.append('fileType', 4);
                         data.append('contentType', "image/png");
                         data.append('content', img_data);
+                        data.append('userkey', this.state.Token);
 
                         axios.post(server_url.UploadUserDocument, data, {
                             headers: {
