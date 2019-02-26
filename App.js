@@ -7,10 +7,8 @@
  Company NEBKA team Copy Right 
  */
 
-import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, AppRegistry, AsyncStorage, NavigatorIOS,} from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import RN from 'react-navigation'
+import { createStackNavigator , createAppContainer } from 'react-navigation';
+import { TapGestureHandler } from 'react-native-gesture-handler';
 
 import introduction from './sourceCode/view/pages/introduction'; 
 import verification from './sourceCode/view/pages/verification'; 
@@ -40,10 +38,8 @@ import introduction_latter_select_file from './sourceCode/view/pages/introductio
 import show_files from './sourceCode/view/pages/show_files';
 import fractional_document_file from './sourceCode/view/pages/fractional_documents_files';
 
-import test from './sourceCode/view/pages/test'
 
-
-const nave = StackNavigator({
+const nave = createStackNavigator({
 
   // test: {screen: test},
   // personal_upload: { screen: personal_upload }, 
@@ -88,7 +84,7 @@ const nave = StackNavigator({
   headerMode: "none"
 });
 
-export default nave;
 
+const App = createAppContainer(nave);
 
-AppRegistry.registerComponent('flow',nave)
+export default App;
